@@ -1,11 +1,25 @@
 {
     "GUI" : [
         {
-            "name" : "TransformationBuffer",
+            "name" : "CanvasViewport",
             "type" : "bank",
             "binding-type" : "cbv",
             "binding-points" : 1,
             "max-bindings" :  1000
+        },
+        {
+            "name" : "Texture",
+            "type" : "bank",
+            "binding-type" : "srv",
+            "binding-points" : 1,
+            "max-bindings" :  1000
+        },
+        {
+            "name" : "Sampler",
+            "type" : "bank",
+            "binding-type" : "sampler",
+            "binding-points" : 1,
+            "max-bindings" :  4
         }
     ]
 }

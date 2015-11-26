@@ -9,6 +9,16 @@
                 "fragment" : "colorFragment.hlsl",
                 "vertex" : "colorVertex.hlsl"
             }
+        },
+        "Textured" : {
+            "glsl" : {
+                "fragment" : "texturedFragment.glsl",
+                "vertex" : "texturedVertex.glsl"
+            },
+            "hlsl" : {
+                "fragment" : "texturedFragment.hlsl",
+                "vertex" : "texturedVertex.hlsl"
+            }
         }
     }
 }
