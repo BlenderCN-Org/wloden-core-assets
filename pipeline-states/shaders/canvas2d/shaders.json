@@ -1,0 +1,14 @@
+{
+    "shaders" : {
+        "Color" : {
+            "glsl" : {
+                "fragment" : "colorFragment.glsl",
+                "vertex" : "colorVertex.glsl"
+            },
+            "hlsl" : {
+                "fragment" : "colorFragment.hlsl",
+                "vertex" : "colorVertex.hlsl"
+            }
+        }
+    }
+}

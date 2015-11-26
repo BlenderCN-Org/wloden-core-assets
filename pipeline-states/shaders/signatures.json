@@ -1,0 +1,11 @@
+{
+    "GUI" : [
+        {
+            "name" : "TransformationBuffer",
+            "type" : "bank",
+            "binding-type" : "cbv",
+            "binding-points" : 1,
+            "max-bindings" :  1000
+        }
+    ]
+}

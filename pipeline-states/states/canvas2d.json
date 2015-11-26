@@ -1,0 +1,25 @@
+{
+    "states" : {
+        "polygon.common" : {
+            "abstract" : true,
+            "shader-signature" : "GUI",
+            "render-target-count" : 1,
+            "vertex-layout" : "CanvasVertex2D"
+        },
+
+        "polygon.color" : {
+            "abstract" : true,
+            "inherit-from" : "polygon.common",
+            "shader" : "Canvas2D.Color"
+        },
+
+        "color.line" : {
+            "inherit-from" : "polygon.color",
+            "primitive-type" : "line"
+        },
+        "color.triangle" : {
+            "inherit-from" : "polygon.color",
+            "primitive-type" : "triangle"
+        }
+    }
+}
