@@ -1,4 +1,5 @@
 {
+    "structures" : "structures/structures.json",
     "shader-signatures" : "shaders/signatures.json",
     "vertex-layouts" : "layouts/vertex-layouts.json",
     "shaders" : "shaders/shaders.json",

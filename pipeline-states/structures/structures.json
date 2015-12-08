@@ -1,0 +1,56 @@
+{
+    "CanvasVertex2D" : {
+        "type" : "vertex",
+        "fields" : [
+            {   "binding" : 0, "type" : "vec2", "name" : "position" },
+            {   "binding" : 1, "type" : "vec2", "name" : "texcoord" },
+            {   "binding" : 2, "type" : "vec4", "name" : "color" }
+        ]
+    },
+
+    "CompressedVertex3DColorTN" : {
+        "type" : "vertex",
+        "fields" : [
+            {   "binding" : 0, "type" : "vec3", "name" : "position" },
+            {   "binding" : 2, "type" : "nbvec4", "name" : "color" },
+            {   "binding" : 3, "type" : "nsvec2", "name" : "normal" },
+            {   "binding" : 4, "type" : "nsvec2", "name" : "tangent" },
+            {   "binding" : 1, "type" : "nsvec2", "name" : "texcoord" }
+        ]
+    },
+
+    "CompressedVertex3DTN" : {
+        "type" : "vertex",
+        "fields" : [
+            {   "binding" : 0, "type" : "vec3", "name" : "position" },
+            {   "binding" : 3, "type" : "nsvec2", "name" : "normal" },
+            {   "binding" : 4, "type" : "nsvec2", "name" : "tangent" },
+            {   "binding" : 1, "type" : "nsvec2", "name" : "texcoord" }
+        ]
+    },
+
+    "CompressedVertex3DColorTNSkin" : {
+        "type" : "vertex",
+        "fields" : [
+            {   "binding" : 0, "type" : "vec3", "name" : "position" },
+            {   "binding" : 2, "type" : "nbvec4", "name" : "color" },
+            {   "binding" : 3, "type" : "nsvec2", "name" : "normal" },
+            {   "binding" : 4, "type" : "nsvec2", "name" : "tangent" },
+            {   "binding" : 1, "type" : "nsvec2", "name" : "texcoord" },
+            {   "binding" : 5, "type" : "svec4", "name" : "boneIndices" },
+            {   "binding" : 6, "type" : "nsvec4", "name" : "boneWeights" }
+        ]
+    },
+
+    "CompressedVertex3DTNSkin": {
+        "type" : "vertex",
+        "fields" : [
+            {   "binding" : 0, "type" : "vec3", "name" : "position" },
+            {   "binding" : 3, "type" : "nsvec2", "name" : "normal" },
+            {   "binding" : 4, "type" : "nsvec2", "name" : "tangent" },
+            {   "binding" : 1, "type" : "nsvec2", "name" : "texcoord" },
+            {   "binding" : 5, "type" : "svec4", "name" : "boneIndices" },
+            {   "binding" : 6, "type" : "nsvec4", "name" : "boneWeights" }
+        ]
+    }
+}

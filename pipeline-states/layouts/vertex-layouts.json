@@ -1,77 +1,17 @@
 {
     "CanvasVertex2D": {
-        "buffer-count" : 1,
-        "structures" : [
-            {
-                "buffer" : 0,
-                "fields" : [
-                    {   "binding" : 0, "type" : "vec2", "name" : "position" },
-                    {   "binding" : 1, "type" : "vec2", "name" : "texcoord" },
-                    {   "binding" : 2, "type" : "vec4", "name" : "color" }
-                ]
-            }
-        ]
+        "buffers" : ["CanvasVertex2D"]
     },
     "CompressedVertex3DColorTN": {
-        "buffer-count" : 1,
-        "structures" : [
-            {
-                "buffer" : 0,
-                "fields" : [
-                    {   "binding" : 0, "type" : "vec3", "name" : "position" },
-                    {   "binding" : 2, "type" : "nbvec4", "name" : "color" },
-                    {   "binding" : 3, "type" : "nsvec2", "name" : "normal" },
-                    {   "binding" : 4, "type" : "nsvec2", "name" : "tangent" },
-                    {   "binding" : 1, "type" : "nsvec2", "name" : "texcoord" }
-                ]
-            }
-        ]
+        "buffers" : ["CompressedVertex3DColorTN"]
     },
     "CompressedVertex3DTN" : {
-        "buffer-count" : 1,
-        "structures" : [
-            {
-                "buffer" : 0,
-                "fields" : [
-                    {   "binding" : 0, "type" : "vec3", "name" : "position" },
-                    {   "binding" : 3, "type" : "nsvec2", "name" : "normal" },
-                    {   "binding" : 4, "type" : "nsvec2", "name" : "tangent" },
-                    {   "binding" : 1, "type" : "nsvec2", "name" : "texcoord" }
-                ]
-            }
-        ]
+        "buffers" : ["CompressedVertex3DTN"]
     },
     "CompressedVertex3DColorTNSkin": {
-        "buffer-count" : 1,
-        "structures" : [
-            {
-                "buffer" : 0,
-                "fields" : [
-                    {   "binding" : 0, "type" : "vec3", "name" : "position" },
-                    {   "binding" : 2, "type" : "nbvec4", "name" : "color" },
-                    {   "binding" : 3, "type" : "nsvec2", "name" : "normal" },
-                    {   "binding" : 4, "type" : "nsvec2", "name" : "tangent" },
-                    {   "binding" : 1, "type" : "nsvec2", "name" : "texcoord" },
-                    {   "binding" : 5, "type" : "svec4", "name" : "boneIndices" },
-                    {   "binding" : 6, "type" : "nsvec4", "name" : "boneWeights" }
-                ]
-            }
-        ]
+        "buffers" : ["CompressedVertex3DColorTNSkin"]
     },
     "CompressedVertex3DTNSkin" : {
-        "buffer-count" : 1,
-        "structures" : [
-            {
-                "buffer" : 0,
-                "fields" : [
-                    {   "binding" : 0, "type" : "vec3", "name" : "position" },
-                    {   "binding" : 3, "type" : "nsvec2", "name" : "normal" },
-                    {   "binding" : 4, "type" : "nsvec2", "name" : "tangent" },
-                    {   "binding" : 1, "type" : "nsvec2", "name" : "texcoord" },
-                    {   "binding" : 5, "type" : "svec4", "name" : "boneIndices" },
-                    {   "binding" : 6, "type" : "nsvec4", "name" : "boneWeights" }
-                ]
-            }
-        ]
+        "buffers" : ["CompressedVertex3DTNSkin"]
     }
 }
