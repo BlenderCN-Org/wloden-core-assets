@@ -4,22 +4,120 @@
             "abstract" : true,
             "shader-signature" : "GUI",
             "render-target-count" : 1,
-            "vertex-layout" : "CanvasVertex2D"
+            "depth-stencil-format" : "D24_UNORM_S8_UINT",
+            "vertex-layout" : "CanvasVertex2D",
+
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "source-alpha",
+                "dest-factor" : "inverted-source-alpha",
+                "operation" : "add"
+            }]
         },
 
-        "polygon.color" : {
+        "polygon.stencil" : {
+            "abstract" : true,
+            "shader-signature" : "GUI",
+            "shader" : "Canvas2D.PolygonStencil",
+            "render-target-count" : 1,
+            "depth-stencil-format" : "D24_UNORM_S8_UINT",
+            "vertex-layout" : "CanvasVertex2D",
+            "primitive-type" : "triangle",
+
+            "stencil-state" : {
+                "enabled" : true,
+                "read-mask" : 255,
+                "write-mask" : 15
+            },
+
+            "color-mask" : {
+                "render-target-mask" : -1,
+                "red-enabled" : false,
+                "green-enabled" : false,
+                "blue-enabled" : false,
+                "alpha-enabled" : false
+            }
+        },
+
+        "polygon.cover" : {
+            "abstract" : true,
+            "shader-signature" : "GUI",
+            "render-target-count" : 1,
+            "vertex-layout" : "CanvasVertex2D",
+
+            "depth-stencil-format" : "D24_UNORM_S8_UINT",
+            "stencil-state" : {
+                "enabled" : true,
+                "read-mask" : 255,
+                "write-mask" : 255
+            },
+
+            "stencil-operations" : {
+                "stencil-fail" : "replace",
+                "depth-fail" : "replace",
+                "stencil-depth-pass" : "replace",
+                "function" : "less"
+            },
+
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "source-alpha",
+                "dest-factor" : "inverted-source-alpha",
+                "operation" : "add"
+            }]
+        },
+
+        "polygon.convex.color" : {
             "abstract" : true,
             "inherit-from" : "polygon.common",
             "shader" : "Canvas2D.Color"
         },
 
-        "color.line" : {
-            "inherit-from" : "polygon.color",
+        "polygon.convex.color.line" : {
+            "inherit-from" : "polygon.convex.color",
             "primitive-type" : "line"
         },
-        "color.triangle" : {
-            "inherit-from" : "polygon.color",
+
+        "polygon.convex.color.triangle" : {
+            "inherit-from" : "polygon.convex.color",
             "primitive-type" : "triangle"
+        },
+
+        "polygon.cover.color" : {
+            "inherit-from" : "polygon.cover",
+            "shader" : "Canvas2D.Color",
+            "primitive-type" : "triangle"
+        },
+
+        "polygon.stencil.even-odd" : {
+            "inherit-from" : "polygon.stencil",
+
+            "stencil-operations" : {
+                "stencil-fail" : "keep",
+                "depth-fail" : "keep",
+                "stencil-depth-pass" : "invert",
+                "function" : "always"
+            }
+        },
+
+        "polygon.stencil.non-zero" : {
+            "inherit-from" : "polygon.stencil",
+
+            "stencil-front-operations" : {
+                "stencil-fail" : "keep",
+                "depth-fail" : "keep",
+                "stencil-depth-pass" : "increase-wrap",
+                "function" : "always"
+            },
+
+            "stencil-back-operations" : {
+                "stencil-fail" : "keep",
+                "depth-fail" : "keep",
+                "stencil-depth-pass" : "decrease-wrap",
+                "function" : "always"
+            }
         }
     }
 }

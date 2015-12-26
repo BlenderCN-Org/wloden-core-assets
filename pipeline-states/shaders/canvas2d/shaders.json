@@ -1,5 +1,15 @@
 {
     "shaders" : {
+        "PolygonStencil" : {
+            "glsl" : {
+                "fragment" : "stencilFragment.glsl",
+                "vertex" : "stencilVertex.glsl"
+            },
+            "hlsl" : {
+                "fragment" : "stencilFragment.hlsl",
+                "vertex" : "stencilVertex.hlsl"
+            }
+        },
         "Color" : {
             "glsl" : {
                 "fragment" : "colorFragment.glsl",
