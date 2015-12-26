@@ -1,0 +1,10 @@
+{
+    "include" : {
+        "dejavu" : "dejavu/fonts.json"
+    },
+
+    "default-font" : "dejavu-sans",
+    "default-mono-font" : "dejavu-sans-mono",
+    "default-sans-font" : "dejavu-sans",
+    "default-serif-font" : "dejavu-serif"
+}

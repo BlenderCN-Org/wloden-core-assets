@@ -1,0 +1,88 @@
+{
+    "fonts" : {
+        "dejavu-sans" : {
+            "faces" : {
+                "default" : {
+                    "file" : "DejaVuSans.ttf"
+                },
+                "bold" : {
+                    "file" : "DejaVuSans-Bold.ttf"
+                },
+                "bold-italic" : {
+                    "file" : "DejaVuSans-BoldOblique.ttf"
+                },
+                "italic" : {
+                    "file" : "DejaVuSans-Oblique.ttf"
+                }
+            }
+        },
+
+        "dejavu-sans-condensed" : {
+            "faces" : {
+                "default" : {
+                    "file" : "DejaVuSansCondensed.ttf"
+                },
+                "bold" : {
+                    "file" : "DejaVuSansCondensed-Bold.ttf"
+                },
+                "bold-italic" : {
+                    "file" : "DejaVuSansCondensed-BoldOblique.ttf"
+                },
+                "italic" : {
+                    "file" : "DejaVuSansCondensed-Oblique.ttf"
+                }
+            }
+        },
+
+        "dejavu-sans-mono" : {
+            "faces" : {
+                "default" : {
+                    "file" : "DejaVuSansMono.ttf"
+                },
+                "bold" : {
+                    "file" : "DejaVuSansMono-Bold.ttf"
+                },
+                "bold-italic" : {
+                    "file" : "DejaVuSansMono-BoldOblique.ttf"
+                },
+                "italic" : {
+                    "file" : "DejaVuSansMono-Oblique.ttf"
+                }
+            }
+        },
+
+        "dejavu-serif" : {
+            "faces" : {
+                "default" : {
+                    "file" : "DejaVuSerif.ttf"
+                },
+                "bold" : {
+                    "file" : "DejaVuSerif-Bold.ttf"
+                },
+                "bold-italic" : {
+                    "file" : "DejaVuSerif-BoldItalic.ttf"
+                },
+                "italic" : {
+                    "file" : "DejaVuSerif-Italic.ttf"
+                }
+            }
+        },
+
+        "dejavu-serif-condensed" : {
+            "faces" : {
+                "default" : {
+                    "file" : "DejaVuSerifCondensed.ttf"
+                },
+                "bold" : {
+                    "file" : "DejaVuSerifCondensed-Bold.ttf"
+                },
+                "bold-italic" : {
+                    "file" : "DejaVuSerifCondensed-BoldItalic.ttf"
+                },
+                "italic" : {
+                    "file" : "DejaVuSerifCondensed-Italic.ttf"
+                }
+            }
+        }
+    }
+}
