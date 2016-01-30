@@ -5,6 +5,7 @@
             "shader-signature" : "GUI",
             "render-target-count" : 1,
             "depth-stencil-format" : "D24_UNORM_S8_UINT",
+            "inherit-from" : "settings.rendering.sample-description",
             "vertex-layout" : "CanvasVertex2D",
 
             "blend-state" : [{
@@ -22,6 +23,7 @@
             "shader" : "Canvas2D.PolygonStencil",
             "render-target-count" : 1,
             "depth-stencil-format" : "D24_UNORM_S8_UINT",
+            "inherit-from" : "settings.rendering.sample-description",
             "vertex-layout" : "CanvasVertex2D",
             "primitive-type" : "triangle",
 
@@ -37,13 +39,22 @@
                 "green-enabled" : false,
                 "blue-enabled" : false,
                 "alpha-enabled" : false
-            }
+            },
+
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "source-alpha",
+                "dest-factor" : "inverted-source-alpha",
+                "operation" : "add"
+            }]
         },
 
         "polygon.cover" : {
             "abstract" : true,
             "shader-signature" : "GUI",
             "render-target-count" : 1,
+            "inherit-from" : "settings.rendering.sample-description",
             "vertex-layout" : "CanvasVertex2D",
 
             "depth-stencil-format" : "D24_UNORM_S8_UINT",
