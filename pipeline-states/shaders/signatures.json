@@ -15,11 +15,18 @@
             "max-bindings" :  1000
         },
         {
+            "name" : "Font",
+            "type" : "bank",
+            "binding-type" : "srv",
+            "binding-points" : 1,
+            "max-bindings" :  100
+        },
+        {
             "name" : "Sampler",
             "type" : "bank",
             "binding-type" : "sampler",
-            "binding-points" : 1,
-            "max-bindings" :  4
+            "binding-points" : 2,
+            "max-bindings" :  100
         }
     ]
 }

@@ -3,7 +3,7 @@
         "dejavu-sans" : {
             "faces" : {
                 "default" : {
-                    "file" : "DejaVuSans.ttf"
+                    "file" : "DejaVuSans.lodenfnt"
                 },
                 "bold" : {
                     "file" : "DejaVuSans-Bold.ttf"

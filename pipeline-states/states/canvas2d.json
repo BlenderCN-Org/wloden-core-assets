@@ -129,6 +129,18 @@
                 "stencil-depth-pass" : "decrease-wrap",
                 "function" : "always"
             }
+        },
+
+        "text.color" : {
+            "inherit-from" : "polygon.convex.color.triangle",
+            "shader" : "Canvas2D.TextColor",
+            "primitive-type" : "triangle"
+        },
+
+        "textsdf.color" : {
+            "inherit-from" : "polygon.convex.color.triangle",
+            "shader" : "Canvas2D.TextSdfColor",
+            "primitive-type" : "triangle"
         }
     }
 }

@@ -29,6 +29,26 @@
                 "fragment" : "texturedFragment.hlsl",
                 "vertex" : "texturedVertex.hlsl"
             }
+        },
+        "TextColor" : {
+            "glsl" : {
+                "fragment" : "textColorFragment.glsl",
+                "vertex" : "textColorVertex.glsl"
+            },
+            "hlsl" : {
+                "fragment" : "textColorFragment.hlsl",
+                "vertex" : "textColorVertex.hlsl"
+            }
+        },
+        "TextSdfColor" : {
+            "glsl" : {
+                "fragment" : "textSdfColorFragment.glsl",
+                "vertex" : "textColorVertex.glsl"
+            },
+            "hlsl" : {
+                "fragment" : "textSdfColorFragment.hlsl",
+                "vertex" : "textColorVertex.hlsl"
+            }
         }
     }
 }
