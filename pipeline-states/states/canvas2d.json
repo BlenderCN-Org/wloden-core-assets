@@ -25,7 +25,7 @@
             "depth-stencil-format" : "D24_UNORM_S8_UINT",
             "inherit-from" : "settings.rendering.sample-description",
             "vertex-layout" : "CanvasVertex2D",
-            "primitive-type" : "triangle",
+            "primitive-type" : "triangles",
 
             "stencil-state" : {
                 "enabled" : true,
@@ -88,18 +88,18 @@
 
         "polygon.convex.color.line" : {
             "inherit-from" : "polygon.convex.color",
-            "primitive-type" : "line"
+            "primitive-type" : "lines"
         },
 
         "polygon.convex.color.triangle" : {
             "inherit-from" : "polygon.convex.color",
-            "primitive-type" : "triangle"
+            "primitive-type" : "triangles"
         },
 
         "polygon.cover.color" : {
             "inherit-from" : "polygon.cover",
             "shader" : "Canvas2D.Color",
-            "primitive-type" : "triangle"
+            "primitive-type" : "triangles"
         },
 
         "polygon.stencil.even-odd" : {
@@ -134,13 +134,13 @@
         "text.color" : {
             "inherit-from" : "polygon.convex.color.triangle",
             "shader" : "Canvas2D.TextColor",
-            "primitive-type" : "triangle"
+            "primitive-type" : "triangles"
         },
 
         "textsdf.color" : {
             "inherit-from" : "polygon.convex.color.triangle",
             "shader" : "Canvas2D.TextSdfColor",
-            "primitive-type" : "triangle"
+            "primitive-type" : "triangles"
         }
     }
 }
