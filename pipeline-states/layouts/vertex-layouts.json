@@ -1,17 +1,5 @@
 {
     "CanvasVertex2D": {
         "buffers" : ["CanvasVertex2D"]
-    },
-    "CompressedVertex3DColorTN": {
-        "buffers" : ["CompressedVertex3DColorTN"]
-    },
-    "CompressedVertex3DTN" : {
-        "buffers" : ["CompressedVertex3DTN"]
-    },
-    "CompressedVertex3DColorTNSkin": {
-        "buffers" : ["CompressedVertex3DColorTNSkin"]
-    },
-    "CompressedVertex3DTNSkin" : {
-        "buffers" : ["CompressedVertex3DTNSkin"]
     }
 }

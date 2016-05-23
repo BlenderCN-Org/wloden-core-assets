@@ -3,21 +3,21 @@
         {
             "name" : "CanvasViewport",
             "type" : "bank",
-            "binding-type" : "cbv",
+            "binding-type" : "uniform-buffer",
             "binding-points" : 1,
             "max-bindings" :  1000
         },
         {
             "name" : "Texture",
             "type" : "bank",
-            "binding-type" : "srv",
+            "binding-type" : "sampled-image",
             "binding-points" : 1,
             "max-bindings" :  1000
         },
         {
             "name" : "Font",
             "type" : "bank",
-            "binding-type" : "srv",
+            "binding-type" : "sampled-image",
             "binding-points" : 1,
             "max-bindings" :  100
         },
