@@ -2,7 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack : enable
 
-layout (set = 0, binding = 0, std140) uniform CanvasViewport
+layout (binding = 0, set = 0, std140) uniform CanvasViewport
 {
     mat4 projectionMatrix;
     mat4 viewMatrix;
