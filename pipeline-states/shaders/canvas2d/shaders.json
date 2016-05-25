@@ -1,54 +1,1 @@
-{
-    "shaders" : {
-        "PolygonStencil" : {
-            "glsl" : {
-                "fragment" : "stencilFragment.glsl",
-                "vertex" : "stencilVertex.glsl"
-            },
-            "hlsl" : {
-                "fragment" : "stencilFragment.hlsl",
-                "vertex" : "stencilVertex.hlsl"
-            }
-        },
-        "Color" : {
-            "glsl" : {
-                "fragment" : "colorFragment.glsl",
-                "vertex" : "colorVertex.glsl"
-            },
-            "hlsl" : {
-                "fragment" : "colorFragment.hlsl",
-                "vertex" : "colorVertex.hlsl"
-            }
-        },
-        "Textured" : {
-            "glsl" : {
-                "fragment" : "texturedFragment.glsl",
-                "vertex" : "texturedVertex.glsl"
-            },
-            "hlsl" : {
-                "fragment" : "texturedFragment.hlsl",
-                "vertex" : "texturedVertex.hlsl"
-            }
-        },
-        "TextColor" : {
-            "glsl" : {
-                "fragment" : "textColorFragment.glsl",
-                "vertex" : "textColorVertex.glsl"
-            },
-            "hlsl" : {
-                "fragment" : "textColorFragment.hlsl",
-                "vertex" : "textColorVertex.hlsl"
-            }
-        },
-        "TextSdfColor" : {
-            "glsl" : {
-                "fragment" : "textSdfColorFragment.glsl",
-                "vertex" : "textColorVertex.glsl"
-            },
-            "hlsl" : {
-                "fragment" : "textSdfColorFragment.hlsl",
-                "vertex" : "textColorVertex.hlsl"
-            }
-        }
-    }
-}
+{	"shaders" : {		"TextColor" : {			"fragment" : {				"glsl" : "textColorFragment.glsl",				"spir-v" : "textColorFragment.spv"			},			"vertex" : {				"glsl" : "genericVertex.glsl",				"spir-v" : "genericVertex.spv"			}		},		"Textured" : {			"fragment" : {				"glsl" : "texturedFragment.glsl",				"spir-v" : "texturedFragment.spv"			},			"vertex" : {				"glsl" : "genericVertex.glsl",				"spir-v" : "genericVertex.spv"			}		},		"PolygonStencil" : {			"fragment" : {				"glsl" : "stencilFragment.glsl",				"spir-v" : "stencilFragment.spv"			},			"vertex" : {				"glsl" : "genericVertex.glsl",				"spir-v" : "genericVertex.spv"			}		},		"TextSdfColor" : {			"fragment" : {				"glsl" : "textSdfColorFragment.glsl",				"spir-v" : "textSdfColorFragment.spv"			},			"vertex" : {				"glsl" : "genericVertex.glsl",				"spir-v" : "genericVertex.spv"			}		},		"Color" : {			"fragment" : {				"glsl" : "colorFragment.glsl",				"spir-v" : "colorFragment.spv"			},			"vertex" : {				"glsl" : "genericVertex.glsl",				"spir-v" : "genericVertex.spv"			}		}	}}

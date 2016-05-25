@@ -1,0 +1,16 @@
+import environment;
+
+semantic FragmentInput {
+    in(0) position: float4;
+    in(1) texcoord: float2;
+    in(2) color: float4;
+}
+
+semantic FragmentOutput {
+    out(0) color: float4;
+}
+
+uniform(set = 1, binding = 0) mainTexture : texture2D;
+uniform(set = 2, binding = 0) fontTexture : texture2D;
+uniform(set = 3, binding = 0) mainSampler : sampler;
+uniform(set = 3, binding = 1) fontSampler : sampler;

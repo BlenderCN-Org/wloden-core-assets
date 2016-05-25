@@ -1,5 +1,1 @@
-{
-    "groups" : {
-        "Canvas2D" : "canvas2d/shaders.json"
-    }
-}
+{	"groups" : {		"Canvas2D" : "canvas2d/shaders.json"	}}

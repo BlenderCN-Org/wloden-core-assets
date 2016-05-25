@@ -1,0 +1,12 @@
+import environment;
+import vertex;
+
+code_block(vertex) main
+{
+    using CanvasViewport;
+
+    VertexOutput.color = VertexInput.color;
+    VertexOutput.texcoord = VertexInput.texcoord;
+    VertexOutput.position = viewMatrix * float4(VertexInput.position, 1.0f, 0.0f);
+    VertexOutput.screenPosition = projectionMatrix * VertexOutput.position;
+}
