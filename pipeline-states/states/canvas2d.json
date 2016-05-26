@@ -86,12 +86,17 @@
             "shader" : "Canvas2D.Color"
         },
 
-        "polygon.convex.color.line" : {
+        "polygon.convex.color.points" : {
+            "inherit-from" : "polygon.convex.color",
+            "primitive-type" : "points"
+        },
+
+        "polygon.convex.color.lines" : {
             "inherit-from" : "polygon.convex.color",
             "primitive-type" : "lines"
         },
 
-        "polygon.convex.color.triangle" : {
+        "polygon.convex.color.triangles" : {
             "inherit-from" : "polygon.convex.color",
             "primitive-type" : "triangles"
         },
@@ -132,13 +137,13 @@
         },
 
         "text.color" : {
-            "inherit-from" : "polygon.convex.color.triangle",
+            "inherit-from" : "polygon.convex.color.triangles",
             "shader" : "Canvas2D.TextColor",
             "primitive-type" : "triangles"
         },
 
         "textsdf.color" : {
-            "inherit-from" : "polygon.convex.color.triangle",
+            "inherit-from" : "polygon.convex.color.triangles",
             "shader" : "Canvas2D.TextSdfColor",
             "primitive-type" : "triangles"
         }

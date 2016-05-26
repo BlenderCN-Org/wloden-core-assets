@@ -7,6 +7,6 @@ code_block(vertex) main
 
     VertexOutput.color = VertexInput.color;
     VertexOutput.texcoord = VertexInput.texcoord;
-    VertexOutput.position = viewMatrix * float4(VertexInput.position, 1.0f, 0.0f);
+    VertexOutput.position = viewMatrix * float4(VertexInput.position, 0.0f, 1.0f);
     VertexOutput.screenPosition = projectionMatrix * VertexOutput.position;
 }

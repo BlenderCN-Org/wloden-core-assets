@@ -24,7 +24,7 @@ void main()
 {
     VertexOutput_m_color = VertexInput_m_color;
     VertexOutput_m_texcoord = VertexInput_m_texcoord;
-    VertexOutput_m_position = (CanvasViewport_dastrel_singleton_.viewMatrix*vec4(VertexInput_m_position,1.0,0.0));
+    VertexOutput_m_position = (CanvasViewport_dastrel_singleton_.viewMatrix*vec4(VertexInput_m_position,0.0,1.0));
     gl_Position = (CanvasViewport_dastrel_singleton_.projectionMatrix*VertexOutput_m_position);
 }
 
