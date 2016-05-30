@@ -2,9 +2,9 @@
     "CanvasVertex2D" : {
         "type" : "vertex",
         "fields" : [
-            {   "binding" : 0, "format" : "R32G32_FLOAT", "name" : "position" },
-            {   "binding" : 1, "format" : "R32G32_FLOAT", "name" : "texcoord" },
-            {   "binding" : 2, "format" : "R32G32B32A32_FLOAT", "name" : "color" }
+            {   "binding" : 0, "format" : "float2", "name" : "position" },
+            {   "binding" : 1, "format" : "float2", "name" : "texcoord" },
+            {   "binding" : 2, "format" : "float4", "name" : "color" }
         ]
     }
 }
