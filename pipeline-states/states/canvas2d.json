@@ -6,15 +6,7 @@
             "render-target-formats" : ["B8G8R8A8_UNORM_SRGB"],
             "depth-stencil-format" : "D24_UNORM_S8_UINT",
             "inherit-from" : "settings.rendering.sample-description",
-            "vertex-layout" : "CanvasVertex2D",
-
-            "blend-state" : [{
-                "render-target-mask" : -1,
-                "enabled" : true,
-                "source-factor" : "source-alpha",
-                "dest-factor" : "inverted-source-alpha",
-                "operation" : "add"
-            }]
+            "vertex-layout" : "CanvasVertex2D"
         },
 
         "polygon.stencil" : {
@@ -39,13 +31,75 @@
                 "green-enabled" : false,
                 "blue-enabled" : false,
                 "alpha-enabled" : false
-            },
+            }
+        },
 
+        "blend.add" : {
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "one",
+                "dest-factor" : "one",
+                "operation" : "add"
+            }]
+        },
+
+        "blend.clear" : {
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "zero",
+                "dest-factor" : "zero",
+                "operation" : "add"
+            }]
+        },
+
+        "blend.dest" : {
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "zero",
+                "dest-factor" : "one",
+                "operation" : "add"
+            }]
+        },
+
+        "blend.dest-over" : {
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "inverted-dest-alpha",
+                "dest-factor" : "dest-alpha",
+                "operation" : "add"
+            }]
+        },
+
+        "blend.multiply" : {
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "dest-color",
+                "dest-factor" : "zero",
+                "operation" : "add"
+            }]
+        },
+
+        "blend.over" : {
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,
                 "source-factor" : "source-alpha",
                 "dest-factor" : "inverted-source-alpha",
+                "operation" : "add"
+            }]
+        },
+
+        "blend.source" : {
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "one",
+                "dest-factor" : "zero",
                 "operation" : "add"
             }]
         },
@@ -87,24 +141,35 @@
         },
 
         "polygon.convex.color.points" : {
+            "abstract" : true,
             "inherit-from" : "polygon.convex.color",
-            "primitive-type" : "points"
+            "primitive-type" : "points",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
         },
 
         "polygon.convex.color.lines" : {
+            "abstract" : true,
             "inherit-from" : "polygon.convex.color",
-            "primitive-type" : "lines"
+            "primitive-type" : "lines",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
         },
 
         "polygon.convex.color.triangles" : {
+            "abstract" : true,
             "inherit-from" : "polygon.convex.color",
-            "primitive-type" : "triangles"
+            "primitive-type" : "triangles",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
         },
 
         "polygon.cover.color" : {
             "inherit-from" : "polygon.cover",
             "shader" : "Canvas2D.Color",
-            "primitive-type" : "triangles"
+            "primitive-type" : "triangles",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
         },
 
         "polygon.stencil.even-odd" : {
