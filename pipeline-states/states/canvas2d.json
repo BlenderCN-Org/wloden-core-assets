@@ -210,7 +210,15 @@
         "textsdf.color" : {
             "inherit-from" : "polygon.convex.color.triangles",
             "shader" : "Canvas2D.TextSdfColor",
-            "primitive-type" : "triangles"
+            "primitive-type" : "triangles",
+
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "source-alpha",
+                "dest-factor" : "inverted-source-alpha",
+                "operation" : "add"
+            }]
         }
     }
 }
