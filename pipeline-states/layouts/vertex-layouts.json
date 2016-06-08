@@ -1,5 +1,8 @@
 {
     "CanvasVertex2D": {
         "buffers" : ["CanvasVertex2D"]
+    },
+    "GenericVertex": {
+        "buffers" : ["GenericVertex"]
     }
 }

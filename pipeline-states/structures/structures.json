@@ -6,5 +6,16 @@
             {   "binding" : 1, "format" : "float2", "name" : "texcoord" },
             {   "binding" : 2, "format" : "float4", "name" : "color" }
         ]
+    },
+    "GenericVertex" : {
+        "type" : "vertex",
+        "fields" : [
+            {   "binding" : 0, "format" : "float3", "name" : "position" },
+            {   "binding" : 4, "format" : "float3", "name" : "tangent" },
+            {   "binding" : 5, "format" : "float3", "name" : "bitangent" },
+            {   "binding" : 3, "format" : "float3", "name" : "normal" },
+            {   "binding" : 1, "format" : "float2", "name" : "texcoord" },
+            {   "binding" : 2, "format" : "float4", "name" : "color" }
+        ]
     }
 }

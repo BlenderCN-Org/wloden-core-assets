@@ -1,5 +1,6 @@
 {
     "groups" : {
-        "canvas2d" : "canvas2d.json"
+        "canvas2d" : "canvas2d.json",
+        "material" : "material.json"
     }
 }

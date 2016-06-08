@@ -1,0 +1,4 @@
+uniform(set=2, binding=0) MaterialState
+{
+    color: float4;
+}

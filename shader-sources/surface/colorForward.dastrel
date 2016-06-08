@@ -1,0 +1,8 @@
+import environment;
+import fragment;
+import material;
+
+code_block(fragment) main
+{
+    FragmentOutput.color = float4(FragmentInput.normal * 0.5f + 0.5f, 1.0f);//FragmentInput.color;
+}

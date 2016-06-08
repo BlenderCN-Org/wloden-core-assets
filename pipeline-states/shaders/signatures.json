@@ -28,5 +28,43 @@
             "binding-points" : 2,
             "max-bindings" :  100
         }
+    ],
+
+    "ForwardRenderer" : [
+        {
+            "name" : "ObjectState",
+            "type" : "bank",
+            "binding-type" : "uniform-buffer",
+            "binding-points" : 1,
+            "max-bindings" :  1000000
+        },
+        {
+            "name" : "CameraState",
+            "type" : "bank",
+            "binding-type" : "uniform-buffer",
+            "binding-points" : 2,
+            "max-bindings" :  1000
+        },
+        {
+            "name" : "LightingState",
+            "type" : "bank",
+            "binding-type" : "uniform-buffer",
+            "binding-points" : 1,
+            "max-bindings" :  100
+        },
+        {
+            "name" : "MaterialState",
+            "type" : "bank",
+            "binding-type" : "uniform-buffer",
+            "binding-points" : 1,
+            "max-bindings" :  10000
+        },
+        {
+            "name" : "Sampler",
+            "type" : "bank",
+            "binding-type" : "sampler",
+            "binding-points" : 10,
+            "max-bindings" :  1
+        }
     ]
 }

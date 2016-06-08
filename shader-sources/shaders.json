@@ -1,5 +1,6 @@
 {
     "groups" : {
-        "Canvas2D" : "canvas2d/shaders.json"
+        "Canvas2D" : "canvas2d/shaders.json",
+        "Surface" : "surface/shaders.json"
     }
 }

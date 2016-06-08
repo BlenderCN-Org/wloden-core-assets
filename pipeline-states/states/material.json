@@ -1,0 +1,32 @@
+{
+    "states" : {
+        "forward.common" : {
+            "abstract" : true,
+            "shader-signature" : "ForwardRenderer",
+            "render-target-formats" : ["B8G8R8A8_UNORM_SRGB"],
+            "depth-stencil-format" : "D24_UNORM_S8_UINT",
+            "inherit-from" : "settings.rendering.sample-description",
+            "vertex-layout" : "GenericVertex",
+
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "source-alpha",
+                "dest-factor" : "inverted-source-alpha",
+                "operation" : "add"
+            }],
+
+            "depth-state" : {
+                "enabled" : true,
+                "write-mask" : true,
+                "function" : "greater"
+            }
+        },
+
+        "forward.surface.color" : {
+            "inherit-from" : "forward.common",
+            "shader" : "Surface.Color",
+            "primitive-type" : "triangles"
+        }
+    }
+}

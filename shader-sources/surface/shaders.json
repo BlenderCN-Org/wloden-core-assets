@@ -1,0 +1,8 @@
+{
+    "shaders" : {
+        "Color" : {
+            "fragment" : "colorForward.dastrel",
+            "vertex" : "genericVertex.dastrel"
+        }
+    }
+}

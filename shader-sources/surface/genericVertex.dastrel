@@ -1,0 +1,18 @@
+import environment;
+import vertex;
+
+code_block(vertex) main
+{
+    using CameraState;
+    using CameraObjectState;
+    using ObjectState;
+
+    VertexOutput.color = GenericVertexLayout.color;
+    VertexOutput.texcoord = GenericVertexLayout.texcoord;
+    VertexOutput.tangent = viewNormalMatrix * normalMatrix * GenericVertexLayout.tangent;
+    VertexOutput.bitangent = viewNormalMatrix * normalMatrix * GenericVertexLayout.bitangent;
+    VertexOutput.normal = viewNormalMatrix * normalMatrix * GenericVertexLayout.normal;
+    let position4 = viewMatrix * modelMatrix * float4(GenericVertexLayout.position, 1.0f);
+    VertexOutput.position =  position4.xyz;
+    VertexOutput.screenPosition = projectionMatrix * position4;
+}
