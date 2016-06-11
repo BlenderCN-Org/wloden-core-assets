@@ -1,8 +1,12 @@
 import environment;
 import fragment;
 import material;
+import lighting;
 
 code_block(fragment) main
 {
-    FragmentOutput.color = float4(FragmentInput.normal * 0.5f + 0.5f, 1.0f);//FragmentInput.color;
+    let N = normalize(FragmentInput.normal);
+    let V = normalize(FragmentInput.position);
+
+    color: FragmentOutput.color <== phongLightingModel albedo: FragmentInput.color normal: N viewVector: V position: FragmentInput.position;
 }

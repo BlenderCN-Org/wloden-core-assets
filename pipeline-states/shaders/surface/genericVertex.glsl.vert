@@ -2,6 +2,12 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack : enable
 
+struct LightSource
+{
+    vec4 position;
+    vec4 intensity;
+};
+
 layout (binding = 0, set = 0, std140) uniform ObjectState
 {
     mat4 modelMatrix;
@@ -26,6 +32,11 @@ layout (binding = 1, set = 1, std140) uniform CameraState
 
 layout (binding = 0, set = 2, std140) uniform GlobalLightingState
 {
+    vec4 groundLighting;
+    vec4 skyLighting;
+    vec3 sunDirection;
+    int numberOfLights;
+    LightSource lightSources[16];
 } GlobalLightingState_dastrel_singleton_;
 
 

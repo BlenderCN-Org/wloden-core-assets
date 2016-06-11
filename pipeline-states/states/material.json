@@ -8,6 +8,9 @@
             "inherit-from" : "settings.rendering.sample-description",
             "vertex-layout" : "GenericVertex",
 
+            "cull-mode" : "back",
+            "front-face" : "counter-clockwise",
+
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,

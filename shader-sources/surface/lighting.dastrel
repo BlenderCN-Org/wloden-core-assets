@@ -1,0 +1,35 @@
+import environment;
+
+code_block phongLightingModel
+{
+    in normal: float3;
+    in viewVector: float3;
+    in position: float3;
+    in albedo: float4;
+    out color: float4;
+
+    using GlobalLightingState;
+
+    let accumulatedColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+    // Add the ambient hemispherical light.
+    let hemiFactor = dot(normal, sunDirection)*0.5f + 0.5f;
+    accumulatedColor += mix(groundLighting, skyLighting, hemiFactor);
+
+    // Accumulate each one of the lights
+    for(let i = 0; i < numberOfLights; i += 1)
+    {
+        let lightSource = lightSources[i];
+        let L = lightSources[i].position.xyz - position*lightSource.position.w;
+        L = normalize(L);
+
+        let NdotL = max(dot(normal, L), 0.0f);
+        if(NdotL == 0.0f)
+            continue;
+
+        accumulatedColor += lightSource.intensity * NdotL;
+    }
+
+    // Return the final lighted color.
+    color = float4(accumulatedColor.rgb, albedo.a);
+}

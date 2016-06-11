@@ -22,4 +22,18 @@ uniform(set=1, binding=1) CameraState
 
 uniform(set=2, binding=0) GlobalLightingState
 {
+    // Hemisphere lighting
+    groundLighting: float4;
+    skyLighting: float4;
+    sunDirection: float3;
+
+    // Normal lights
+    numberOfLights: int;
+    lightSources: LightSource[16];
+}
+
+struct LightSource
+{
+    position: float4;
+    intensity: float4;
 }
