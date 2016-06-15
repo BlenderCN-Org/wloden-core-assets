@@ -93,6 +93,12 @@ void phongLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in v
     color = vec4(accumulatedColor.rgb,albedo.a);
 }
 
+layout (binding = 0, set = 2, std140) uniform MaterialState
+{
+    vec4 color;
+} MaterialState_dastrel_singleton_;
+
+
 layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
 layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
 layout (binding = 1, set = 4) uniform sampler displacementSampler_dastrel_global_;
@@ -104,12 +110,6 @@ layout (location = 4) in vec3 FragmentInput_m_tangent;
 layout (location = 5) in vec3 FragmentInput_m_bitangent;
 
 layout (location = 0) out vec4 FragmentOutput_m_color;
-
-
-layout (binding = 0, set = 2, std140) uniform MaterialState
-{
-    vec4 color;
-} MaterialState_dastrel_singleton_;
 
 
 void main();

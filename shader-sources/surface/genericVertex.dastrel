@@ -14,3 +14,4 @@ code_block(vertex) main
     VertexOutput.position =  position4.xyz;
     VertexOutput.screenPosition = projectionMatrix * position4;
 }
+ 

@@ -1,11 +1,6 @@
 {
-	"destination" : "../pipeline-states/shaders",
-	"target-languages" : [
-		"spir-v",
-		"glsl"
-	],
 	"groups" : {
-		"Surface" : "surface/shaders.json",
-		"Canvas2D" : "canvas2d/shaders.json"
+		"Canvas2D" : "canvas2d/shaders.json",
+		"Surface" : "surface/shaders.json"
 	}
 }
