@@ -2,22 +2,17 @@ uniform(set=0, binding=0) ObjectState
 {
     modelMatrix: float4x4;
     inverseModelMatrix: float4x4;
-    normalMatrix: float3x3;
-    inverseNormalMatrix: float3x3;
 }
 
 uniform(set=1, binding=0) CameraObjectState
 {
     inverseViewMatrix: float4x4;
     viewMatrix: float4x4;
-    inverseViewNormalMatrix: float3x3;
-    viewNormalMatrix: float3x3;
 }
 
 uniform(set=1, binding=1) CameraState
 {
     projectionMatrix: float4x4;
-    inverseProjectionMatrix: float4x4;
 }
 
 uniform(set=2, binding=0) GlobalLightingState
@@ -36,4 +31,30 @@ struct LightSource
 {
     position: float4;
     intensity: float4;
+    spotDirection: float3;
+    innerCosCutoff: float;
+    outerCosCutoff: float;
+    spotExponent: float;
+    radius: float;
+}
+
+function transformNormalToView(normal: float3) -> float3
+{
+    using CameraObjectState;
+    using ObjectState;
+
+    return ((float4(normal, 0.0f) * inverseModelMatrix) * inverseViewMatrix).xyz;
+}
+
+function transformPositionToView(position: float3) -> float4
+{
+    return transformVector4ToView(float4(position, 1.0f));
+}
+
+function transformVector4ToView(position: float4) -> float4
+{
+    using CameraObjectState;
+    using ObjectState;
+
+    return viewMatrix * (modelMatrix * position);
 }

@@ -1,1 +1,14 @@
-{	"shaders" : {		"Color" : {			"fragment" : {				"glsl" : "colorForward.glsl.frag",				"spir-v" : "colorForward.spv"			},			"vertex" : {				"glsl" : "genericVertex.glsl.vert",				"spir-v" : "genericVertex.spv"			}		}	}}
+{
+	"shaders" : {
+		"Color" : {
+			"fragment" : {
+				"glsl" : "colorForward.glsl.frag",
+				"spir-v" : "colorForward.spv"
+			},
+			"vertex" : {
+				"glsl" : "genericVertex.glsl.vert",
+				"spir-v" : "genericVertex.spv"
+			}
+		}
+	}
+}

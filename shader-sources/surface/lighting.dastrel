@@ -6,10 +6,13 @@ code_block phongLightingModel
     in viewVector: float3;
     in position: float3;
     in albedo: float4;
+    in metalness: float;
+    in smoothness: float;
     out color: float4;
 
     using GlobalLightingState;
 
+    let shininess = 128.0f * smoothness;
     let accumulatedColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
     // Add the ambient hemispherical light.
@@ -21,13 +24,36 @@ code_block phongLightingModel
     {
         let lightSource = lightSources[i];
         let L = lightSources[i].position.xyz - position*lightSource.position.w;
-        L = normalize(L);
+        let dist = length(L);
+        L = L / dist;
 
         let NdotL = max(dot(normal, L), 0.0f);
         if(NdotL == 0.0f)
             continue;
 
-        accumulatedColor += lightSource.intensity * NdotL;
+        // Compute the attenuation factor.
+        // I am using (partly) the technique that I found here: https://imdoingitwrong.wordpress.com/2011/01/31/light-attenuation/
+        let attenuationDistance = max(0.0f, dist - lightSource.radius);
+        let attDen = 1.0f + attenuationDistance/lightSource.radius;
+        let attenuation = 1.0f/(attDen*attDen);
+
+        // Are we inside the spot light cone?
+        let spotCos = 1.0f;
+        if(lightSource.outerCosCutoff > -1.0f) // For no spot lights.
+            spotCos = dot(L, lightSource.spotDirection);
+
+        if(spotCos < lightSource.outerCosCutoff)
+            continue;
+        let spotAttenuation = smoothstep(lightSource.outerCosCutoff, lightSource.innerCosCutoff, spotCos)*pow(spotCos, lightSource.spotExponent);
+        //attenuation *= spotAttenuation;
+        let diffuseFactor = NdotL*attenuation;
+
+        // Compute the specular factor.
+        let R = reflect(L, normal);
+        let RdotV = max(dot(R, viewVector), 0.0f);
+        let specularFactor = attenuation*pow(RdotV, shininess);
+        accumulatedColor += lightSource.intensity * albedo * diffuseFactor + specularFactor*mix(lightSource.intensity, albedo, metalness);
+
     }
 
     // Return the final lighted color.

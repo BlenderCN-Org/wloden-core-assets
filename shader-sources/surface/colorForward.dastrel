@@ -8,5 +8,7 @@ code_block(fragment) main
     let N = normalize(FragmentInput.normal);
     let V = normalize(FragmentInput.position);
 
-    color: FragmentOutput.color <== phongLightingModel albedo: FragmentInput.color normal: N viewVector: V position: FragmentInput.position;
+    color: FragmentOutput.color <== phongLightingModel
+        albedo: FragmentInput.color metalness: 0.0f smoothness: 0.6f
+        normal: N viewVector: V position: FragmentInput.position;
 }
