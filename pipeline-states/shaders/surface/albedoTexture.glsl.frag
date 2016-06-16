@@ -114,12 +114,14 @@ void phongLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in v
     color = vec4(accumulatedColor.rgb,albedo.a);
 }
 
+layout (binding = 0, set = 3) uniform texture2D albedoTexture_dastrel_global_;
 void main();
 
 void main()
 {
     vec3 N = normalize(FragmentInput_m_normal);
     vec3 V = normalize(FragmentInput_m_position);
-    phongLightingModel(FragmentOutput_m_color, N, V, FragmentInput_m_position, FragmentInput_m_color, 0.0, 0.6    );
+    vec4 albedo = (FragmentInput_m_color*texture(sampler2D(albedoSampler_dastrel_global_, albedoTexture_dastrel_global_), FragmentInput_m_texcoord));
+    phongLightingModel(FragmentOutput_m_color, N, V, FragmentInput_m_position, albedo, 0.0, 0.6    );
 }
 

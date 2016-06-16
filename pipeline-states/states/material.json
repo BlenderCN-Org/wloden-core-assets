@@ -30,6 +30,12 @@
             "inherit-from" : "forward.common",
             "shader" : "Surface.Color",
             "primitive-type" : "triangles"
+        },
+
+        "forward.surface.albedo-texture" : {
+            "inherit-from" : "forward.common",
+            "shader" : "Surface.AlbedoTexture",
+            "primitive-type" : "triangles"
         }
     }
 }

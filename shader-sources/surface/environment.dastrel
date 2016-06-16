@@ -27,6 +27,9 @@ uniform(set=2, binding=0) GlobalLightingState
     lightSources: LightSource[16];
 }
 
+uniform(set = 4, binding = 0) albedoSampler : sampler;
+uniform(set = 4, binding = 1) normalSampler : sampler;
+
 struct LightSource
 {
     position: float4;

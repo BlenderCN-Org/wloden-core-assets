@@ -3,6 +3,10 @@
         "Color" : {
             "fragment" : "colorForward.dastrel",
             "vertex" : "genericVertex.dastrel"
+        },
+        "AlbedoTexture" : {
+            "fragment" : "albedoTexture.dastrel",
+            "vertex" : "genericVertex.dastrel"
         }
     }
 }

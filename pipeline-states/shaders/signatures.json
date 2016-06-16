@@ -55,8 +55,8 @@
         {
             "name" : "MaterialState",
             "type" : "bank",
-            "binding-type" : "uniform-buffer",
-            "binding-points" : 1,
+            "binding-type" : "sampled-image",
+            "binding-points" : 5,
             "max-bindings" :  10000
         },
         {
@@ -64,7 +64,7 @@
             "type" : "bank",
             "binding-type" : "sampler",
             "binding-points" : 10,
-            "max-bindings" :  1
+            "max-bindings" :  10
         }
     ]
 }

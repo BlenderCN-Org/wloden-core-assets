@@ -1,0 +1,17 @@
+import environment;
+import fragment;
+import material;
+import lighting;
+
+uniform(set=3, binding=0) albedoTexture : texture2D;
+
+code_block(fragment) main
+{
+    let N = normalize(FragmentInput.normal);
+    let V = normalize(FragmentInput.position);
+
+    let albedo = FragmentInput.color * albedoSampler.sample(albedoTexture, FragmentInput.texcoord);
+    color: FragmentOutput.color <== phongLightingModel
+        albedo: albedo metalness: 0.0f smoothness: 0.6f
+        normal: N viewVector: V position: FragmentInput.position;
+}

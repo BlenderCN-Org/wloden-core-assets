@@ -17,7 +17,7 @@ code_block phongLightingModel
 
     // Add the ambient hemispherical light.
     let hemiFactor = dot(normal, sunDirection)*0.5f + 0.5f;
-    accumulatedColor += mix(groundLighting, skyLighting, hemiFactor);
+    accumulatedColor += albedo * mix(groundLighting, skyLighting, hemiFactor);
 
     // Accumulate each one of the lights
     for(let i = 0; i < numberOfLights; i += 1)

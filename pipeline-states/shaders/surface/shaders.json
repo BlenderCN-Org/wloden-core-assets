@@ -9,6 +9,16 @@
 				"spir-v" : "genericVertex.spv",
 				"glsl" : "genericVertex.glsl.vert"
 			}
+		},
+		"AlbedoTexture" : {
+			"fragment" : {
+				"spir-v" : "albedoTexture.spv",
+				"glsl" : "albedoTexture.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "genericVertex.spv",
+				"glsl" : "genericVertex.glsl.vert"
+			}
 		}
 	}
 }
