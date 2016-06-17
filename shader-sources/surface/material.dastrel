@@ -1,4 +1,9 @@
-uniform(set=2, binding=0) MaterialState
+uniform(set = 3, binding=0) MaterialState
 {
     color: float4;
 }
+
+uniform(set = 3, binding = 2) albedoTexture : texture2D;
+
+uniform(set = 4, binding = 0) albedoSampler : sampler;
+uniform(set = 4, binding = 1) normalSampler : sampler;

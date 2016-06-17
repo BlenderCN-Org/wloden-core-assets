@@ -39,8 +39,6 @@ layout (binding = 0, set = 2, std140) uniform GlobalLightingState
     LightSource lightSources[16];
 } GlobalLightingState_dastrel_singleton_;
 
-layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
 vec3 transformNormalToView (vec3 normal);
 vec4 transformPositionToView (vec3 position);
 vec4 transformVector4ToView (vec4 position);

@@ -3,8 +3,6 @@ import fragment;
 import material;
 import lighting;
 
-uniform(set=3, binding=0) albedoTexture : texture2D;
-
 code_block(fragment) main
 {
     let N = normalize(FragmentInput.normal);

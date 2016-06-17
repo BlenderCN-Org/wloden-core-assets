@@ -15,12 +15,6 @@ layout (location = 5) in vec3 FragmentInput_m_bitangent;
 layout (location = 0) out vec4 FragmentOutput_m_color;
 
 
-layout (binding = 0, set = 2, std140) uniform MaterialState
-{
-    vec4 color;
-} MaterialState_dastrel_singleton_;
-
-
 struct LightSource
 {
     vec4 position;
@@ -58,8 +52,6 @@ layout (binding = 0, set = 2, std140) uniform GlobalLightingState
     LightSource lightSources[16];
 } GlobalLightingState_dastrel_singleton_;
 
-layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
 vec3 transformNormalToView (vec3 normal);
 vec4 transformPositionToView (vec3 position);
 vec4 transformVector4ToView (vec4 position);
@@ -114,7 +106,15 @@ void phongLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in v
     color = vec4(accumulatedColor.rgb,albedo.a);
 }
 
-layout (binding = 0, set = 3) uniform texture2D albedoTexture_dastrel_global_;
+layout (binding = 0, set = 3, std140) uniform MaterialState
+{
+    vec4 color;
+} MaterialState_dastrel_singleton_;
+
+layout (binding = 2, set = 3) uniform texture2D albedoTexture_dastrel_global_;
+layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
+layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
+
 void main();
 
 void main()

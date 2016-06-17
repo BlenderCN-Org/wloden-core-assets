@@ -3,30 +3,46 @@
         {
             "name" : "CanvasViewport",
             "type" : "bank",
-            "binding-type" : "uniform-buffer",
-            "binding-points" : 1,
-            "max-bindings" :  1000
+            "max-bindings" :  1000,
+            "elements" : [
+                {
+                    "type" : "uniform-buffer",
+                    "points" : 1
+                }
+            ]
         },
         {
             "name" : "Texture",
             "type" : "bank",
-            "binding-type" : "sampled-image",
-            "binding-points" : 1,
-            "max-bindings" :  1000
+            "max-bindings" :  1000,
+            "elements" : [
+                {
+                    "type" : "sampled-image",
+                    "points" : 1
+                }
+            ]
         },
         {
             "name" : "Font",
             "type" : "bank",
-            "binding-type" : "sampled-image",
-            "binding-points" : 1,
-            "max-bindings" :  100
+            "max-bindings" :  100,
+            "elements" : [
+                {
+                    "type" : "sampled-image",
+                    "points" : 1
+                }
+            ]
         },
         {
             "name" : "Sampler",
             "type" : "bank",
-            "binding-type" : "sampler",
-            "binding-points" : 2,
-            "max-bindings" :  100
+            "max-bindings" :  100,
+            "elements" : [
+                {
+                    "type" : "sampler",
+                    "points" : 2
+                }
+            ]
         }
     ],
 
@@ -34,37 +50,76 @@
         {
             "name" : "ObjectState",
             "type" : "bank",
-            "binding-type" : "uniform-buffer",
-            "binding-points" : 1,
-            "max-bindings" :  1000000
+            "max-bindings" :  1000000,
+            "elements" : [
+                {
+                    "type" : "uniform-buffer",
+                    "points" : 1
+                },
+                {
+                    "type" : "storage-buffer",
+                    "points" : 1
+                }
+            ]
         },
         {
             "name" : "CameraState",
             "type" : "bank",
-            "binding-type" : "uniform-buffer",
-            "binding-points" : 2,
-            "max-bindings" :  1000
+            "max-bindings" :  10000,
+            "elements" : [
+                {
+                    "type" : "uniform-buffer",
+                    "points" : 1
+                },
+                {
+                    "type" : "uniform-buffer",
+                    "points" : 1
+                }
+            ]
         },
         {
             "name" : "LightingState",
             "type" : "bank",
-            "binding-type" : "uniform-buffer",
-            "binding-points" : 1,
-            "max-bindings" :  100
+            "max-bindings" :  100,
+            "elements" : [
+                {
+                    "type" : "uniform-buffer",
+                    "points" : 1
+                }
+            ]
         },
         {
             "name" : "MaterialState",
             "type" : "bank",
-            "binding-type" : "sampled-image",
-            "binding-points" : 5,
-            "max-bindings" :  10000
+            "max-bindings" :  10000,
+            "elements" : [
+                {
+                    "name" : "attributes",
+                    "type" : "uniform-buffer",
+                    "points" : 1
+                },
+                {
+                    "name" : "bigAttributes",
+                    "type" : "storage-buffer",
+                    "points" : 1
+                },
+                {
+                    "name" : "textures",
+                    "type" : "sampled-image",
+                    "points" : 5
+                }
+            ]
         },
         {
             "name" : "Sampler",
             "type" : "bank",
-            "binding-type" : "sampler",
-            "binding-points" : 10,
-            "max-bindings" :  10
+            "max-bindings" :  10,
+            "elements" : [
+                {
+                    "type" : "sampler",
+                    "points" : 5
+                }
+            ]
         }
     ]
 }
