@@ -31,19 +31,29 @@ vec4 evaluateColorRamp (float coord)
 {
     if ( (CurrentColorRamp_dastrel_singleton_.colorRampSize==0) )
     return vec4(1.0,1.0,1.0,1.0);
-    ColorRampEntry lastEntry = ColorRamps_dastrel_singleton_.entries[CurrentColorRamp_dastrel_singleton_.colorRampIndex];
-    ColorRampEntry newEntry = lastEntry;
-    for ( int i = 1; (i<CurrentColorRamp_dastrel_singleton_.colorRampSize); i += 1    )
+    int a = 0;
+    int b = CurrentColorRamp_dastrel_singleton_.colorRampSize;
+    int lastResult = a;
+    while ( (a<b) )
     {
-        newEntry = ColorRamps_dastrel_singleton_.entries[(CurrentColorRamp_dastrel_singleton_.colorRampIndex+i)];
-        if ( (newEntry.edge>coord) )
-        break;
-        lastEntry = newEntry;
+        int m = ((a+b)/2);
+        if ( (ColorRamps_dastrel_singleton_.entries[(CurrentColorRamp_dastrel_singleton_.colorRampIndex+m)].edge<=coord) )
+        {
+            lastResult = m;
+            a = (m+1);
+        }
+        else
+        {
+            b = m;
+        }
     }
-    float delta = (newEntry.edge-lastEntry.edge);
-    if ( (delta<0.0001) )
-    return newEntry.color;
-    return mix(lastEntry.color,newEntry.color,((coord-lastEntry.edge)/delta));
+    int entryIndex = (CurrentColorRamp_dastrel_singleton_.colorRampIndex+lastResult);
+    float prevEdge = ColorRamps_dastrel_singleton_.entries[entryIndex].edge;
+    if ( (((lastResult==0)&&(coord<=prevEdge))||(lastResult==(CurrentColorRamp_dastrel_singleton_.colorRampSize-1))) )
+    return ColorRamps_dastrel_singleton_.entries[entryIndex].color;
+    float nextEdge = ColorRamps_dastrel_singleton_.entries[(entryIndex+1)].edge;
+    float mixFactor = ((coord-prevEdge)/(nextEdge-prevEdge));
+    return mix(ColorRamps_dastrel_singleton_.entries[entryIndex].color,ColorRamps_dastrel_singleton_.entries[(entryIndex+1)].color,mixFactor);
 }
 
 layout (location = 0) in vec2 VertexInput_m_position;

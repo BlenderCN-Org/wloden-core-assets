@@ -29,19 +29,33 @@ function evaluateColorRamp(coord: float) -> float4
     if(colorRampSize == 0)
         return float4(1.0f, 1.0f, 1.0f, 1.0f);
 
-    let lastEntry = entries[colorRampIndex];
-    let newEntry = lastEntry;
-    for(let i = 1; i < colorRampSize; i += 1)
+    // Binary search over the color ramp entries.
+    let a = 0;
+    let b = colorRampSize;
+    let lastResult = a;
+    while(a < b)
     {
-        newEntry = entries[colorRampIndex + i];
-        if(newEntry.edge > coord)
-            break;
-        lastEntry = newEntry;
+        let m = (a + b) / 2;
+        if(entries[colorRampIndex + m].edge <= coord)
+        {
+            lastResult = m;
+            a = m + 1;
+        }
+        else
+        {
+            b = m;
+        }
     }
 
-    let delta = newEntry.edge - lastEntry.edge;
-    if (delta < 0.0001f)
-        return newEntry.color;
+    // Are we outside of the color ramp?
+    let entryIndex = colorRampIndex + lastResult;
+    let prevEdge = entries[entryIndex].edge;
+    if((lastResult == 0 && coord <= prevEdge) ||
+        (lastResult == colorRampSize - 1))
+        return entries[entryIndex].color;
 
-    return mix(lastEntry.color, newEntry.color, (coord - lastEntry.edge) / delta);
+    // Perform linear interpolation between the colors.
+    let nextEdge = entries[entryIndex + 1].edge;
+    let mixFactor = (coord - prevEdge) / (nextEdge - prevEdge);
+    return mix(entries[entryIndex].color, entries[entryIndex + 1].color, mixFactor);
 }
