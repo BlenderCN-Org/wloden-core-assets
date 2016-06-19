@@ -20,6 +20,16 @@
 				"glsl" : "genericVertex.glsl.vert"
 			}
 		},
+		"Gradient" : {
+			"fragment" : {
+				"spir-v" : "gradientFragment.spv",
+				"glsl" : "gradientFragment.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "genericVertex.spv",
+				"glsl" : "genericVertex.glsl.vert"
+			}
+		},
 		"Textured" : {
 			"fragment" : {
 				"spir-v" : "texturedFragment.spv",

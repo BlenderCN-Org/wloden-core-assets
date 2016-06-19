@@ -8,6 +8,10 @@
                 {
                     "type" : "uniform-buffer",
                     "points" : 1
+                },
+                {
+                    "type" : "storage-buffer",
+                    "points" : 1
                 }
             ]
         },
@@ -43,6 +47,11 @@
                     "points" : 2
                 }
             ]
+        },
+        {
+            "name" : "CurrentGradient",
+            "type" : "constant",
+            "count" : 2
         }
     ],
 
@@ -69,11 +78,7 @@
             "elements" : [
                 {
                     "type" : "uniform-buffer",
-                    "points" : 1
-                },
-                {
-                    "type" : "uniform-buffer",
-                    "points" : 1
+                    "points" : 2
                 }
             ]
         },

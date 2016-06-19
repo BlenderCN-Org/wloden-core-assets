@@ -8,6 +8,10 @@
             "fragment" : "colorFragment.dastrel",
             "vertex" : "genericVertex.dastrel"
         },
+        "Gradient" : {
+            "fragment" : "gradientFragment.dastrel",
+            "vertex" : "genericVertex.dastrel"
+        },
         "Textured" : {
             "fragment" : "texturedFragment.dastrel",
             "vertex" : "genericVertex.dastrel"

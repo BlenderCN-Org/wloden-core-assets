@@ -172,6 +172,14 @@
                 "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
         },
 
+        "polygon.cover.gradient" : {
+            "inherit-from" : "polygon.cover",
+            "shader" : "Canvas2D.Gradient",
+            "primitive-type" : "triangles",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
+        },
+
         "polygon.stencil.even-odd" : {
             "inherit-from" : "polygon.stencil",
 
@@ -202,13 +210,15 @@
         },
 
         "text.color" : {
-            "inherit-from" : "polygon.convex.color.triangles",
+            "inherit-from" : "polygon.common",
+            "primitive-type" : "triangles",
             "shader" : "Canvas2D.TextColor",
             "primitive-type" : "triangles"
         },
 
         "textsdf.color" : {
-            "inherit-from" : "polygon.convex.color.triangles",
+            "inherit-from" : "polygon.common",
+            "primitive-type" : "triangles",
             "shader" : "Canvas2D.TextSdfColor",
             "primitive-type" : "triangles",
 

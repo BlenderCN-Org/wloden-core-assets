@@ -61,7 +61,6 @@ void main();
 
 void main()
 {
-    float fontAlpha = texture(sampler2D(fontSampler_dastrel_global_, fontTexture_dastrel_global_), FragmentInput_m_texcoord).r;
-    FragmentOutput_m_color = vec4(FragmentInput_m_color.rgb,(FragmentInput_m_color.a*fontAlpha));
+    FragmentOutput_m_color = (FragmentInput_m_color*evaluateColorRamp(0.5));
 }
 

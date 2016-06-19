@@ -1,6 +1,8 @@
 uniform(set = 3, binding=0) MaterialState
 {
-    color: float4;
+    albedo: float4;
+    fresnel: float3;
+    smoothness: float;
 }
 
 uniform(set = 3, binding = 2) albedoTexture : texture2D;

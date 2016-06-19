@@ -58,14 +58,26 @@ vec4 transformVector4ToView (vec4 position)
     return (CameraObjectState_dastrel_singleton_.viewMatrix*(ObjectState_dastrel_singleton_.modelMatrix*position));
 }
 
-void phongLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in vec3 position, in vec4 albedo, in float metalness, in float smoothness);
+vec3 fresnelSchlick (vec3 F0, float cosTheta);
+void forwardLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in vec3 position, in vec4 albedo, in float smoothness, in vec3 fresnel);
 
-void phongLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in vec3 position, in vec4 albedo, in float metalness, in float smoothness)
+vec3 fresnelSchlick (vec3 F0, float cosTheta)
 {
-    float shininess = (128.0*smoothness);
-    vec4 accumulatedColor = vec4(0.0,0.0,0.0,0.0);
+    float powFactor = (1.0-cosTheta);
+    float powFactor2 = (powFactor*powFactor);
+    float powFactor4 = (powFactor2*powFactor2);
+    float powValue = (powFactor4+powFactor);
+    return (F0+((vec3(1.0,1.0,1.0)-F0)*powValue));
+}
+
+void forwardLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in vec3 position, in vec4 albedo, in float smoothness, in vec3 fresnel)
+{
+    vec3 albedoColor = albedo.rgb;
+    float specularPower = exp2((10.0*smoothness));
+    float specularNormalization = ((specularPower+2.0)*0.125);
+    vec3 accumulatedColor = vec3(0.0,0.0,0.0);
     float hemiFactor = ((dot(normal,GlobalLightingState_dastrel_singleton_.sunDirection)*0.5)+0.5);
-    accumulatedColor += (albedo*mix(GlobalLightingState_dastrel_singleton_.groundLighting,GlobalLightingState_dastrel_singleton_.skyLighting,hemiFactor));
+    accumulatedColor += (albedoColor*mix(GlobalLightingState_dastrel_singleton_.groundLighting.rgb,GlobalLightingState_dastrel_singleton_.skyLighting.rgb,hemiFactor));
     for ( int i = 0; (i<GlobalLightingState_dastrel_singleton_.numberOfLights); i += 1    )
     {
         LightSource lightSource = GlobalLightingState_dastrel_singleton_.lightSources[i];
@@ -75,22 +87,22 @@ void phongLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in v
         float NdotL = max(dot(normal,L),0.0);
         if ( (NdotL==0.0) )
         continue;
-        float attenuationDistance = max(0.0,(dist-lightSource.radius));
-        float attDen = (1.0+(attenuationDistance/lightSource.radius));
-        float attenuation = (1.0/(attDen*attDen));
         float spotCos = 1.0;
         if ( (lightSource.outerCosCutoff>(-1.0)) )
         spotCos = dot(L,lightSource.spotDirection);
         if ( (spotCos<lightSource.outerCosCutoff) )
         continue;
         float spotAttenuation = (smoothstep(lightSource.outerCosCutoff,lightSource.innerCosCutoff,spotCos)*pow(spotCos,lightSource.spotExponent));
-        float diffuseFactor = (NdotL*attenuation);
-        vec3 R = reflect(L,normal);
-        float RdotV = max(dot(R,viewVector),0.0);
-        float specularFactor = (attenuation*pow(RdotV,shininess));
-        accumulatedColor += (((lightSource.intensity*albedo)*diffuseFactor)+(specularFactor*mix(lightSource.intensity,albedo,metalness)));
+        float attenuationDistance = max(0.0,(dist-lightSource.radius));
+        float attDen = (1.0+(attenuationDistance/lightSource.radius));
+        float attenuation = (spotAttenuation/(attDen*attDen));
+        vec3 H = normalize((L+viewVector));
+        vec3 F = fresnelSchlick(fresnel,dot(H,L));
+        float NdotH = dot(normal,H);
+        float D = (pow(NdotH,specularPower)*specularNormalization);
+        accumulatedColor += (((lightSource.intensity.rgb*attenuation)*(albedoColor+(F*D)))*NdotL);
     }
-    color = vec4(accumulatedColor.rgb,albedo.a);
+    color = vec4(accumulatedColor,albedo.a);
 }
 
 layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
@@ -108,7 +120,9 @@ layout (location = 0) out vec4 FragmentOutput_m_color;
 
 layout (binding = 0, set = 3, std140) uniform MaterialState
 {
-    vec4 color;
+    vec4 albedo;
+    vec3 fresnel;
+    float smoothness;
 } MaterialState_dastrel_singleton_;
 
 layout (binding = 2, set = 3) uniform texture2D albedoTexture_dastrel_global_;
@@ -120,7 +134,7 @@ void main();
 void main()
 {
     vec3 N = normalize(FragmentInput_m_normal);
-    vec3 V = normalize(FragmentInput_m_position);
-    phongLightingModel(FragmentOutput_m_color, N, V, FragmentInput_m_position, FragmentInput_m_color, 0.0, 0.6    );
+    vec3 V = normalize((-FragmentInput_m_position));
+    forwardLightingModel(FragmentOutput_m_color, N, V, FragmentInput_m_position, (FragmentInput_m_color*MaterialState_dastrel_singleton_.albedo), MaterialState_dastrel_singleton_.smoothness, MaterialState_dastrel_singleton_.fresnel    );
 }
 

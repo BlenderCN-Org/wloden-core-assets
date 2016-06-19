@@ -3,3 +3,45 @@ uniform(set=0, binding=0) CanvasViewport
     projectionMatrix: float4x4;
     viewMatrix: float4x4;
 }
+
+struct ColorRampEntry
+{
+    edge: float;
+    color: float4;
+}
+
+buffer(set=0, binding=1) ColorRamps
+{
+    entries: ColorRampEntry[];
+}
+
+uniform(push_constant) CurrentColorRamp
+{
+    colorRampIndex: int;
+    colorRampSize: int;
+}
+
+function evaluateColorRamp(coord: float) -> float4
+{
+    using ColorRamps;
+    using CurrentColorRamp;
+
+    if(colorRampSize == 0)
+        return float4(1.0f, 1.0f, 1.0f, 1.0f);
+
+    let lastEntry = entries[colorRampIndex];
+    let newEntry = lastEntry;
+    for(let i = 1; i < colorRampSize; i += 1)
+    {
+        newEntry = entries[colorRampIndex + i];
+        if(newEntry.edge > coord)
+            break;
+        lastEntry = newEntry;
+    }
+
+    let delta = newEntry.edge - lastEntry.edge;
+    if (delta < 0.0001f)
+        return newEntry.color;
+
+    return mix(lastEntry.color, newEntry.color, (coord - lastEntry.edge) / delta);
+}

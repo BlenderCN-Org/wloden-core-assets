@@ -1,23 +1,37 @@
 import environment;
 
-code_block phongLightingModel
+function fresnelSchlick(F0: float3, cosTheta: float) -> float3
+{
+    let powFactor = 1.0f - cosTheta;
+    let powFactor2 = powFactor * powFactor;
+    let powFactor4 = powFactor2 * powFactor2;
+    let powValue = powFactor4 + powFactor;
+
+    return F0 + (float3(1.0f, 1.0f, 1.0f) - F0) * powValue;
+}
+
+code_block forwardLightingModel
 {
     in normal: float3;
     in viewVector: float3;
     in position: float3;
     in albedo: float4;
-    in metalness: float;
     in smoothness: float;
+    in fresnel: float3;
     out color: float4;
 
     using GlobalLightingState;
 
-    let shininess = 128.0f * smoothness;
-    let accumulatedColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    let albedoColor = albedo.rgb;
+
+    let specularPower = exp2(10.0f*smoothness);
+    let specularNormalization = (specularPower + 2.0f) * 0.125f;
+
+    let accumulatedColor = float3(0.0f, 0.0f, 0.0f);
 
     // Add the ambient hemispherical light.
     let hemiFactor = dot(normal, sunDirection)*0.5f + 0.5f;
-    accumulatedColor += albedo * mix(groundLighting, skyLighting, hemiFactor);
+    accumulatedColor += albedoColor * mix(groundLighting.rgb, skyLighting.rgb, hemiFactor);
 
     // Accumulate each one of the lights
     for(let i = 0; i < numberOfLights; i += 1)
@@ -31,12 +45,6 @@ code_block phongLightingModel
         if(NdotL == 0.0f)
             continue;
 
-        // Compute the attenuation factor.
-        // I am using (partly) the technique that I found here: https://imdoingitwrong.wordpress.com/2011/01/31/light-attenuation/
-        let attenuationDistance = max(0.0f, dist - lightSource.radius);
-        let attDen = 1.0f + attenuationDistance/lightSource.radius;
-        let attenuation = 1.0f/(attDen*attDen);
-
         // Are we inside the spot light cone?
         let spotCos = 1.0f;
         if(lightSource.outerCosCutoff > -1.0f) // For no spot lights.
@@ -45,17 +53,25 @@ code_block phongLightingModel
         if(spotCos < lightSource.outerCosCutoff)
             continue;
         let spotAttenuation = smoothstep(lightSource.outerCosCutoff, lightSource.innerCosCutoff, spotCos)*pow(spotCos, lightSource.spotExponent);
-        //attenuation *= spotAttenuation;
-        let diffuseFactor = NdotL*attenuation;
 
-        // Compute the specular factor.
-        let R = reflect(L, normal);
-        let RdotV = max(dot(R, viewVector), 0.0f);
-        let specularFactor = attenuation*pow(RdotV, shininess);
-        accumulatedColor += lightSource.intensity * albedo * diffuseFactor + specularFactor*mix(lightSource.intensity, albedo, metalness);
+        // Compute the attenuation factor.
+        // I am using (partly) the technique that I found here: https://imdoingitwrong.wordpress.com/2011/01/31/light-attenuation/
+        let attenuationDistance = max(0.0f, dist - lightSource.radius);
+        let attDen = 1.0f + attenuationDistance/lightSource.radius;
+        let attenuation = spotAttenuation/(attDen*attDen);
 
+        // Compute the fresnel factor
+        let H = normalize(L + viewVector);
+        let F = fresnelSchlick(fresnel, dot(H, L));
+
+        // Compute the distribution factor.
+        let NdotH = dot(normal, H);
+        let D = pow(NdotH, specularPower)*specularNormalization;
+
+        // Add the light contribution.
+        accumulatedColor += lightSource.intensity.rgb*attenuation*(albedoColor + F*D)*NdotL;
     }
 
     // Return the final lighted color.
-    color = float4(accumulatedColor.rgb, albedo.a);
+    color = float4(accumulatedColor, albedo.a);
 }

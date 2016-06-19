@@ -6,9 +6,10 @@ import lighting;
 code_block(fragment) main
 {
     let N = normalize(FragmentInput.normal);
-    let V = normalize(FragmentInput.position);
+    let V = normalize(-FragmentInput.position);
 
-    color: FragmentOutput.color <== phongLightingModel
-        albedo: FragmentInput.color metalness: 0.0f smoothness: 0.6f
+    color: FragmentOutput.color <== forwardLightingModel
+        albedo: FragmentInput.color*MaterialState.albedo
+        fresnel: MaterialState.fresnel smoothness: MaterialState.smoothness
         normal: N viewVector: V position: FragmentInput.position;
 }
