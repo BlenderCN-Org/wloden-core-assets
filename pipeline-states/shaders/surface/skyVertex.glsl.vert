@@ -100,13 +100,7 @@ void main();
 
 void main()
 {
-    VertexOutput_m_color = GenericVertexLayout_m_color;
-    VertexOutput_m_texcoord = GenericVertexLayout_m_texcoord;
-    VertexOutput_m_tangent = transformNormalToView(GenericVertexLayout_m_tangent);
-    VertexOutput_m_bitangent = transformNormalToView(GenericVertexLayout_m_bitangent);
-    VertexOutput_m_normal = transformNormalToView(GenericVertexLayout_m_normal);
-    vec4 position4 = transformPositionToView(GenericVertexLayout_m_position);
-    VertexOutput_m_position = position4.xyz;
-    gl_Position = (CameraState_dastrel_singleton_.projectionMatrix*position4);
+    VertexOutput_m_position = (transformPositionToWorld(GenericVertexLayout_m_position).xyz-cameraWorldPosition());
+    gl_Position = (CameraState_dastrel_singleton_.projectionMatrix*transformPositionToView(GenericVertexLayout_m_position));
 }
 

@@ -13,6 +13,7 @@ uniform(set=1, binding=0) CameraObjectState
 uniform(set=1, binding=1) CameraState
 {
     projectionMatrix: float4x4;
+    currentTime: float;
 }
 
 uniform(set=2, binding=0) GlobalLightingState
@@ -57,4 +58,28 @@ function transformVector4ToView(position: float4) -> float4
     using ObjectState;
 
     return viewMatrix * (modelMatrix * position);
+}
+
+function transformPositionToWorld(position: float3) -> float4
+{
+    using ObjectState;
+
+    return modelMatrix * float4(position, 1.0f);
+}
+
+function cameraWorldPosition() -> float3
+{
+    using CameraObjectState;
+
+    return inverseViewMatrix[3].xyz;
+}
+
+function fresnelSchlick(F0: float3, cosTheta: float) -> float3
+{
+    let powFactor = 1.0f - cosTheta;
+    let powFactor2 = powFactor * powFactor;
+    let powFactor4 = powFactor2 * powFactor2;
+    let powValue = powFactor4 + powFactor;
+
+    return F0 + (float3(1.0f, 1.0f, 1.0f) - F0) * powValue;
 }

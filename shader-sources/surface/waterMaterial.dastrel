@@ -1,0 +1,22 @@
+struct WaterHarmonic
+{
+    centerOrDirection: float2;
+    amplitude: float;
+    frequency: float;
+    isRadial: int;
+}
+
+uniform(set = 3, binding=0) MaterialState
+{
+    albedo: float4;
+    fresnel: float3;
+    smoothness: float;
+    propagationSpeed: float;
+    harmonics: WaterHarmonic[5];
+}
+
+uniform(set = 3, binding = 2) normalTexture : texture2D;
+uniform(set = 4, binding = 1) normalSampler : sampler;
+
+uniform(set = 3, binding = 3) skyTexture : textureCube;
+uniform(set = 4, binding = 2) skySampler : sampler;

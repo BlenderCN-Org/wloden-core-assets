@@ -19,6 +19,66 @@
 				"spir-v" : "genericVertex.spv",
 				"glsl" : "genericVertex.glsl.vert"
 			}
+		},
+		"AlbedoFresnelTexture" : {
+			"fragment" : {
+				"spir-v" : "albedoFresnelTexture.spv",
+				"glsl" : "albedoFresnelTexture.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "genericVertex.spv",
+				"glsl" : "genericVertex.glsl.vert"
+			}
+		},
+		"AlbedoNormalTexture" : {
+			"fragment" : {
+				"spir-v" : "albedoNormalTexture.spv",
+				"glsl" : "albedoNormalTexture.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "genericVertex.spv",
+				"glsl" : "genericVertex.glsl.vert"
+			}
+		},
+		"AlbedoNormalFresnelTexture" : {
+			"fragment" : {
+				"spir-v" : "albedoNormalFresnelTexture.spv",
+				"glsl" : "albedoNormalFresnelTexture.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "genericVertex.spv",
+				"glsl" : "genericVertex.glsl.vert"
+			}
+		},
+		"Sky" : {
+			"fragment" : {
+				"spir-v" : "skyFragment.spv",
+				"glsl" : "skyFragment.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "skyVertex.spv",
+				"glsl" : "skyVertex.glsl.vert"
+			}
+		},
+		"WaterColor" : {
+			"fragment" : {
+				"spir-v" : "waterColorForward.spv",
+				"glsl" : "waterColorForward.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "waterVertex.spv",
+				"glsl" : "waterVertex.glsl.vert"
+			}
+		},
+		"WaterSky" : {
+			"fragment" : {
+				"spir-v" : "waterSkyForward.spv",
+				"glsl" : "waterSkyForward.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "waterVertex.spv",
+				"glsl" : "waterVertex.glsl.vert"
+			}
 		}
 	}
 }

@@ -36,6 +36,44 @@
             "inherit-from" : "forward.common",
             "shader" : "Surface.AlbedoTexture",
             "primitive-type" : "triangles"
+        },
+
+        "forward.surface.albedo-fresnel-texture" : {
+            "inherit-from" : "forward.common",
+            "shader" : "Surface.AlbedoFresnelTexture",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.surface.albedo-normal-texture" : {
+            "inherit-from" : "forward.common",
+            "shader" : "Surface.AlbedoNormalTexture",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.surface.albedo-normal-fresnel-texture" : {
+            "inherit-from" : "forward.common",
+            "shader" : "Surface.AlbedoNormalFresnelTexture",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.sky" : {
+            "inherit-from" : "forward.common",
+            "shader" : "Surface.Sky",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.water.color" : {
+            "inherit-from" : "forward.common",
+            "cull-mode" : "none",
+            "shader" : "Surface.WaterColor",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.water.sky" : {
+            "inherit-from" : "forward.common",
+            "cull-mode" : "none",
+            "shader" : "Surface.WaterSky",
+            "primitive-type" : "triangles"
         }
     }
 }

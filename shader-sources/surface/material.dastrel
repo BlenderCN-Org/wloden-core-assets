@@ -6,6 +6,8 @@ uniform(set = 3, binding=0) MaterialState
 }
 
 uniform(set = 3, binding = 2) albedoTexture : texture2D;
+uniform(set = 3, binding = 3) normalTexture : texture2D;
+uniform(set = 3, binding = 4) fresnelTexture : texture2D;
 
 uniform(set = 4, binding = 0) albedoSampler : sampler;
 uniform(set = 4, binding = 1) normalSampler : sampler;

@@ -7,6 +7,30 @@
         "AlbedoTexture" : {
             "fragment" : "albedoTexture.dastrel",
             "vertex" : "genericVertex.dastrel"
+        },
+        "AlbedoFresnelTexture" : {
+            "fragment" : "albedoFresnelTexture.dastrel",
+            "vertex" : "genericVertex.dastrel"
+        },
+        "AlbedoNormalTexture" : {
+            "fragment" : "albedoNormalTexture.dastrel",
+            "vertex" : "genericVertex.dastrel"
+        },
+        "AlbedoNormalFresnelTexture" : {
+            "fragment" : "albedoNormalFresnelTexture.dastrel",
+            "vertex" : "genericVertex.dastrel"
+        },
+        "Sky" : {
+            "fragment" : "skyFragment.dastrel",
+            "vertex" : "skyVertex.dastrel"
+        },
+        "WaterColor" : {
+            "fragment" : "waterColorForward.dastrel",
+            "vertex" : "waterVertex.dastrel"
+        },
+        "WaterSky" : {
+            "fragment" : "waterSkyForward.dastrel",
+            "vertex" : "waterVertex.dastrel"
         }
     }
 }

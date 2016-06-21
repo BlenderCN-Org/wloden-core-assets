@@ -1,0 +1,59 @@
+import environment;
+import vertex;
+import waterMaterial;
+
+code_block(vertex) main
+{
+    using CameraState;
+    using MaterialState;
+
+    let height = 0.0f;
+    let position = GenericVertexLayout.position;
+    let tangentialContributions = float2(0.0f, 0.0f);
+    for(let i = 0; i < 5; i += 1)
+    {
+        // Fetch the harmonic parameters
+        let harmonic = harmonics[i];
+
+        // Compute the distance factor.
+        let distance : float;
+        let distanceDerivatives : float2;
+        if(harmonic.isRadial == 1)
+        {
+            distance = length(position.xz - harmonic.centerOrDirection);
+            distanceDerivatives = (position.xz - harmonic.centerOrDirection) / distance;
+        }
+        else
+        {
+            distance = dot(position.xz, harmonic.centerOrDirection);
+            distanceDerivatives = harmonic.centerOrDirection;
+        }
+
+        // Compute the propagation speed factor.
+        let omega = 6.283185307179586f * harmonic.frequency;
+        let kappa = omega / propagationSpeed;
+
+        // Compute the contribution by the harmonic.
+        let phase = kappa*distance + omega*currentTime;
+        height += harmonic.amplitude * sin(phase);
+
+        // Add the tangential factor
+        tangentialContributions += harmonic.amplitude*kappa*cos(phase)*distanceDerivatives;
+    }
+
+    position += float3(0.0f, height, 0.0f);
+
+    let tangent = normalize(float3(1.0f, tangentialContributions.x, 0.0f));
+    let bitangent = normalize(float3(0.0f, tangentialContributions.y, 1.0f));
+    let normal = normalize(cross(bitangent, tangent));
+
+    VertexOutput.color = GenericVertexLayout.color;
+    VertexOutput.texcoord = GenericVertexLayout.texcoord;
+    VertexOutput.tangent = transformNormalToView(tangent);
+    VertexOutput.bitangent = transformNormalToView(bitangent);
+    VertexOutput.normal = transformNormalToView(normal);
+    let position4 = transformPositionToView(position);
+
+    VertexOutput.position =  position4.xyz;
+    VertexOutput.screenPosition = projectionMatrix * position4;
+}

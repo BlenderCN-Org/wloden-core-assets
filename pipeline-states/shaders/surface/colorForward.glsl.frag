@@ -28,6 +28,7 @@ layout (binding = 0, set = 1, std140) uniform CameraObjectState
 layout (binding = 1, set = 1, std140) uniform CameraState
 {
     mat4 projectionMatrix;
+    float currentTime;
 } CameraState_dastrel_singleton_;
 
 layout (binding = 0, set = 2, std140) uniform GlobalLightingState
@@ -42,6 +43,9 @@ layout (binding = 0, set = 2, std140) uniform GlobalLightingState
 vec3 transformNormalToView (vec3 normal);
 vec4 transformPositionToView (vec3 position);
 vec4 transformVector4ToView (vec4 position);
+vec4 transformPositionToWorld (vec3 position);
+vec3 cameraWorldPosition ();
+vec3 fresnelSchlick (vec3 F0, float cosTheta);
 
 vec3 transformNormalToView (vec3 normal)
 {
@@ -56,6 +60,25 @@ vec4 transformPositionToView (vec3 position)
 vec4 transformVector4ToView (vec4 position)
 {
     return (CameraObjectState_dastrel_singleton_.viewMatrix*(ObjectState_dastrel_singleton_.modelMatrix*position));
+}
+
+vec4 transformPositionToWorld (vec3 position)
+{
+    return (ObjectState_dastrel_singleton_.modelMatrix*vec4(position,1.0));
+}
+
+vec3 cameraWorldPosition ()
+{
+    return CameraObjectState_dastrel_singleton_.inverseViewMatrix[3].xyz;
+}
+
+vec3 fresnelSchlick (vec3 F0, float cosTheta)
+{
+    float powFactor = (1.0-cosTheta);
+    float powFactor2 = (powFactor*powFactor);
+    float powFactor4 = (powFactor2*powFactor2);
+    float powValue = (powFactor4+powFactor);
+    return (F0+((vec3(1.0,1.0,1.0)-F0)*powValue));
 }
 
 layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
@@ -79,20 +102,11 @@ layout (binding = 0, set = 3, std140) uniform MaterialState
 } MaterialState_dastrel_singleton_;
 
 layout (binding = 2, set = 3) uniform texture2D albedoTexture_dastrel_global_;
+layout (binding = 3, set = 3) uniform texture2D normalTexture_dastrel_global_;
 layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
 layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
 
-vec3 fresnelSchlick (vec3 F0, float cosTheta);
 void forwardLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in vec3 position, in vec4 albedo, in float smoothness, in vec3 fresnel);
-
-vec3 fresnelSchlick (vec3 F0, float cosTheta)
-{
-    float powFactor = (1.0-cosTheta);
-    float powFactor2 = (powFactor*powFactor);
-    float powFactor4 = (powFactor2*powFactor2);
-    float powValue = (powFactor4+powFactor);
-    return (F0+((vec3(1.0,1.0,1.0)-F0)*powValue));
-}
 
 void forwardLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in vec3 position, in vec4 albedo, in float smoothness, in vec3 fresnel)
 {

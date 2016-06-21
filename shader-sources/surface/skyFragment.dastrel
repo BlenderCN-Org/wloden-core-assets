@@ -1,0 +1,11 @@
+import environment;
+import fragment;
+
+uniform(set = 3, binding = 2) skyTexture : textureCube;
+uniform(set = 4, binding = 2) skySampler : sampler;
+
+code_block(fragment) main
+{
+    let skyColor = skySampler.sample(skyTexture, FragmentInput.position);
+    FragmentOutput.color = skyColor;
+}

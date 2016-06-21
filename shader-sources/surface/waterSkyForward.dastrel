@@ -1,0 +1,25 @@
+import environment;
+import fragment;
+import waterMaterial;
+import lighting;
+
+code_block(fragment) main
+{
+    let N = normalize(FragmentInput.normal);
+    let V = normalize(-FragmentInput.position);
+
+    let lightedColor : float4;
+    color: lightedColor <== forwardLightingModel
+        albedo: FragmentInput.color*MaterialState.albedo
+        fresnel: MaterialState.fresnel smoothness: MaterialState.smoothness
+        normal: N viewVector: V position: FragmentInput.position;
+
+    let R = reflect(-V, N);
+    let skyPosition = (CameraObjectState.inverseViewMatrix * float4(R, 0.0f)).xyz;
+    let skyColor = skySampler.sample(skyTexture, skyPosition);
+
+    let NdotV = max(0.0f, min(1.0f, dot(N, V)));
+    let reflectionFresnel = fresnelSchlick(MaterialState.fresnel, NdotV);
+
+    FragmentOutput.color = float4(skyColor.rgb*reflectionFresnel + lightedColor.rgb, lightedColor.a);
+}

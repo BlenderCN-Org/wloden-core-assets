@@ -2,6 +2,19 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack : enable
 
+layout (binding = 0, set = 3, std140) uniform MaterialState
+{
+    vec4 albedo;
+    vec3 fresnel;
+    float smoothness;
+} MaterialState_dastrel_singleton_;
+
+layout (binding = 2, set = 3) uniform texture2D albedoTexture_dastrel_global_;
+layout (binding = 3, set = 3) uniform texture2D normalTexture_dastrel_global_;
+layout (binding = 4, set = 3) uniform texture2D fresnelTexture_dastrel_global_;
+layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
+layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
+
 struct LightSource
 {
     vec4 position;
@@ -131,25 +144,19 @@ layout (location = 5) in vec3 FragmentInput_m_bitangent;
 layout (location = 0) out vec4 FragmentOutput_m_color;
 
 
-layout (binding = 0, set = 3, std140) uniform MaterialState
-{
-    vec4 albedo;
-    vec3 fresnel;
-    float smoothness;
-} MaterialState_dastrel_singleton_;
-
-layout (binding = 2, set = 3) uniform texture2D albedoTexture_dastrel_global_;
-layout (binding = 3, set = 3) uniform texture2D normalTexture_dastrel_global_;
-layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
-
 void main();
 
 void main()
 {
-    vec3 N = normalize(FragmentInput_m_normal);
+    vec3 t = normalize(FragmentInput_m_tangent);
+    vec3 b = normalize(FragmentInput_m_bitangent);
+    vec3 n = normalize(FragmentInput_m_normal);
     vec3 V = normalize((-FragmentInput_m_position));
     vec4 albedo = (FragmentInput_m_color*texture(sampler2D(albedoSampler_dastrel_global_, albedoTexture_dastrel_global_), FragmentInput_m_texcoord));
-    forwardLightingModel(FragmentOutput_m_color, N, V, FragmentInput_m_position, (albedo*MaterialState_dastrel_singleton_.albedo), MaterialState_dastrel_singleton_.smoothness, MaterialState_dastrel_singleton_.fresnel    );
+    vec3 fresnel = texture(sampler2D(albedoSampler_dastrel_global_, fresnelTexture_dastrel_global_), FragmentInput_m_texcoord).rgb;
+    vec3 tangentNormal = ((texture(sampler2D(normalSampler_dastrel_global_, normalTexture_dastrel_global_), FragmentInput_m_texcoord).agb*2.0)-1.0);
+    mat3 TBN = mat3(t,b,n);
+    vec3 N = normalize((TBN*tangentNormal));
+    forwardLightingModel(FragmentOutput_m_color, N, V, FragmentInput_m_position, (albedo*MaterialState_dastrel_singleton_.albedo), MaterialState_dastrel_singleton_.smoothness, fresnel    );
 }
 

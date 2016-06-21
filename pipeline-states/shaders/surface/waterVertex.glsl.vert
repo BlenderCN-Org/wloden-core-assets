@@ -2,6 +2,28 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack : enable
 
+struct WaterHarmonic
+{
+    vec2 centerOrDirection;
+    float amplitude;
+    float frequency;
+    int isRadial;
+};
+
+layout (binding = 0, set = 3, std140) uniform MaterialState
+{
+    vec4 albedo;
+    vec3 fresnel;
+    float smoothness;
+    float propagationSpeed;
+    WaterHarmonic harmonics[5];
+} MaterialState_dastrel_singleton_;
+
+layout (binding = 2, set = 3) uniform texture2D normalTexture_dastrel_global_;
+layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
+layout (binding = 3, set = 3) uniform textureCube skyTexture_dastrel_global_;
+layout (binding = 2, set = 4) uniform sampler skySampler_dastrel_global_;
+
 struct LightSource
 {
     vec4 position;
@@ -100,12 +122,40 @@ void main();
 
 void main()
 {
+    float height = 0.0;
+    vec3 position = GenericVertexLayout_m_position;
+    vec2 tangentialContributions = vec2(0.0,0.0);
+    for ( int i = 0; (i<5); i += 1    )
+    {
+        WaterHarmonic harmonic = MaterialState_dastrel_singleton_.harmonics[i];
+        float distance;
+        vec2 distanceDerivatives;
+        if ( (harmonic.isRadial==1) )
+        {
+            distance = length((position.xz-harmonic.centerOrDirection));
+            distanceDerivatives = ((position.xz-harmonic.centerOrDirection)/distance);
+        }
+        else
+        {
+            distance = dot(position.xz,harmonic.centerOrDirection);
+            distanceDerivatives = harmonic.centerOrDirection;
+        }
+        float omega = (6.283185307179586*harmonic.frequency);
+        float kappa = (omega/MaterialState_dastrel_singleton_.propagationSpeed);
+        float phase = ((kappa*distance)+(omega*CameraState_dastrel_singleton_.currentTime));
+        height += (harmonic.amplitude*sin(phase));
+        tangentialContributions += (((harmonic.amplitude*kappa)*cos(phase))*distanceDerivatives);
+    }
+    position += vec3(0.0,height,0.0);
+    vec3 tangent = normalize(vec3(1.0,tangentialContributions.x,0.0));
+    vec3 bitangent = normalize(vec3(0.0,tangentialContributions.y,1.0));
+    vec3 normal = normalize(cross(bitangent,tangent));
     VertexOutput_m_color = GenericVertexLayout_m_color;
     VertexOutput_m_texcoord = GenericVertexLayout_m_texcoord;
-    VertexOutput_m_tangent = transformNormalToView(GenericVertexLayout_m_tangent);
-    VertexOutput_m_bitangent = transformNormalToView(GenericVertexLayout_m_bitangent);
-    VertexOutput_m_normal = transformNormalToView(GenericVertexLayout_m_normal);
-    vec4 position4 = transformPositionToView(GenericVertexLayout_m_position);
+    VertexOutput_m_tangent = transformNormalToView(tangent);
+    VertexOutput_m_bitangent = transformNormalToView(bitangent);
+    VertexOutput_m_normal = transformNormalToView(normal);
+    vec4 position4 = transformPositionToView(position);
     VertexOutput_m_position = position4.xyz;
     gl_Position = (CameraState_dastrel_singleton_.projectionMatrix*position4);
 }
