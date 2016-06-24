@@ -2,28 +2,6 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack : enable
 
-struct WaterHarmonic
-{
-    vec2 centerOrDirection;
-    float amplitude;
-    float frequency;
-    int isRadial;
-};
-
-layout (binding = 0, set = 3, std140) uniform MaterialState
-{
-    vec4 albedo;
-    vec3 fresnel;
-    float smoothness;
-    float propagationSpeed;
-    WaterHarmonic harmonics[5];
-} MaterialState_dastrel_singleton_;
-
-layout (binding = 2, set = 3) uniform texture2D normalTexture_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
-layout (binding = 3, set = 3) uniform textureCube skyTexture_dastrel_global_;
-layout (binding = 2, set = 4) uniform sampler skySampler_dastrel_global_;
-
 struct LightSource
 {
     vec4 position;
@@ -117,6 +95,28 @@ layout (location = 3) out vec3 VertexOutput_m_normal;
 layout (location = 4) out vec3 VertexOutput_m_tangent;
 layout (location = 5) out vec3 VertexOutput_m_bitangent;
 
+
+struct WaterHarmonic
+{
+    vec2 centerOrDirection;
+    float amplitude;
+    float frequency;
+    int isRadial;
+};
+
+layout (binding = 0, set = 3, std140) uniform MaterialState
+{
+    vec4 albedo;
+    vec3 fresnel;
+    float smoothness;
+    float propagationSpeed;
+    WaterHarmonic harmonics[5];
+} MaterialState_dastrel_singleton_;
+
+layout (binding = 2, set = 3) uniform texture2D normalTexture_dastrel_global_;
+layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
+layout (binding = 3, set = 3) uniform textureCube skyTexture_dastrel_global_;
+layout (binding = 2, set = 4) uniform sampler skySampler_dastrel_global_;
 
 void main();
 
