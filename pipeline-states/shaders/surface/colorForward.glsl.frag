@@ -103,6 +103,7 @@ layout (binding = 0, set = 3, std140) uniform MaterialState
 
 layout (binding = 2, set = 3) uniform texture2D albedoTexture_dastrel_global_;
 layout (binding = 3, set = 3) uniform texture2D normalTexture_dastrel_global_;
+layout (binding = 4, set = 3) uniform texture2D fresnelTexture_dastrel_global_;
 layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
 layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
 
