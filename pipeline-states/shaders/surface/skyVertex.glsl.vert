@@ -85,8 +85,7 @@ layout (location = 0) in vec3 GenericVertexLayout_m_position;
 layout (location = 1) in vec2 GenericVertexLayout_m_texcoord;
 layout (location = 2) in vec4 GenericVertexLayout_m_color;
 layout (location = 3) in vec3 GenericVertexLayout_m_normal;
-layout (location = 4) in vec3 GenericVertexLayout_m_tangent;
-layout (location = 5) in vec3 GenericVertexLayout_m_bitangent;
+layout (location = 4) in vec4 GenericVertexLayout_m_tangent4;
 
 layout (location = 0) out vec3 VertexOutput_m_position;
 layout (location = 1) out vec2 VertexOutput_m_texcoord;

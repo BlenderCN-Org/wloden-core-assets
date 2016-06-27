@@ -2,19 +2,6 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack : enable
 
-layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler displacementSampler_dastrel_global_;
-layout (location = 0) in vec3 FragmentInput_m_position;
-layout (location = 1) in vec2 FragmentInput_m_texcoord;
-layout (location = 2) in vec4 FragmentInput_m_color;
-layout (location = 3) in vec3 FragmentInput_m_normal;
-layout (location = 4) in vec3 FragmentInput_m_tangent;
-layout (location = 5) in vec3 FragmentInput_m_bitangent;
-
-layout (location = 0) out vec4 FragmentOutput_m_color;
-
-
 struct LightSource
 {
     vec4 position;
@@ -94,13 +81,33 @@ vec3 fresnelSchlick (vec3 F0, float cosTheta)
     return (F0+((vec3(1.0,1.0,1.0)-F0)*powValue));
 }
 
-layout (binding = 2, set = 3) uniform textureCube skyTexture_dastrel_global_;
-layout (binding = 2, set = 4) uniform sampler skySampler_dastrel_global_;
+layout (location = 0) in vec3 SkinnedGenericVertexLayout_m_position;
+layout (location = 1) in vec2 SkinnedGenericVertexLayout_m_texcoord;
+layout (location = 2) in vec4 SkinnedGenericVertexLayout_m_color;
+layout (location = 3) in vec3 SkinnedGenericVertexLayout_m_normal;
+layout (location = 4) in vec4 SkinnedGenericVertexLayout_m_tangent4;
+layout (location = 5) in vec4 SkinnedGenericVertexLayout_m_boneWeights;
+layout (location = 6) in ivec4 SkinnedGenericVertexLayout_m_boneIndices;
+
+layout (location = 0) out vec3 VertexOutput_m_position;
+layout (location = 1) out vec2 VertexOutput_m_texcoord;
+layout (location = 2) out vec4 VertexOutput_m_color;
+layout (location = 3) out vec3 VertexOutput_m_normal;
+layout (location = 4) out vec3 VertexOutput_m_tangent;
+layout (location = 5) out vec3 VertexOutput_m_bitangent;
+
+
 void main();
 
 void main()
 {
-    vec4 skyColor = texture(samplerCube(skySampler_dastrel_global_, skyTexture_dastrel_global_), FragmentInput_m_position);
-    FragmentOutput_m_color = skyColor;
+    VertexOutput_m_color = SkinnedGenericVertexLayout_m_color;
+    VertexOutput_m_texcoord = SkinnedGenericVertexLayout_m_texcoord;
+    VertexOutput_m_tangent = transformNormalToView(SkinnedGenericVertexLayout_m_tangent4.xyz);
+    VertexOutput_m_normal = transformNormalToView(SkinnedGenericVertexLayout_m_normal);
+    VertexOutput_m_bitangent = (cross(VertexOutput_m_normal,VertexOutput_m_tangent)*SkinnedGenericVertexLayout_m_tangent4.w);
+    vec4 position4 = transformPositionToView(SkinnedGenericVertexLayout_m_position);
+    VertexOutput_m_position = position4.xyz;
+    gl_Position = (CameraState_dastrel_singleton_.projectionMatrix*position4);
 }
 

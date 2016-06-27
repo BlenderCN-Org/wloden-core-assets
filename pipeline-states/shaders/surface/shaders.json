@@ -50,6 +50,56 @@
 				"glsl" : "genericVertex.glsl.vert"
 			}
 		},
+		"SkinnedColor" : {
+			"fragment" : {
+				"spir-v" : "colorForward.spv",
+				"glsl" : "colorForward.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "skinnedGenericVertex.spv",
+				"glsl" : "skinnedGenericVertex.glsl.vert"
+			}
+		},
+		"SkinnedAlbedoTexture" : {
+			"fragment" : {
+				"spir-v" : "albedoTexture.spv",
+				"glsl" : "albedoTexture.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "skinnedGenericVertex.spv",
+				"glsl" : "skinnedGenericVertex.glsl.vert"
+			}
+		},
+		"SkinnedAlbedoFresnelTexture" : {
+			"fragment" : {
+				"spir-v" : "albedoFresnelTexture.spv",
+				"glsl" : "albedoFresnelTexture.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "skinnedGenericVertex.spv",
+				"glsl" : "skinnedGenericVertex.glsl.vert"
+			}
+		},
+		"SkinnedAlbedoNormalTexture" : {
+			"fragment" : {
+				"spir-v" : "albedoNormalTexture.spv",
+				"glsl" : "albedoNormalTexture.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "skinnedGenericVertex.spv",
+				"glsl" : "skinnedGenericVertex.glsl.vert"
+			}
+		},
+		"SkinnedAlbedoNormalFresnelTexture" : {
+			"fragment" : {
+				"spir-v" : "albedoNormalFresnelTexture.spv",
+				"glsl" : "albedoNormalFresnelTexture.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "skinnedGenericVertex.spv",
+				"glsl" : "skinnedGenericVertex.glsl.vert"
+			}
+		},
 		"Sky" : {
 			"fragment" : {
 				"spir-v" : "skyFragment.spv",

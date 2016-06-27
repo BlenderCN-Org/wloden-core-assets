@@ -1,0 +1,16 @@
+import environment;
+import skinnedVertex;
+
+code_block(vertex) main
+{
+    using CameraState;
+
+    VertexOutput.color = SkinnedGenericVertexLayout.color;
+    VertexOutput.texcoord = SkinnedGenericVertexLayout.texcoord;
+    VertexOutput.tangent = transformNormalToView(SkinnedGenericVertexLayout.tangent4.xyz);
+    VertexOutput.normal = transformNormalToView(SkinnedGenericVertexLayout.normal);
+    VertexOutput.bitangent = cross(VertexOutput.normal, VertexOutput.tangent) * SkinnedGenericVertexLayout.tangent4.w;
+    let position4 = transformPositionToView(SkinnedGenericVertexLayout.position);
+    VertexOutput.position =  position4.xyz;
+    VertexOutput.screenPosition = projectionMatrix * position4;
+}

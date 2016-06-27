@@ -1,11 +1,13 @@
 import environment;
 
-semantic GenericVertexLayout {
+semantic SkinnedGenericVertexLayout {
     in(0) position: float3;
     in(1) texcoord: float2;
     in(2) color: float4;
     in(3) normal: float3;
     in(4) tangent4: float4;
+    in(5) boneWeights: float4;
+    in(6) boneIndices: int4;
 }
 
 semantic VertexOutput {

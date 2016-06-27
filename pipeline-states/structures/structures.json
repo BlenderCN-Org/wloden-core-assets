@@ -10,12 +10,24 @@
     "GenericVertex" : {
         "type" : "vertex",
         "fields" : [
-            {   "binding" : 0, "format" : "float3", "name" : "position" },
-            {   "binding" : 4, "format" : "float3", "name" : "tangent" },
-            {   "binding" : 5, "format" : "float3", "name" : "bitangent" },
-            {   "binding" : 3, "format" : "float3", "name" : "normal" },
+            {   "binding" : 0, "format" : "R32G32B32_FLOAT", "name" : "position" },
+            {   "binding" : 3, "format" : "R32G32B32_FLOAT", "name" : "normal" },
             {   "binding" : 1, "format" : "float2", "name" : "texcoord" },
+            {   "binding" : 4, "format" : "float4", "name" : "tangent4" },
             {   "binding" : 2, "format" : "float4", "name" : "color" }
+        ]
+    },
+
+    "SkinnedGenericVertex" : {
+        "type" : "vertex",
+        "fields" : [
+            {   "binding" : 0, "format" : "R32G32B32_FLOAT", "name" : "position" },
+            {   "binding" : 3, "format" : "R32G32B32_FLOAT", "name" : "normal" },
+            {   "binding" : 1, "format" : "float2", "name" : "texcoord" },
+            {   "binding" : 4, "format" : "float4", "name" : "tangent4" },
+            {   "binding" : 2, "format" : "float4", "name" : "color" },
+            {   "binding" : 5, "format" : "R16G16B16A16_UNORM", "name" : "boneWeights" },
+            {   "binding" : 6, "format" : "R16G16B16A16_UINT", "name" : "boneIndices" }
         ]
     }
 }

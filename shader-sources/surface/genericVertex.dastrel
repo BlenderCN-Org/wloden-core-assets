@@ -7,11 +7,10 @@ code_block(vertex) main
 
     VertexOutput.color = GenericVertexLayout.color;
     VertexOutput.texcoord = GenericVertexLayout.texcoord;
-    VertexOutput.tangent = transformNormalToView(GenericVertexLayout.tangent);
-    VertexOutput.bitangent = transformNormalToView(GenericVertexLayout.bitangent);
+    VertexOutput.tangent = transformNormalToView(GenericVertexLayout.tangent4.xyz);
     VertexOutput.normal = transformNormalToView(GenericVertexLayout.normal);
+    VertexOutput.bitangent = cross(VertexOutput.normal, VertexOutput.tangent) * GenericVertexLayout.tangent4.w;
     let position4 = transformPositionToView(GenericVertexLayout.position);
     VertexOutput.position =  position4.xyz;
     VertexOutput.screenPosition = projectionMatrix * position4;
 }
- 

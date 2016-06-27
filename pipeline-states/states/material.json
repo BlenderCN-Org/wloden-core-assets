@@ -6,7 +6,6 @@
             "render-target-formats" : ["B8G8R8A8_UNORM_SRGB"],
             "depth-stencil-format" : "D24_UNORM_S8_UINT",
             "inherit-from" : "settings.rendering.sample-description",
-            "vertex-layout" : "GenericVertex",
 
             "cull-mode" : "back",
             "front-face" : "counter-clockwise",
@@ -26,51 +25,93 @@
             }
         },
 
-        "forward.surface.color" : {
+        "forward.common.generic-vertex" : {
+            "abstract" : true,
             "inherit-from" : "forward.common",
+            "vertex-layout" : "GenericVertex"
+        },
+
+        "forward.common.skinned-generic-vertex" : {
+            "abstract" : true,
+            "inherit-from" : "forward.common",
+            "vertex-layout" : "SkinnedGenericVertex"
+        },
+
+        "forward.surface.color" : {
+            "inherit-from" : "forward.common.generic-vertex",
             "shader" : "Surface.Color",
             "primitive-type" : "triangles"
         },
 
         "forward.surface.albedo-texture" : {
-            "inherit-from" : "forward.common",
+            "inherit-from" : "forward.common.generic-vertex",
             "shader" : "Surface.AlbedoTexture",
             "primitive-type" : "triangles"
         },
 
         "forward.surface.albedo-fresnel-texture" : {
-            "inherit-from" : "forward.common",
+            "inherit-from" : "forward.common.generic-vertex",
             "shader" : "Surface.AlbedoFresnelTexture",
             "primitive-type" : "triangles"
         },
 
         "forward.surface.albedo-normal-texture" : {
-            "inherit-from" : "forward.common",
+            "inherit-from" : "forward.common.generic-vertex",
             "shader" : "Surface.AlbedoNormalTexture",
             "primitive-type" : "triangles"
         },
 
         "forward.surface.albedo-normal-fresnel-texture" : {
-            "inherit-from" : "forward.common",
+            "inherit-from" : "forward.common.generic-vertex",
             "shader" : "Surface.AlbedoNormalFresnelTexture",
             "primitive-type" : "triangles"
         },
 
+        "forward.skinned.color" : {
+            "inherit-from" : "forward.common.skinned-generic-vertex",
+            "shader" : "Surface.SkinnedColor",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.skinned.albedo-texture" : {
+            "inherit-from" : "forward.common.skinned-generic-vertex",
+            "shader" : "Surface.SkinnedAlbedoTexture",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.skinned.albedo-fresnel-texture" : {
+            "inherit-from" : "forward.common.skinned-generic-vertex",
+            "shader" : "Surface.SkinnedAlbedoFresnelTexture",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.skinned.albedo-normal-texture" : {
+            "inherit-from" : "forward.common.skinned-generic-vertex",
+            "shader" : "Surface.SkinnedAlbedoNormalTexture",
+            "primitive-type" : "triangles"
+        },
+
+        "forward.skinned.albedo-normal-fresnel-texture" : {
+            "inherit-from" : "forward.common.skinned-generic-vertex",
+            "shader" : "Surface.SkinnedAlbedoNormalFresnelTexture",
+            "primitive-type" : "triangles"
+        },
+
         "forward.sky" : {
-            "inherit-from" : "forward.common",
+            "inherit-from" : "forward.common.generic-vertex",
             "shader" : "Surface.Sky",
             "primitive-type" : "triangles"
         },
 
         "forward.water.color" : {
-            "inherit-from" : "forward.common",
+            "inherit-from" : "forward.common.generic-vertex",
             "cull-mode" : "none",
             "shader" : "Surface.WaterColor",
             "primitive-type" : "triangles"
         },
 
         "forward.water.sky" : {
-            "inherit-from" : "forward.common",
+            "inherit-from" : "forward.common.generic-vertex",
             "cull-mode" : "none",
             "shader" : "Surface.WaterSky",
             "primitive-type" : "triangles"

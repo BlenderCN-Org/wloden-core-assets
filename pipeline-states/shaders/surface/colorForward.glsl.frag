@@ -2,6 +2,19 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack : enable
 
+layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
+layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
+layout (binding = 1, set = 4) uniform sampler displacementSampler_dastrel_global_;
+layout (location = 0) in vec3 FragmentInput_m_position;
+layout (location = 1) in vec2 FragmentInput_m_texcoord;
+layout (location = 2) in vec4 FragmentInput_m_color;
+layout (location = 3) in vec3 FragmentInput_m_normal;
+layout (location = 4) in vec3 FragmentInput_m_tangent;
+layout (location = 5) in vec3 FragmentInput_m_bitangent;
+
+layout (location = 0) out vec4 FragmentOutput_m_color;
+
+
 struct LightSource
 {
     vec4 position;
@@ -130,19 +143,6 @@ void forwardLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in
     }
     color = vec4(accumulatedColor,albedo.a);
 }
-
-layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler displacementSampler_dastrel_global_;
-layout (location = 0) in vec3 FragmentInput_m_position;
-layout (location = 1) in vec2 FragmentInput_m_texcoord;
-layout (location = 2) in vec4 FragmentInput_m_color;
-layout (location = 3) in vec3 FragmentInput_m_normal;
-layout (location = 4) in vec3 FragmentInput_m_tangent;
-layout (location = 5) in vec3 FragmentInput_m_bitangent;
-
-layout (location = 0) out vec4 FragmentOutput_m_color;
-
 
 void main();
 

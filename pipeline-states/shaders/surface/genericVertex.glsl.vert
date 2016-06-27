@@ -85,8 +85,7 @@ layout (location = 0) in vec3 GenericVertexLayout_m_position;
 layout (location = 1) in vec2 GenericVertexLayout_m_texcoord;
 layout (location = 2) in vec4 GenericVertexLayout_m_color;
 layout (location = 3) in vec3 GenericVertexLayout_m_normal;
-layout (location = 4) in vec3 GenericVertexLayout_m_tangent;
-layout (location = 5) in vec3 GenericVertexLayout_m_bitangent;
+layout (location = 4) in vec4 GenericVertexLayout_m_tangent4;
 
 layout (location = 0) out vec3 VertexOutput_m_position;
 layout (location = 1) out vec2 VertexOutput_m_texcoord;
@@ -102,9 +101,9 @@ void main()
 {
     VertexOutput_m_color = GenericVertexLayout_m_color;
     VertexOutput_m_texcoord = GenericVertexLayout_m_texcoord;
-    VertexOutput_m_tangent = transformNormalToView(GenericVertexLayout_m_tangent);
-    VertexOutput_m_bitangent = transformNormalToView(GenericVertexLayout_m_bitangent);
+    VertexOutput_m_tangent = transformNormalToView(GenericVertexLayout_m_tangent4.xyz);
     VertexOutput_m_normal = transformNormalToView(GenericVertexLayout_m_normal);
+    VertexOutput_m_bitangent = (cross(VertexOutput_m_normal,VertexOutput_m_tangent)*GenericVertexLayout_m_tangent4.w);
     vec4 position4 = transformPositionToView(GenericVertexLayout_m_position);
     VertexOutput_m_position = position4.xyz;
     gl_Position = (CameraState_dastrel_singleton_.projectionMatrix*position4);
