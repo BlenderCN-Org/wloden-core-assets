@@ -107,14 +107,26 @@
             "inherit-from" : "forward.common.generic-vertex",
             "cull-mode" : "none",
             "shader" : "Surface.WaterColor",
-            "primitive-type" : "triangles"
+            "primitive-type" : "triangles",
+
+            "depth-state" : {
+                "enabled" : true,
+                "write-mask" : false,
+                "function" : "greater"
+            }
         },
 
         "forward.water.sky" : {
             "inherit-from" : "forward.common.generic-vertex",
             "cull-mode" : "none",
             "shader" : "Surface.WaterSky",
-            "primitive-type" : "triangles"
+            "primitive-type" : "triangles",
+
+            "depth-state" : {
+                "enabled" : true,
+                "write-mask" : false,
+                "function" : "greater"
+            }
         }
     }
 }

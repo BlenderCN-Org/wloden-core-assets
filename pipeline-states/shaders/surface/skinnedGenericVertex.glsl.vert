@@ -81,6 +81,11 @@ vec3 fresnelSchlick (vec3 F0, float cosTheta)
     return (F0+((vec3(1.0,1.0,1.0)-F0)*powValue));
 }
 
+layout (binding = 1, set = 0) buffer PoseState
+{
+    mat4 matrices[];
+} PoseState_dastrel_singleton_;
+
 layout (location = 0) in vec3 SkinnedGenericVertexLayout_m_position;
 layout (location = 1) in vec2 SkinnedGenericVertexLayout_m_texcoord;
 layout (location = 2) in vec4 SkinnedGenericVertexLayout_m_color;
@@ -96,6 +101,28 @@ layout (location = 3) out vec3 VertexOutput_m_normal;
 layout (location = 4) out vec3 VertexOutput_m_tangent;
 layout (location = 5) out vec3 VertexOutput_m_bitangent;
 
+vec3 skinPosition (vec3 position);
+vec3 skinVector (vec3 vector);
+
+vec3 skinPosition (vec3 position)
+{
+    vec4 position4 = vec4(position,1.0);
+    vec3 result = ((PoseState_dastrel_singleton_.matrices[SkinnedGenericVertexLayout_m_boneIndices.x]*position4).xyz*SkinnedGenericVertexLayout_m_boneWeights.x);
+    result += ((PoseState_dastrel_singleton_.matrices[SkinnedGenericVertexLayout_m_boneIndices.y]*position4).xyz*SkinnedGenericVertexLayout_m_boneWeights.y);
+    result += ((PoseState_dastrel_singleton_.matrices[SkinnedGenericVertexLayout_m_boneIndices.z]*position4).xyz*SkinnedGenericVertexLayout_m_boneWeights.z);
+    result += ((PoseState_dastrel_singleton_.matrices[SkinnedGenericVertexLayout_m_boneIndices.w]*position4).xyz*SkinnedGenericVertexLayout_m_boneWeights.w);
+    return result;
+}
+
+vec3 skinVector (vec3 vector)
+{
+    vec4 vector4 = vec4(vector,0.0);
+    vec3 result = ((PoseState_dastrel_singleton_.matrices[SkinnedGenericVertexLayout_m_boneIndices.x]*vector4).xyz*SkinnedGenericVertexLayout_m_boneWeights.x);
+    result += ((PoseState_dastrel_singleton_.matrices[SkinnedGenericVertexLayout_m_boneIndices.y]*vector4).xyz*SkinnedGenericVertexLayout_m_boneWeights.y);
+    result += ((PoseState_dastrel_singleton_.matrices[SkinnedGenericVertexLayout_m_boneIndices.z]*vector4).xyz*SkinnedGenericVertexLayout_m_boneWeights.z);
+    result += ((PoseState_dastrel_singleton_.matrices[SkinnedGenericVertexLayout_m_boneIndices.w]*vector4).xyz*SkinnedGenericVertexLayout_m_boneWeights.w);
+    return result;
+}
 
 void main();
 
@@ -103,10 +130,10 @@ void main()
 {
     VertexOutput_m_color = SkinnedGenericVertexLayout_m_color;
     VertexOutput_m_texcoord = SkinnedGenericVertexLayout_m_texcoord;
-    VertexOutput_m_tangent = transformNormalToView(SkinnedGenericVertexLayout_m_tangent4.xyz);
-    VertexOutput_m_normal = transformNormalToView(SkinnedGenericVertexLayout_m_normal);
+    VertexOutput_m_tangent = transformNormalToView(skinVector(SkinnedGenericVertexLayout_m_tangent4.xyz));
+    VertexOutput_m_normal = transformNormalToView(skinVector(SkinnedGenericVertexLayout_m_normal));
     VertexOutput_m_bitangent = (cross(VertexOutput_m_normal,VertexOutput_m_tangent)*SkinnedGenericVertexLayout_m_tangent4.w);
-    vec4 position4 = transformPositionToView(SkinnedGenericVertexLayout_m_position);
+    vec4 position4 = transformPositionToView(skinPosition(SkinnedGenericVertexLayout_m_position));
     VertexOutput_m_position = position4.xyz;
     gl_Position = (CameraState_dastrel_singleton_.projectionMatrix*position4);
 }

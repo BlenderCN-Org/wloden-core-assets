@@ -27,7 +27,7 @@
             {   "binding" : 4, "format" : "float4", "name" : "tangent4" },
             {   "binding" : 2, "format" : "float4", "name" : "color" },
             {   "binding" : 5, "format" : "R16G16B16A16_UNORM", "name" : "boneWeights" },
-            {   "binding" : 6, "format" : "R16G16B16A16_UINT", "name" : "boneIndices" }
+            {   "binding" : 6, "format" : "R16G16B16A16_SINT", "name" : "boneIndices" }
         ]
     }
 }
