@@ -35,6 +35,7 @@
         },
 
         "blend.add" : {
+            "abstract" : true,
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,
@@ -45,6 +46,7 @@
         },
 
         "blend.clear" : {
+            "abstract" : true,
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,
@@ -55,6 +57,7 @@
         },
 
         "blend.dest" : {
+            "abstract" : true,
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,
@@ -65,6 +68,7 @@
         },
 
         "blend.dest-over" : {
+            "abstract" : true,
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,
@@ -75,6 +79,7 @@
         },
 
         "blend.multiply" : {
+            "abstract" : true,
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,
@@ -85,6 +90,7 @@
         },
 
         "blend.over" : {
+            "abstract" : true,
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,
@@ -95,6 +101,7 @@
         },
 
         "blend.source" : {
+            "abstract" : true,
             "blend-state" : [{
                 "render-target-mask" : -1,
                 "enabled" : true,
