@@ -1,105 +1,69 @@
-#version 400
+#version 430
 #extension GL_ARB_separate_shader_objects : enable
-#extension GL_ARB_shading_language_420pack : enable
 
-struct LightSource
+#ifdef VULKAN
+#define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
+#define SLVM_VK_UNIFORM_SAMPLER(lc, name) layout lc uniform sampler name;
+#define SLVM_COMBINE_SAMPLER_WITH(sampler, texture, samplerType) samplerType(texture, sampler)
+#define SLVM_TEXTURE(vulkanType, openglType) vulkanType
+#else
+#define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) binding = glb
+#define SLVM_VK_UNIFORM_SAMPLER(lc, name) /* Declaration removed */
+#define SLVM_COMBINE_SAMPLER_WITH(sampler, texture, samplerType) texture
+#define SLVM_TEXTURE(vulkanType, openglType) openglType
+#endif
+
+layout ( location = 0 ) in vec3 GenericVertexLayout_sve_position;
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 0), std140 ) uniform ObjectState_block
 {
-    vec4 position;
-    vec4 intensity;
-    vec3 spotDirection;
-    float innerCosCutoff;
-    float outerCosCutoff;
-    float spotExponent;
-    float radius;
-};
+	mat4 modelMatrix;
+	mat4 inverseModelMatrix;
+} ObjectState;
 
-layout (binding = 0, set = 0, std140) uniform ObjectState
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform ObjectState_block
 {
-    mat4 modelMatrix;
-    mat4 inverseModelMatrix;
-} ObjectState_dastrel_singleton_;
+	mat4 modelMatrix;
+	mat4 inverseModelMatrix;
+} CameraObjectState;
 
-layout (binding = 0, set = 1, std140) uniform CameraObjectState
+layout ( location = 0 ) out vec3 VertexOutput_sve_position;
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 1), std140 ) uniform CameraState_block
 {
-    mat4 inverseViewMatrix;
-    mat4 viewMatrix;
-} CameraObjectState_dastrel_singleton_;
+	mat4 projectionMatrix;
+	float currentTime;
+} CameraState;
 
-layout (binding = 1, set = 1, std140) uniform CameraState
+vec4 transformPositionToWorld (vec3 arg1)
 {
-    mat4 projectionMatrix;
-    float currentTime;
-} CameraState_dastrel_singleton_;
-
-layout (binding = 0, set = 2, std140) uniform GlobalLightingState
-{
-    vec4 groundLighting;
-    vec4 skyLighting;
-    vec3 sunDirection;
-    int numberOfLights;
-    LightSource lightSources[16];
-} GlobalLightingState_dastrel_singleton_;
-
-vec3 transformNormalToView (vec3 normal);
-vec4 transformPositionToView (vec3 position);
-vec4 transformVector4ToView (vec4 position);
-vec4 transformPositionToWorld (vec3 position);
-vec3 cameraWorldPosition ();
-vec3 fresnelSchlick (vec3 F0, float cosTheta);
-
-vec3 transformNormalToView (vec3 normal)
-{
-    return ((vec4(normal,0.0)*ObjectState_dastrel_singleton_.inverseModelMatrix)*CameraObjectState_dastrel_singleton_.inverseViewMatrix).xyz;
-}
-
-vec4 transformPositionToView (vec3 position)
-{
-    return transformVector4ToView(vec4(position,1.0));
-}
-
-vec4 transformVector4ToView (vec4 position)
-{
-    return (CameraObjectState_dastrel_singleton_.viewMatrix*(ObjectState_dastrel_singleton_.modelMatrix*position));
-}
-
-vec4 transformPositionToWorld (vec3 position)
-{
-    return (ObjectState_dastrel_singleton_.modelMatrix*vec4(position,1.0));
+	return (ObjectState.modelMatrix * vec4(arg1, 1.0));
 }
 
 vec3 cameraWorldPosition ()
 {
-    return CameraObjectState_dastrel_singleton_.inverseViewMatrix[3].xyz;
+	return CameraObjectState.modelMatrix[3].xyz;
 }
 
-vec3 fresnelSchlick (vec3 F0, float cosTheta)
+vec4 transformVector4ToView (vec4 arg1)
 {
-    float powFactor = (1.0-cosTheta);
-    float powFactor2 = (powFactor*powFactor);
-    float powFactor4 = (powFactor2*powFactor2);
-    float powValue = (powFactor4+powFactor);
-    return (F0+((vec3(1.0,1.0,1.0)-F0)*powValue));
+	return (CameraObjectState.inverseModelMatrix * (ObjectState.modelMatrix * arg1));
 }
 
-layout (location = 0) in vec3 GenericVertexLayout_m_position;
-layout (location = 1) in vec2 GenericVertexLayout_m_texcoord;
-layout (location = 2) in vec4 GenericVertexLayout_m_color;
-layout (location = 3) in vec3 GenericVertexLayout_m_normal;
-layout (location = 4) in vec4 GenericVertexLayout_m_tangent4;
-
-layout (location = 0) out vec3 VertexOutput_m_position;
-layout (location = 1) out vec2 VertexOutput_m_texcoord;
-layout (location = 2) out vec4 VertexOutput_m_color;
-layout (location = 3) out vec3 VertexOutput_m_normal;
-layout (location = 4) out vec3 VertexOutput_m_tangent;
-layout (location = 5) out vec3 VertexOutput_m_bitangent;
-
-
-void main();
-
-void main()
+vec4 transformPositionToView (vec3 arg1)
 {
-    VertexOutput_m_position = (transformPositionToWorld(GenericVertexLayout_m_position).xyz-cameraWorldPosition());
-    gl_Position = (CameraState_dastrel_singleton_.projectionMatrix*transformPositionToView(GenericVertexLayout_m_position));
+	vec4 _g4;
+	_g4 = transformVector4ToView(vec4(arg1, 1.0));
+	return _g4;
+}
+
+void main ()
+{
+	vec4 _g1;
+	vec3 _g2;
+	vec4 _g3;
+	_g1 = transformPositionToWorld(GenericVertexLayout_sve_position);
+	_g2 = cameraWorldPosition();
+	VertexOutput_sve_position = (_g1.xyz - _g2);
+	_g3 = transformPositionToView(GenericVertexLayout_sve_position);
+	gl_Position = (CameraState.projectionMatrix * _g3);
 }
 

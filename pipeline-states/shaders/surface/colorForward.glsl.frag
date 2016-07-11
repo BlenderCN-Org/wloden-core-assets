@@ -1,155 +1,127 @@
-#version 400
+#version 430
 #extension GL_ARB_separate_shader_objects : enable
-#extension GL_ARB_shading_language_420pack : enable
+
+#ifdef VULKAN
+#define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
+#define SLVM_VK_UNIFORM_SAMPLER(lc, name) layout lc uniform sampler name;
+#define SLVM_COMBINE_SAMPLER_WITH(sampler, texture, samplerType) samplerType(texture, sampler)
+#define SLVM_TEXTURE(vulkanType, openglType) vulkanType
+#else
+#define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) binding = glb
+#define SLVM_VK_UNIFORM_SAMPLER(lc, name) /* Declaration removed */
+#define SLVM_COMBINE_SAMPLER_WITH(sampler, texture, samplerType) texture
+#define SLVM_TEXTURE(vulkanType, openglType) openglType
+#endif
 
 struct LightSource
 {
-    vec4 position;
-    vec4 intensity;
-    vec3 spotDirection;
-    float innerCosCutoff;
-    float outerCosCutoff;
-    float spotExponent;
-    float radius;
+	vec4 position;
+	vec4 intensity;
+	vec3 spotDirection;
+	float innerCosCutoff;
+	float outerCosCutoff;
+	float spotExponent;
+	float radius;
 };
 
-layout (binding = 0, set = 0, std140) uniform ObjectState
+layout ( location = 3 ) in vec3 FragmentInput_sve_normal;
+layout ( location = 0 ) in vec3 FragmentInput_sve_position;
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 3, 0), std140 ) uniform MaterialState_block
 {
-    mat4 modelMatrix;
-    mat4 inverseModelMatrix;
-} ObjectState_dastrel_singleton_;
+	vec4 albedo;
+	vec3 fresnel;
+	float smoothness;
+} MaterialState;
 
-layout (binding = 0, set = 1, std140) uniform CameraObjectState
+layout ( location = 2 ) in vec4 FragmentInput_sve_color;
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 2, 0), std140 ) uniform GlobalLightingState_block
 {
-    mat4 inverseViewMatrix;
-    mat4 viewMatrix;
-} CameraObjectState_dastrel_singleton_;
+	vec4 groundLighting;
+	vec4 skyLighting;
+	vec3 sunDirection;
+	int numberOfLights;
+	LightSource lightSources[16];
+} GlobalLightingState;
 
-layout (binding = 1, set = 1, std140) uniform CameraState
+layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
+vec3 fresnelSchlick (vec3 arg1, float arg2)
 {
-    mat4 projectionMatrix;
-    float currentTime;
-} CameraState_dastrel_singleton_;
-
-layout (binding = 0, set = 2, std140) uniform GlobalLightingState
-{
-    vec4 groundLighting;
-    vec4 skyLighting;
-    vec3 sunDirection;
-    int numberOfLights;
-    LightSource lightSources[16];
-} GlobalLightingState_dastrel_singleton_;
-
-vec3 transformNormalToView (vec3 normal);
-vec4 transformPositionToView (vec3 position);
-vec4 transformVector4ToView (vec4 position);
-vec4 transformPositionToWorld (vec3 position);
-vec3 cameraWorldPosition ();
-vec3 fresnelSchlick (vec3 F0, float cosTheta);
-
-vec3 transformNormalToView (vec3 normal)
-{
-    return ((vec4(normal,0.0)*ObjectState_dastrel_singleton_.inverseModelMatrix)*CameraObjectState_dastrel_singleton_.inverseViewMatrix).xyz;
+	float powFactor;
+	float powFactor2;
+	float powFactor4;
+	float powValue;
+	powFactor = (1.0 - arg2);
+	powFactor2 = (powFactor * powFactor);
+	powFactor4 = (powFactor2 * powFactor2);
+	powValue = (powFactor4 * powFactor);
+	return (arg1 + ((vec3(1.0, 1.0, 1.0) - arg1) * vec3(powValue, powValue, powValue)));
 }
 
-vec4 transformPositionToView (vec3 position)
+void forwardLightingModel (inout vec4 color, vec3 normal, vec3 viewVector, vec3 position, vec4 albedo, float smoothness, vec3 fresnel)
 {
-    return transformVector4ToView(vec4(position,1.0));
+	vec3 albedoColor;
+	float specularPower;
+	float specularNormalization;
+	vec3 accumulatedColor;
+	float hemiFactor;
+	int i;
+	LightSource lightSource;
+	vec3 L;
+	float dist;
+	float NdotL;
+	float spotCos;
+	float spotAttenuation;
+	float attenuationDistance;
+	float attDen;
+	float attenuation;
+	vec3 H;
+	vec3 F;
+	float NdotH;
+	float D;
+	vec3 _g1;
+	albedoColor = albedo.xyz;
+	specularPower = exp2((10.0 * smoothness));
+	specularNormalization = ((specularPower + 2.0) * 0.125);
+	accumulatedColor = vec3(0.0, 0.0, 0.0);
+	hemiFactor = ((dot(normal, GlobalLightingState.sunDirection) * 0.5) + 0.5);
+	accumulatedColor = (accumulatedColor + (albedoColor * mix(GlobalLightingState.groundLighting.xyz, GlobalLightingState.skyLighting.xyz, vec3(hemiFactor, hemiFactor, hemiFactor))));
+	i = 0;
+	for (;(i < GlobalLightingState.numberOfLights); i = (i + 1))
+	{
+		lightSource = GlobalLightingState.lightSources[i];
+		L = (GlobalLightingState.lightSources[i].position.xyz - (position * vec3(lightSource.position.w, lightSource.position.w, lightSource.position.w)));
+		dist = length(L);
+		L = (L / vec3(dist, dist, dist));
+		NdotL = max(dot(normal, L), 0.0);
+		if ((NdotL == 0.0))
+			continue;
+		spotCos = 1.0;
+		if ((lightSource.outerCosCutoff > -1.0))
+			spotCos = dot(L, lightSource.spotDirection);
+		if ((spotCos < lightSource.outerCosCutoff))
+			continue;
+		spotAttenuation = (smoothstep(lightSource.outerCosCutoff, lightSource.innerCosCutoff, spotCos) * pow(spotCos, lightSource.spotExponent));
+		attenuationDistance = max(0.0, (dist - lightSource.radius));
+		attDen = (1.0 + (attenuationDistance / lightSource.radius));
+		attenuation = (spotAttenuation / (attDen * attDen));
+		H = normalize((L + viewVector));
+		_g1 = fresnelSchlick(fresnel, dot(H, L));
+		F = _g1;
+		NdotH = dot(normal, H);
+		D = (pow(NdotH, specularPower) * specularNormalization);
+		accumulatedColor = (accumulatedColor + (((lightSource.intensity.xyz * vec3(attenuation, attenuation, attenuation)) * (albedoColor + (F * vec3(D, D, D)))) * vec3(NdotL, NdotL, NdotL)));
+	}
+	color = vec4(accumulatedColor, albedo.w);
 }
 
-vec4 transformVector4ToView (vec4 position)
+void main ()
 {
-    return (CameraObjectState_dastrel_singleton_.viewMatrix*(ObjectState_dastrel_singleton_.modelMatrix*position));
-}
-
-vec4 transformPositionToWorld (vec3 position)
-{
-    return (ObjectState_dastrel_singleton_.modelMatrix*vec4(position,1.0));
-}
-
-vec3 cameraWorldPosition ()
-{
-    return CameraObjectState_dastrel_singleton_.inverseViewMatrix[3].xyz;
-}
-
-vec3 fresnelSchlick (vec3 F0, float cosTheta)
-{
-    float powFactor = (1.0-cosTheta);
-    float powFactor2 = (powFactor*powFactor);
-    float powFactor4 = (powFactor2*powFactor2);
-    float powValue = (powFactor4+powFactor);
-    return (F0+((vec3(1.0,1.0,1.0)-F0)*powValue));
-}
-
-layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler displacementSampler_dastrel_global_;
-layout (location = 0) in vec3 FragmentInput_m_position;
-layout (location = 1) in vec2 FragmentInput_m_texcoord;
-layout (location = 2) in vec4 FragmentInput_m_color;
-layout (location = 3) in vec3 FragmentInput_m_normal;
-layout (location = 4) in vec3 FragmentInput_m_tangent;
-layout (location = 5) in vec3 FragmentInput_m_bitangent;
-
-layout (location = 0) out vec4 FragmentOutput_m_color;
-
-
-layout (binding = 0, set = 3, std140) uniform MaterialState
-{
-    vec4 albedo;
-    vec3 fresnel;
-    float smoothness;
-} MaterialState_dastrel_singleton_;
-
-layout (binding = 2, set = 3) uniform texture2D albedoTexture_dastrel_global_;
-layout (binding = 3, set = 3) uniform texture2D normalTexture_dastrel_global_;
-layout (binding = 4, set = 3) uniform texture2D fresnelTexture_dastrel_global_;
-layout (binding = 0, set = 4) uniform sampler albedoSampler_dastrel_global_;
-layout (binding = 1, set = 4) uniform sampler normalSampler_dastrel_global_;
-
-void forwardLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in vec3 position, in vec4 albedo, in float smoothness, in vec3 fresnel);
-
-void forwardLightingModel(out vec4 color, in vec3 normal, in vec3 viewVector, in vec3 position, in vec4 albedo, in float smoothness, in vec3 fresnel)
-{
-    vec3 albedoColor = albedo.rgb;
-    float specularPower = exp2((10.0*smoothness));
-    float specularNormalization = ((specularPower+2.0)*0.125);
-    vec3 accumulatedColor = vec3(0.0,0.0,0.0);
-    float hemiFactor = ((dot(normal,GlobalLightingState_dastrel_singleton_.sunDirection)*0.5)+0.5);
-    accumulatedColor += (albedoColor*mix(GlobalLightingState_dastrel_singleton_.groundLighting.rgb,GlobalLightingState_dastrel_singleton_.skyLighting.rgb,hemiFactor));
-    for ( int i = 0; (i<GlobalLightingState_dastrel_singleton_.numberOfLights); i += 1    )
-    {
-        LightSource lightSource = GlobalLightingState_dastrel_singleton_.lightSources[i];
-        vec3 L = (GlobalLightingState_dastrel_singleton_.lightSources[i].position.xyz-(position*lightSource.position.w));
-        float dist = length(L);
-        L = (L/dist);
-        float NdotL = max(dot(normal,L),0.0);
-        if ( (NdotL==0.0) )
-        continue;
-        float spotCos = 1.0;
-        if ( (lightSource.outerCosCutoff>(-1.0)) )
-        spotCos = dot(L,lightSource.spotDirection);
-        if ( (spotCos<lightSource.outerCosCutoff) )
-        continue;
-        float spotAttenuation = (smoothstep(lightSource.outerCosCutoff,lightSource.innerCosCutoff,spotCos)*pow(spotCos,lightSource.spotExponent));
-        float attenuationDistance = max(0.0,(dist-lightSource.radius));
-        float attDen = (1.0+(attenuationDistance/lightSource.radius));
-        float attenuation = (spotAttenuation/(attDen*attDen));
-        vec3 H = normalize((L+viewVector));
-        vec3 F = fresnelSchlick(fresnel,dot(H,L));
-        float NdotH = dot(normal,H);
-        float D = (pow(NdotH,specularPower)*specularNormalization);
-        accumulatedColor += (((lightSource.intensity.rgb*attenuation)*(albedoColor+(F*D)))*NdotL);
-    }
-    color = vec4(accumulatedColor,albedo.a);
-}
-
-void main();
-
-void main()
-{
-    vec3 N = normalize(FragmentInput_m_normal);
-    vec3 V = normalize((-FragmentInput_m_position));
-    forwardLightingModel(FragmentOutput_m_color, N, V, FragmentInput_m_position, (FragmentInput_m_color*MaterialState_dastrel_singleton_.albedo), MaterialState_dastrel_singleton_.smoothness, MaterialState_dastrel_singleton_.fresnel    );
+	vec3 N;
+	vec3 V;
+	vec4 g8;
+	N = normalize(FragmentInput_sve_normal);
+	V = normalize(-FragmentInput_sve_position);
+	forwardLightingModel(g8, N, V, FragmentInput_sve_position, (FragmentInput_sve_color * MaterialState.albedo), MaterialState.smoothness, MaterialState.fresnel);
+	FragmentOutput_sve_color = g8;
 }
 

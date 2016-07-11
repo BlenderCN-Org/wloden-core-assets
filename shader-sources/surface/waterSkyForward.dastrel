@@ -20,6 +20,7 @@ code_block(fragment) main
 
     let NdotV = max(0.0f, min(1.0f, dot(N, V)));
     let reflectionFresnel = fresnelSchlick(MaterialState.fresnel, NdotV);
+    let reflectionFactor = fresnelSchlick(lightedColor.a, NdotV);
 
-    FragmentOutput.color = float4(skyColor.rgb*reflectionFresnel + lightedColor.rgb, lightedColor.a);
+    FragmentOutput.color = float4(skyColor.rgb*reflectionFresnel + lightedColor.rgb, reflectionFactor);
 }

@@ -1,78 +1,29 @@
-#version 400
+#version 430
 #extension GL_ARB_separate_shader_objects : enable
-#extension GL_ARB_shading_language_420pack : enable
 
-struct ColorRampEntry
+#ifdef VULKAN
+#define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
+#define SLVM_VK_UNIFORM_SAMPLER(lc, name) layout lc uniform sampler name;
+#define SLVM_COMBINE_SAMPLER_WITH(sampler, texture, samplerType) samplerType(texture, sampler)
+#define SLVM_TEXTURE(vulkanType, openglType) vulkanType
+#else
+#define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) binding = glb
+#define SLVM_VK_UNIFORM_SAMPLER(lc, name) /* Declaration removed */
+#define SLVM_COMBINE_SAMPLER_WITH(sampler, texture, samplerType) texture
+#define SLVM_TEXTURE(vulkanType, openglType) openglType
+#endif
+
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 2, 0) ) uniform SLVM_TEXTURE(texture2D, sampler2D) fontTexture;
+layout ( location = 1 ) in vec2 FragmentInput_sve_texcoord;
+SLVM_VK_UNIFORM_SAMPLER( ( SLVM_GL_BINDING_VK_SET_BINDING(2, 3, 1) ) ,fontSampler)
+layout ( location = 2 ) in vec4 FragmentInput_sve_color;
+layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
+void main ()
 {
-    float edge;
-    vec4 color;
-};
-
-layout (binding = 0, set = 0, std140) uniform CanvasViewport
-{
-    mat4 projectionMatrix;
-    mat4 viewMatrix;
-} CanvasViewport_dastrel_singleton_;
-
-layout (push_constant) uniform CurrentColorRamp
-{
-    int colorRampIndex;
-    int colorRampSize;
-} CurrentColorRamp_dastrel_singleton_;
-
-layout (binding = 1, set = 0) buffer ColorRamps
-{
-    ColorRampEntry entries[];
-} ColorRamps_dastrel_singleton_;
-
-vec4 evaluateColorRamp (float coord);
-
-vec4 evaluateColorRamp (float coord)
-{
-    if ( (CurrentColorRamp_dastrel_singleton_.colorRampSize==0) )
-    return vec4(1.0,1.0,1.0,1.0);
-    int a = 0;
-    int b = CurrentColorRamp_dastrel_singleton_.colorRampSize;
-    int lastResult = a;
-    while ( (a<b) )
-    {
-        int m = ((a+b)/2);
-        if ( (ColorRamps_dastrel_singleton_.entries[(CurrentColorRamp_dastrel_singleton_.colorRampIndex+m)].edge<=coord) )
-        {
-            lastResult = m;
-            a = (m+1);
-        }
-        else
-        {
-            b = m;
-        }
-    }
-    int entryIndex = (CurrentColorRamp_dastrel_singleton_.colorRampIndex+lastResult);
-    float prevEdge = ColorRamps_dastrel_singleton_.entries[entryIndex].edge;
-    if ( (((lastResult==0)&&(coord<=prevEdge))||(lastResult==(CurrentColorRamp_dastrel_singleton_.colorRampSize-1))) )
-    return ColorRamps_dastrel_singleton_.entries[entryIndex].color;
-    float nextEdge = ColorRamps_dastrel_singleton_.entries[(entryIndex+1)].edge;
-    float mixFactor = ((coord-prevEdge)/(nextEdge-prevEdge));
-    return mix(ColorRamps_dastrel_singleton_.entries[entryIndex].color,ColorRamps_dastrel_singleton_.entries[(entryIndex+1)].color,mixFactor);
-}
-
-layout (binding = 0, set = 1) uniform texture2D mainTexture_dastrel_global_;
-layout (binding = 0, set = 2) uniform texture2D fontTexture_dastrel_global_;
-layout (binding = 0, set = 3) uniform sampler mainSampler_dastrel_global_;
-layout (binding = 1, set = 3) uniform sampler fontSampler_dastrel_global_;
-layout (location = 0) in vec4 FragmentInput_m_position;
-layout (location = 1) in vec2 FragmentInput_m_texcoord;
-layout (location = 2) in vec4 FragmentInput_m_color;
-
-layout (location = 0) out vec4 FragmentOutput_m_color;
-
-
-void main();
-
-void main()
-{
-    float fontSample = texture(sampler2D(fontSampler_dastrel_global_, fontTexture_dastrel_global_), FragmentInput_m_texcoord).r;
-    float fontAlpha = smoothstep((-0.08),0.04,fontSample);
-    FragmentOutput_m_color = vec4(FragmentInput_m_color.rgb,(FragmentInput_m_color.a*fontAlpha));
+	float fontSample;
+	float fontAlpha;
+	fontSample = texture(SLVM_COMBINE_SAMPLER_WITH(fontSampler, fontTexture, sampler2D), FragmentInput_sve_texcoord).x;
+	fontAlpha = smoothstep(-0.08, 0.04, fontSample);
+	FragmentOutput_sve_color = vec4(FragmentInput_sve_color.xyz, (FragmentInput_sve_color.w * fontAlpha));
 }
 
