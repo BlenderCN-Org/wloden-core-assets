@@ -53,6 +53,11 @@
         "WaterSky" : {
             "fragment" : "waterSkyForward.dastrel",
             "vertex" : "waterVertex.dastrel"
+        },
+
+        "FlatColor" : {
+            "fragment" : "flatColorForward.dastrel",
+            "vertex" : "genericVertex.dastrel"
         }
     }
 }

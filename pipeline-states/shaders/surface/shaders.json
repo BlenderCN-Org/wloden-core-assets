@@ -129,6 +129,16 @@
 				"spir-v" : "waterVertex.spv",
 				"glsl" : "waterVertex.glsl.vert"
 			}
+		},
+		"FlatColor" : {
+			"fragment" : {
+				"spir-v" : "flatColorForward.spv",
+				"glsl" : "flatColorForward.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "genericVertex.spv",
+				"glsl" : "genericVertex.glsl.vert"
+			}
 		}
 	}
 }
