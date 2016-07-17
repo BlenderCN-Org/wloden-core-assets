@@ -58,6 +58,11 @@
         "FlatColor" : {
             "fragment" : "flatColorForward.dastrel",
             "vertex" : "genericVertex.dastrel"
+        },
+
+        "FlatColorStipple" : {
+            "fragment" : "flatColorStippleForward.dastrel",
+            "vertex" : "stippleVertex.dastrel"
         }
     }
 }

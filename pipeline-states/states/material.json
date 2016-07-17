@@ -160,6 +160,63 @@
             }
         },
 
+        "forward.flat-color-stipple.lines" : {
+            "inherit-from" : "forward.common.generic-vertex",
+            "shader" : "Surface.FlatColorStipple",
+            "primitive-type" : "lines"
+        },
+
+        "forward.flat-color-stipple.triangles" : {
+            "inherit-from" : "forward.common.generic-vertex",
+            "shader" : "Surface.FlatColorStipple",
+            "primitive-type" : "triangles"
+        },
+
+
+        "forward.flat-color-stipple.depth-nowrite.lines" : {
+            "inherit-from" : "forward.common.generic-vertex",
+            "shader" : "Surface.FlatColorStipple",
+            "primitive-type" : "lines",
+
+            "depth-state" : {
+                "enabled" : true,
+                "write-mask" : false,
+                "function" : "greater-equal"
+            }
+        },
+
+        "forward.flat-color-stipple.depth-nowrite.triangles" : {
+            "inherit-from" : "forward.common.generic-vertex",
+            "shader" : "Surface.FlatColorStipple",
+            "primitive-type" : "triangles",
+
+            "depth-state" : {
+                "enabled" : true,
+                "write-mask" : false,
+                "function" : "greater-equal"
+            }
+        },
+
+        "forward.flat-color-stipple.no-depth.lines" : {
+            "inherit-from" : "forward.common.generic-vertex",
+            "shader" : "Surface.FlatColorStipple",
+            "primitive-type" : "lines",
+
+            "depth-state" : {
+                "enabled" : false
+            }
+        },
+
+        "forward.flat-color-stipple.no-depth.triangles" : {
+            "inherit-from" : "forward.common.generic-vertex",
+            "shader" : "Surface.FlatColorStipple",
+            "primitive-type" : "triangles",
+
+            "depth-state" : {
+                "enabled" : false
+            }
+        },
+        
         "forward.water.color" : {
             "inherit-from" : "forward.common.generic-vertex",
             "cull-mode" : "none",

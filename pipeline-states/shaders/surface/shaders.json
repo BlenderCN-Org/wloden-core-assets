@@ -139,6 +139,16 @@
 				"spir-v" : "genericVertex.spv",
 				"glsl" : "genericVertex.glsl.vert"
 			}
+		},
+		"FlatColorStipple" : {
+			"fragment" : {
+				"spir-v" : "flatColorStippleForward.spv",
+				"glsl" : "flatColorStippleForward.glsl.frag"
+			},
+			"vertex" : {
+				"spir-v" : "stippleVertex.spv",
+				"glsl" : "stippleVertex.glsl.vert"
+			}
 		}
 	}
 }

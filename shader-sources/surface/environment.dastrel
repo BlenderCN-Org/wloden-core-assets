@@ -67,6 +67,13 @@ function transformPositionToWorld(position: float3) -> float4
     return modelMatrix * float4(position, 1.0f);
 }
 
+function transformVectorToWorld(position: float3) -> float3
+{
+    using ObjectState;
+
+    return (modelMatrix * float4(position, 0.0f)).xyz;
+}
+
 function cameraWorldPosition() -> float3
 {
     using CameraObjectState;
