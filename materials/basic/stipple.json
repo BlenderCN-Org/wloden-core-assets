@@ -2,5 +2,6 @@
     "type" : "FlatColor",
 
     "stipple" : true,
-    "write-depth" : false
+
+    "use-depth" : false
 }

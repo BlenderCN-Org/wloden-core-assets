@@ -2,6 +2,7 @@ uniform(set=0, binding=0) ObjectState
 {
     modelMatrix: float4x4;
     inverseModelMatrix: float4x4;
+    color: float4;
 }
 
 uniform(set=1, binding=0) CameraObjectState

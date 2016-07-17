@@ -13,21 +13,22 @@
 #define SLVM_TEXTURE(vulkanType, openglType) openglType
 #endif
 
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 0), std140 ) uniform ObjectState_block
+{
+	mat4 modelMatrix;
+	mat4 inverseModelMatrix;
+	vec4 color;
+} ObjectState;
+
 layout ( location = 2 ) in vec4 GenericVertexLayout_sve_color;
 layout ( location = 2 ) out vec4 VertexOutput_sve_color;
 layout ( location = 1 ) in vec2 GenericVertexLayout_sve_texcoord;
 layout ( location = 1 ) out vec2 VertexOutput_sve_texcoord;
 layout ( location = 4 ) in vec4 GenericVertexLayout_sve_tangent4;
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 0), std140 ) uniform ObjectState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraObjectState_block
 {
-	mat4 modelMatrix;
-	mat4 inverseModelMatrix;
-} ObjectState;
-
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform ObjectState_block
-{
-	mat4 modelMatrix;
-	mat4 inverseModelMatrix;
+	mat4 inverseViewMatrix;
+	mat4 viewMatrix;
 } CameraObjectState;
 
 layout ( location = 4 ) out vec3 VertexOutput_sve_tangent;
@@ -44,12 +45,12 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 1), std140 ) uniform CameraState_b
 
 vec3 transformNormalToView (vec3 arg1)
 {
-	return ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraObjectState.modelMatrix).xyz;
+	return ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraObjectState.inverseViewMatrix).xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraObjectState.inverseModelMatrix * (ObjectState.modelMatrix * arg1));
+	return (CameraObjectState.viewMatrix * (ObjectState.modelMatrix * arg1));
 }
 
 vec4 transformPositionToView (vec3 arg1)
@@ -65,7 +66,7 @@ void main ()
 	vec3 _g1;
 	vec3 _g2;
 	vec4 _g3;
-	VertexOutput_sve_color = GenericVertexLayout_sve_color;
+	VertexOutput_sve_color = (GenericVertexLayout_sve_color * ObjectState.color);
 	VertexOutput_sve_texcoord = GenericVertexLayout_sve_texcoord;
 	_g1 = transformNormalToView(GenericVertexLayout_sve_tangent4.xyz);
 	VertexOutput_sve_tangent = _g1;

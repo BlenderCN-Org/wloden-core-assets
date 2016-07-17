@@ -15,20 +15,21 @@
 
 layout ( location = 1 ) in vec2 GenericVertexLayout_sve_texcoord;
 layout ( location = 1 ) out vec2 VertexOutput_sve_texcoord;
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 0), std140 ) uniform ObjectState_block
+{
+	mat4 modelMatrix;
+	mat4 inverseModelMatrix;
+	vec4 color;
+} ObjectState;
+
 layout ( location = 2 ) in vec4 GenericVertexLayout_sve_color;
 layout ( location = 2 ) out vec4 VertexOutput_sve_color;
 layout ( location = 0 ) in vec3 GenericVertexLayout_sve_position;
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 1, 0), std140 ) uniform CameraObjectState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraObjectState_block
 {
 	mat4 inverseViewMatrix;
 	mat4 viewMatrix;
 } CameraObjectState;
-
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 0, 0), std140 ) uniform CameraObjectState_block
-{
-	mat4 inverseViewMatrix;
-	mat4 viewMatrix;
-} ObjectState;
 
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
 layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 1), std140 ) uniform CameraState_block
@@ -39,7 +40,7 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 1), std140 ) uniform CameraState_b
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraObjectState.viewMatrix * (ObjectState.inverseViewMatrix * arg1));
+	return (CameraObjectState.viewMatrix * (ObjectState.modelMatrix * arg1));
 }
 
 vec4 transformPositionToView (vec3 arg1)
@@ -51,7 +52,7 @@ vec4 transformPositionToView (vec3 arg1)
 
 vec3 transformVectorToWorld (vec3 arg1)
 {
-	return (ObjectState.inverseViewMatrix * vec4(arg1, 0.0)).xyz;
+	return (ObjectState.modelMatrix * vec4(arg1, 0.0)).xyz;
 }
 
 void main ()
@@ -60,7 +61,7 @@ void main ()
 	vec4 _g1;
 	vec3 _g3;
 	VertexOutput_sve_texcoord = GenericVertexLayout_sve_texcoord;
-	VertexOutput_sve_color = GenericVertexLayout_sve_color;
+	VertexOutput_sve_color = (GenericVertexLayout_sve_color * ObjectState.color);
 	_g1 = transformPositionToView(GenericVertexLayout_sve_position);
 	position4 = _g1;
 	_g3 = transformVectorToWorld(GenericVertexLayout_sve_position);

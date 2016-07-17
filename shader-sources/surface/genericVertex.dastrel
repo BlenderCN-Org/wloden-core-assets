@@ -5,7 +5,7 @@ code_block(vertex) main
 {
     using CameraState;
 
-    VertexOutput.color = GenericVertexLayout.color;
+    VertexOutput.color = GenericVertexLayout.color*ObjectState.color;
     VertexOutput.texcoord = GenericVertexLayout.texcoord;
     VertexOutput.tangent = transformNormalToView(GenericVertexLayout.tangent4.xyz);
     VertexOutput.normal = transformNormalToView(GenericVertexLayout.normal);

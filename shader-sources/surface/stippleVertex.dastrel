@@ -6,7 +6,7 @@ code_block(vertex) main
     using CameraState;
 
     VertexOutput.texcoord = GenericVertexLayout.texcoord;
-    VertexOutput.color = GenericVertexLayout.color;
+    VertexOutput.color = GenericVertexLayout.color*ObjectState.color;
     let position4 = transformPositionToView(GenericVertexLayout.position);
     VertexOutput.position =  transformVectorToWorld(GenericVertexLayout.position);
     VertexOutput.screenPosition = projectionMatrix * position4;
