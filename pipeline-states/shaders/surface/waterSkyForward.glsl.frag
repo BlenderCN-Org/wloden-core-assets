@@ -53,11 +53,13 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 2, 0), std140 ) uniform GlobalLightin
 	LightSource lightSources[16];
 } GlobalLightingState;
 
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 0), std140 ) uniform CameraObjectState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 0), std140 ) uniform CameraState_block
 {
 	mat4 inverseViewMatrix;
 	mat4 viewMatrix;
-} CameraObjectState;
+	mat4 projectionMatrix;
+	float currentTime;
+} CameraState;
 
 layout ( SLVM_GL_BINDING_VK_SET_BINDING(7, 3, 3) ) uniform SLVM_TEXTURE(textureCube, samplerCube) skyTexture;
 SLVM_VK_UNIFORM_SAMPLER( ( SLVM_GL_BINDING_VK_SET_BINDING(8, 4, 2) ) ,skySampler)
@@ -164,7 +166,7 @@ void main ()
 	forwardLightingModel(g8, N, V, FragmentInput_sve_position, (FragmentInput_sve_color * MaterialState.albedo), MaterialState.smoothness, MaterialState.fresnel);
 	lightedColor = g8;
 	R = reflect(-V, N);
-	skyPosition = (CameraObjectState.inverseViewMatrix * vec4(R, 0.0)).xyz;
+	skyPosition = (CameraState.inverseViewMatrix * vec4(R, 0.0)).xyz;
 	skyColor = texture(SLVM_COMBINE_SAMPLER_WITH(skySampler, skyTexture, samplerCube), skyPosition);
 	NdotV = max(0.0, min(1.0, dot(N, V)));
 	_g2 = fresnelSchlick(MaterialState.fresnel, NdotV);

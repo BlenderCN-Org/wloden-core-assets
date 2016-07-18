@@ -78,7 +78,7 @@
             "elements" : [
                 {
                     "type" : "uniform-buffer",
-                    "points" : 2
+                    "points" : 1
                 }
             ]
         },

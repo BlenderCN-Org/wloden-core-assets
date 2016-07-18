@@ -31,8 +31,10 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 3, 0), std140 ) uniform MaterialState
 	WaterHarmonic harmonics[5];
 } MaterialState;
 
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 1), std140 ) uniform CameraState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraState_block
 {
+	mat4 inverseViewMatrix;
+	mat4 viewMatrix;
 	mat4 projectionMatrix;
 	float currentTime;
 } CameraState;
@@ -48,24 +50,18 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 0, 0), std140 ) uniform ObjectState_b
 	vec4 color;
 } ObjectState;
 
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(7, 1, 0), std140 ) uniform CameraObjectState_block
-{
-	mat4 inverseViewMatrix;
-	mat4 viewMatrix;
-} CameraObjectState;
-
 layout ( location = 4 ) out vec3 VertexOutput_sve_tangent;
 layout ( location = 5 ) out vec3 VertexOutput_sve_bitangent;
 layout ( location = 3 ) out vec3 VertexOutput_sve_normal;
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
 vec3 transformNormalToView (vec3 arg1)
 {
-	return ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraObjectState.inverseViewMatrix).xyz;
+	return ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraState.inverseViewMatrix).xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraObjectState.viewMatrix * (ObjectState.modelMatrix * arg1));
+	return (CameraState.viewMatrix * (ObjectState.modelMatrix * arg1));
 }
 
 vec4 transformPositionToView (vec3 arg1)

@@ -5,14 +5,11 @@ uniform(set=0, binding=0) ObjectState
     color: float4;
 }
 
-uniform(set=1, binding=0) CameraObjectState
+uniform(set=1, binding=0) CameraState
 {
     inverseViewMatrix: float4x4;
     viewMatrix: float4x4;
-}
 
-uniform(set=1, binding=1) CameraState
-{
     projectionMatrix: float4x4;
     currentTime: float;
 }
@@ -42,7 +39,7 @@ struct LightSource
 
 function transformNormalToView(normal: float3) -> float3
 {
-    using CameraObjectState;
+    using CameraState;
     using ObjectState;
 
     return ((float4(normal, 0.0f) * inverseModelMatrix) * inverseViewMatrix).xyz;
@@ -55,7 +52,7 @@ function transformPositionToView(position: float3) -> float4
 
 function transformVector4ToView(position: float4) -> float4
 {
-    using CameraObjectState;
+    using CameraState;
     using ObjectState;
 
     return viewMatrix * (modelMatrix * position);
@@ -77,7 +74,7 @@ function transformVectorToWorld(position: float3) -> float3
 
 function cameraWorldPosition() -> float3
 {
-    using CameraObjectState;
+    using CameraState;
 
     return inverseViewMatrix[3].xyz;
 }

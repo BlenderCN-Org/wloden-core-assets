@@ -25,11 +25,13 @@ layout ( location = 2 ) out vec4 VertexOutput_sve_color;
 layout ( location = 1 ) in vec2 GenericVertexLayout_sve_texcoord;
 layout ( location = 1 ) out vec2 VertexOutput_sve_texcoord;
 layout ( location = 4 ) in vec4 GenericVertexLayout_sve_tangent4;
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraObjectState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraState_block
 {
 	mat4 inverseViewMatrix;
 	mat4 viewMatrix;
-} CameraObjectState;
+	mat4 projectionMatrix;
+	float currentTime;
+} CameraState;
 
 layout ( location = 4 ) out vec3 VertexOutput_sve_tangent;
 layout ( location = 3 ) in vec3 GenericVertexLayout_sve_normal;
@@ -37,20 +39,14 @@ layout ( location = 3 ) out vec3 VertexOutput_sve_normal;
 layout ( location = 5 ) out vec3 VertexOutput_sve_bitangent;
 layout ( location = 0 ) in vec3 GenericVertexLayout_sve_position;
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 1), std140 ) uniform CameraState_block
-{
-	mat4 projectionMatrix;
-	float currentTime;
-} CameraState;
-
 vec3 transformNormalToView (vec3 arg1)
 {
-	return ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraObjectState.inverseViewMatrix).xyz;
+	return ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraState.inverseViewMatrix).xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraObjectState.viewMatrix * (ObjectState.modelMatrix * arg1));
+	return (CameraState.viewMatrix * (ObjectState.modelMatrix * arg1));
 }
 
 vec4 transformPositionToView (vec3 arg1)

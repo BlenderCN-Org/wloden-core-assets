@@ -21,19 +21,15 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 0), std140 ) uniform ObjectState_b
 	vec4 color;
 } ObjectState;
 
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraObjectState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraState_block
 {
 	mat4 inverseViewMatrix;
 	mat4 viewMatrix;
-} CameraObjectState;
-
-layout ( location = 0 ) out vec3 VertexOutput_sve_position;
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 1), std140 ) uniform CameraState_block
-{
 	mat4 projectionMatrix;
 	float currentTime;
 } CameraState;
 
+layout ( location = 0 ) out vec3 VertexOutput_sve_position;
 vec4 transformPositionToWorld (vec3 arg1)
 {
 	return (ObjectState.modelMatrix * vec4(arg1, 1.0));
@@ -41,12 +37,12 @@ vec4 transformPositionToWorld (vec3 arg1)
 
 vec3 cameraWorldPosition ()
 {
-	return CameraObjectState.inverseViewMatrix[3].xyz;
+	return CameraState.inverseViewMatrix[3].xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraObjectState.viewMatrix * (ObjectState.modelMatrix * arg1));
+	return (CameraState.viewMatrix * (ObjectState.modelMatrix * arg1));
 }
 
 vec4 transformPositionToView (vec3 arg1)

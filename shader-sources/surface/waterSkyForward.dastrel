@@ -15,7 +15,7 @@ code_block(fragment) main
         normal: N viewVector: V position: FragmentInput.position;
 
     let R = reflect(-V, N);
-    let skyPosition = (CameraObjectState.inverseViewMatrix * float4(R, 0.0f)).xyz;
+    let skyPosition = (CameraState.inverseViewMatrix * float4(R, 0.0f)).xyz;
     let skyColor = skySampler.sample(skyTexture, skyPosition);
 
     let NdotV = max(0.0f, min(1.0f, dot(N, V)));
