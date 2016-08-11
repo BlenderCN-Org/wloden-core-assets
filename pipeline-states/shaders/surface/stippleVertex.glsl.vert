@@ -1,5 +1,6 @@
 #version 430
 #extension GL_ARB_separate_shader_objects : enable
+#pragma SLVM
 
 #ifdef VULKAN
 #define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
@@ -48,20 +49,22 @@ vec4 transformPositionToView (vec3 arg1)
 
 vec3 transformVectorToWorld (vec3 arg1)
 {
-	return (ObjectState.modelMatrix * vec4(arg1, 0.0)).xyz;
+	vec4 _g4;
+	_g4 = (ObjectState.modelMatrix * vec4(arg1, 0.0));
+	return _g4.xyz;
 }
 
 void main ()
 {
-	vec4 position4;
+	vec4 _l_position4;
 	vec4 _g1;
 	vec3 _g3;
 	VertexOutput_sve_texcoord = GenericVertexLayout_sve_texcoord;
 	VertexOutput_sve_color = (GenericVertexLayout_sve_color * ObjectState.color);
 	_g1 = transformPositionToView(GenericVertexLayout_sve_position);
-	position4 = _g1;
+	_l_position4 = _g1;
 	_g3 = transformVectorToWorld(GenericVertexLayout_sve_position);
 	VertexOutput_sve_position = _g3;
-	gl_Position = (CameraState.projectionMatrix * position4);
+	gl_Position = (CameraState.projectionMatrix * _l_position4);
 }
 

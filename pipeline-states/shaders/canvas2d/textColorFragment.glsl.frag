@@ -1,5 +1,6 @@
 #version 430
 #extension GL_ARB_separate_shader_objects : enable
+#pragma SLVM
 
 #ifdef VULKAN
 #define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
@@ -20,8 +21,8 @@ layout ( location = 2 ) in vec4 FragmentInput_sve_color;
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
 void main ()
 {
-	float fontAlpha;
-	fontAlpha = texture(SLVM_COMBINE_SAMPLER_WITH(fontSampler, fontTexture, sampler2D), FragmentInput_sve_texcoord).x;
-	FragmentOutput_sve_color = vec4(FragmentInput_sve_color.xyz, (FragmentInput_sve_color.w * fontAlpha));
+	float _l_fontAlpha;
+	_l_fontAlpha = texture(SLVM_COMBINE_SAMPLER_WITH(fontSampler, fontTexture, sampler2D), FragmentInput_sve_texcoord).x;
+	FragmentOutput_sve_color = vec4(FragmentInput_sve_color.xyz, (FragmentInput_sve_color.w * _l_fontAlpha));
 }
 

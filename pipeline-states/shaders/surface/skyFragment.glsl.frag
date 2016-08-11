@@ -1,5 +1,6 @@
 #version 430
 #extension GL_ARB_separate_shader_objects : enable
+#pragma SLVM
 
 #ifdef VULKAN
 #define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
@@ -19,8 +20,8 @@ SLVM_VK_UNIFORM_SAMPLER( ( SLVM_GL_BINDING_VK_SET_BINDING(2, 4, 2) ) ,skySampler
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
 void main ()
 {
-	vec4 skyColor;
-	skyColor = texture(SLVM_COMBINE_SAMPLER_WITH(skySampler, skyTexture, samplerCube), FragmentInput_sve_position);
-	FragmentOutput_sve_color = skyColor;
+	vec4 _l_skyColor;
+	_l_skyColor = texture(SLVM_COMBINE_SAMPLER_WITH(skySampler, skyTexture, samplerCube), FragmentInput_sve_position);
+	FragmentOutput_sve_color = _l_skyColor;
 }
 

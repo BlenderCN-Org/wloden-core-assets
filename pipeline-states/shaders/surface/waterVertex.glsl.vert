@@ -1,5 +1,6 @@
 #version 430
 #extension GL_ARB_separate_shader_objects : enable
+#pragma SLVM
 
 #ifdef VULKAN
 #define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
@@ -56,7 +57,9 @@ layout ( location = 3 ) out vec3 VertexOutput_sve_normal;
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
 vec3 transformNormalToView (vec3 arg1)
 {
-	return ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraState.inverseViewMatrix).xyz;
+	vec4 _g3;
+	_g3 = ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraState.inverseViewMatrix);
+	return _g3.xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
@@ -66,69 +69,71 @@ vec4 transformVector4ToView (vec4 arg1)
 
 vec4 transformPositionToView (vec3 arg1)
 {
-	vec4 _g5;
-	_g5 = transformVector4ToView(vec4(arg1, 1.0));
-	return _g5;
+	vec4 _g7;
+	_g7 = transformVector4ToView(vec4(arg1, 1.0));
+	return _g7;
 }
 
 void main ()
 {
-	float height;
-	vec3 position;
-	vec2 tangentialContributions;
-	int i;
-	WaterHarmonic harmonic;
-	float distance;
-	vec2 distanceDerivatives;
-	float omega;
-	float kappa;
-	float phase;
-	vec3 tangent;
-	vec3 bitangent;
-	vec3 normal;
-	vec4 position4;
-	vec3 _g1;
+	float _l_height;
+	vec3 _l_position;
+	vec2 _l_tangentialContributions;
+	int _l_i;
+	WaterHarmonic _l_harmonic;
+	float _l_distance;
+	vec2 _l_distanceDerivatives;
+	float _l_omega;
+	float _l_kappa;
+	float _l_phase;
+	vec3 _l_tangent;
+	vec3 _l_bitangent;
+	vec3 _l_normal;
+	vec4 _l_position4;
+	float _g1;
 	vec3 _g2;
-	vec3 _g3;
-	vec4 _g4;
-	height = 0.0;
-	position = GenericVertexLayout_sve_position;
-	tangentialContributions = vec2(0.0, 0.0);
-	i = 0;
-	for (;(i < 5); i = (i + 1))
+	vec3 _g4;
+	vec3 _g5;
+	vec4 _g6;
+	_l_height = 0.0;
+	_l_position = GenericVertexLayout_sve_position;
+	_l_tangentialContributions = vec2(0.0, 0.0);
+	_l_i = 0;
+	for (;(_l_i < 5); _l_i = (_l_i + 1))
 	{
-		harmonic = MaterialState.harmonics[i];
-		if ((harmonic.isRadial == 1))
+		_l_harmonic = MaterialState.harmonics[_l_i];
+		if ((_l_harmonic.isRadial == 1))
 		{
-			distance = length((position.xz - harmonic.centerOrDirection));
-			distanceDerivatives = ((position.xz - harmonic.centerOrDirection) / vec2(distance, distance));
+			_l_distance = length((_l_position.xz - _l_harmonic.centerOrDirection));
+			_l_distanceDerivatives = ((_l_position.xz - _l_harmonic.centerOrDirection) / vec2(_l_distance, _l_distance));
 		}
 		else
 		{
-			distance = dot(position.xz, harmonic.centerOrDirection);
-			distanceDerivatives = harmonic.centerOrDirection;
+			_l_distance = dot(_l_position.xz, _l_harmonic.centerOrDirection);
+			_l_distanceDerivatives = _l_harmonic.centerOrDirection;
 		}
-		omega = (6.283185307179586 * harmonic.frequency);
-		kappa = (omega / MaterialState.propagationSpeed);
-		phase = ((kappa * distance) + (omega * CameraState.currentTime));
-		height = (height + (harmonic.amplitude * sin(phase)));
-		tangentialContributions = (tangentialContributions + (vec2(((harmonic.amplitude * kappa) * cos(phase)), ((harmonic.amplitude * kappa) * cos(phase))) * distanceDerivatives));
+		_l_omega = (6.283185307179586 * _l_harmonic.frequency);
+		_l_kappa = (_l_omega / MaterialState.propagationSpeed);
+		_l_phase = ((_l_kappa * _l_distance) + (_l_omega * CameraState.currentTime));
+		_l_height = (_l_height + (_l_harmonic.amplitude * sin(_l_phase)));
+		_g1 = ((_l_harmonic.amplitude * _l_kappa) * cos(_l_phase));
+		_l_tangentialContributions = (_l_tangentialContributions + (vec2(_g1, _g1) * _l_distanceDerivatives));
 	}
-	position = (position + vec3(0.0, height, 0.0));
-	tangent = normalize(vec3(1.0, tangentialContributions.x, 0.0));
-	bitangent = normalize(vec3(0.0, tangentialContributions.y, 1.0));
-	normal = normalize(cross(bitangent, tangent));
+	_l_position = (_l_position + vec3(0.0, _l_height, 0.0));
+	_l_tangent = normalize(vec3(1.0, _l_tangentialContributions.x, 0.0));
+	_l_bitangent = normalize(vec3(0.0, _l_tangentialContributions.y, 1.0));
+	_l_normal = normalize(cross(_l_bitangent, _l_tangent));
 	VertexOutput_sve_color = GenericVertexLayout_sve_color;
 	VertexOutput_sve_texcoord = GenericVertexLayout_sve_texcoord;
-	_g1 = transformNormalToView(tangent);
-	VertexOutput_sve_tangent = _g1;
-	_g2 = transformNormalToView(bitangent);
-	VertexOutput_sve_bitangent = _g2;
-	_g3 = transformNormalToView(normal);
-	VertexOutput_sve_normal = _g3;
-	_g4 = transformPositionToView(position);
-	position4 = _g4;
-	VertexOutput_sve_position = position4.xyz;
-	gl_Position = (CameraState.projectionMatrix * position4);
+	_g2 = transformNormalToView(_l_tangent);
+	VertexOutput_sve_tangent = _g2;
+	_g4 = transformNormalToView(_l_bitangent);
+	VertexOutput_sve_bitangent = _g4;
+	_g5 = transformNormalToView(_l_normal);
+	VertexOutput_sve_normal = _g5;
+	_g6 = transformPositionToView(_l_position);
+	_l_position4 = _g6;
+	VertexOutput_sve_position = _l_position4.xyz;
+	gl_Position = (CameraState.projectionMatrix * _l_position4);
 }
 

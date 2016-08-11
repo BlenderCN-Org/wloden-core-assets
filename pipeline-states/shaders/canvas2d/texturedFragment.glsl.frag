@@ -1,5 +1,6 @@
 #version 430
 #extension GL_ARB_separate_shader_objects : enable
+#pragma SLVM
 
 #ifdef VULKAN
 #define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b

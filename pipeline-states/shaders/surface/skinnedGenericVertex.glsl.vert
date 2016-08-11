@@ -1,5 +1,6 @@
 #version 430
 #extension GL_ARB_separate_shader_objects : enable
+#pragma SLVM
 
 #ifdef VULKAN
 #define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
@@ -48,31 +49,65 @@ layout ( location = 0 ) in vec3 SkinnedGenericVertexLayout_sve_position;
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
 vec3 skinVector (vec3 arg1)
 {
-	vec4 vector4;
-	vec3 result;
-	vector4 = vec4(arg1, 0.0);
-	result = ((PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.x] * vector4).xyz * vec3(SkinnedGenericVertexLayout_sve_boneWeights.x, SkinnedGenericVertexLayout_sve_boneWeights.x, SkinnedGenericVertexLayout_sve_boneWeights.x));
-	result = (result + ((PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.y] * vector4).xyz * vec3(SkinnedGenericVertexLayout_sve_boneWeights.y, SkinnedGenericVertexLayout_sve_boneWeights.y, SkinnedGenericVertexLayout_sve_boneWeights.y)));
-	result = (result + ((PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.z] * vector4).xyz * vec3(SkinnedGenericVertexLayout_sve_boneWeights.z, SkinnedGenericVertexLayout_sve_boneWeights.z, SkinnedGenericVertexLayout_sve_boneWeights.z)));
-	result = (result + ((PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.w] * vector4).xyz * vec3(SkinnedGenericVertexLayout_sve_boneWeights.w, SkinnedGenericVertexLayout_sve_boneWeights.w, SkinnedGenericVertexLayout_sve_boneWeights.w)));
-	return result;
+	vec4 _l_vector4;
+	vec3 _l_result;
+	vec4 _g2;
+	float _g3;
+	vec4 _g4;
+	float _g5;
+	vec4 _g6;
+	float _g7;
+	vec4 _g8;
+	float _g9;
+	_l_vector4 = vec4(arg1, 0.0);
+	_g2 = (PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.x] * _l_vector4);
+	_g3 = SkinnedGenericVertexLayout_sve_boneWeights.x;
+	_l_result = (_g2.xyz * vec3(_g3, _g3, _g3));
+	_g4 = (PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.y] * _l_vector4);
+	_g5 = SkinnedGenericVertexLayout_sve_boneWeights.y;
+	_l_result = (_l_result + (_g4.xyz * vec3(_g5, _g5, _g5)));
+	_g6 = (PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.z] * _l_vector4);
+	_g7 = SkinnedGenericVertexLayout_sve_boneWeights.z;
+	_l_result = (_l_result + (_g6.xyz * vec3(_g7, _g7, _g7)));
+	_g8 = (PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.w] * _l_vector4);
+	_g9 = SkinnedGenericVertexLayout_sve_boneWeights.w;
+	_l_result = (_l_result + (_g8.xyz * vec3(_g9, _g9, _g9)));
+	return _l_result;
 }
 
 vec3 transformNormalToView (vec3 arg1)
 {
-	return ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraState.inverseViewMatrix).xyz;
+	vec4 _g11;
+	_g11 = ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraState.inverseViewMatrix);
+	return _g11.xyz;
 }
 
 vec3 skinPosition (vec3 arg1)
 {
-	vec4 position4;
-	vec3 result;
-	position4 = vec4(arg1, 1.0);
-	result = ((PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.x] * position4).xyz * vec3(SkinnedGenericVertexLayout_sve_boneWeights.x, SkinnedGenericVertexLayout_sve_boneWeights.x, SkinnedGenericVertexLayout_sve_boneWeights.x));
-	result = (result + ((PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.y] * position4).xyz * vec3(SkinnedGenericVertexLayout_sve_boneWeights.y, SkinnedGenericVertexLayout_sve_boneWeights.y, SkinnedGenericVertexLayout_sve_boneWeights.y)));
-	result = (result + ((PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.z] * position4).xyz * vec3(SkinnedGenericVertexLayout_sve_boneWeights.z, SkinnedGenericVertexLayout_sve_boneWeights.z, SkinnedGenericVertexLayout_sve_boneWeights.z)));
-	result = (result + ((PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.w] * position4).xyz * vec3(SkinnedGenericVertexLayout_sve_boneWeights.w, SkinnedGenericVertexLayout_sve_boneWeights.w, SkinnedGenericVertexLayout_sve_boneWeights.w)));
-	return result;
+	vec4 _l_position4;
+	vec3 _l_result;
+	vec4 _g16;
+	float _g17;
+	vec4 _g18;
+	float _g19;
+	vec4 _g20;
+	float _g21;
+	vec4 _g22;
+	float _g23;
+	_l_position4 = vec4(arg1, 1.0);
+	_g16 = (PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.x] * _l_position4);
+	_g17 = SkinnedGenericVertexLayout_sve_boneWeights.x;
+	_l_result = (_g16.xyz * vec3(_g17, _g17, _g17));
+	_g18 = (PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.y] * _l_position4);
+	_g19 = SkinnedGenericVertexLayout_sve_boneWeights.y;
+	_l_result = (_l_result + (_g18.xyz * vec3(_g19, _g19, _g19)));
+	_g20 = (PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.z] * _l_position4);
+	_g21 = SkinnedGenericVertexLayout_sve_boneWeights.z;
+	_l_result = (_l_result + (_g20.xyz * vec3(_g21, _g21, _g21)));
+	_g22 = (PoseState.matrices[SkinnedGenericVertexLayout_sve_boneIndices.w] * _l_position4);
+	_g23 = SkinnedGenericVertexLayout_sve_boneWeights.w;
+	_l_result = (_l_result + (_g22.xyz * vec3(_g23, _g23, _g23)));
+	return _l_result;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
@@ -82,33 +117,35 @@ vec4 transformVector4ToView (vec4 arg1)
 
 vec4 transformPositionToView (vec3 arg1)
 {
-	vec4 _g7;
-	_g7 = transformVector4ToView(vec4(arg1, 1.0));
-	return _g7;
+	vec4 _g25;
+	_g25 = transformVector4ToView(vec4(arg1, 1.0));
+	return _g25;
 }
 
 void main ()
 {
-	vec4 position4;
+	vec4 _l_position4;
 	vec3 _g1;
-	vec3 _g2;
-	vec3 _g3;
-	vec3 _g4;
-	vec3 _g5;
-	vec4 _g6;
+	vec3 _g10;
+	vec3 _g12;
+	vec3 _g13;
+	float _g14;
+	vec3 _g15;
+	vec4 _g24;
 	VertexOutput_sve_color = SkinnedGenericVertexLayout_sve_color;
 	VertexOutput_sve_texcoord = SkinnedGenericVertexLayout_sve_texcoord;
 	_g1 = skinVector(SkinnedGenericVertexLayout_sve_tangent4.xyz);
-	_g2 = transformNormalToView(_g1);
-	VertexOutput_sve_tangent = _g2;
-	_g3 = skinVector(SkinnedGenericVertexLayout_sve_normal);
-	_g4 = transformNormalToView(_g3);
-	VertexOutput_sve_normal = _g4;
-	VertexOutput_sve_bitangent = (cross(VertexOutput_sve_normal, VertexOutput_sve_tangent) * vec3(SkinnedGenericVertexLayout_sve_tangent4.w, SkinnedGenericVertexLayout_sve_tangent4.w, SkinnedGenericVertexLayout_sve_tangent4.w));
-	_g5 = skinPosition(SkinnedGenericVertexLayout_sve_position);
-	_g6 = transformPositionToView(_g5);
-	position4 = _g6;
-	VertexOutput_sve_position = position4.xyz;
-	gl_Position = (CameraState.projectionMatrix * position4);
+	_g10 = transformNormalToView(_g1);
+	VertexOutput_sve_tangent = _g10;
+	_g12 = skinVector(SkinnedGenericVertexLayout_sve_normal);
+	_g13 = transformNormalToView(_g12);
+	VertexOutput_sve_normal = _g13;
+	_g14 = SkinnedGenericVertexLayout_sve_tangent4.w;
+	VertexOutput_sve_bitangent = (cross(VertexOutput_sve_normal, VertexOutput_sve_tangent) * vec3(_g14, _g14, _g14));
+	_g15 = skinPosition(SkinnedGenericVertexLayout_sve_position);
+	_g24 = transformPositionToView(_g15);
+	_l_position4 = _g24;
+	VertexOutput_sve_position = _l_position4.xyz;
+	gl_Position = (CameraState.projectionMatrix * _l_position4);
 }
 

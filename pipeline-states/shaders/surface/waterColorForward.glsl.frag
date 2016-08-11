@@ -1,5 +1,6 @@
 #version 430
 #extension GL_ARB_separate_shader_objects : enable
+#pragma SLVM
 
 #ifdef VULKAN
 #define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
@@ -56,82 +57,84 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 2, 0), std140 ) uniform GlobalLightin
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
 vec3 fresnelSchlick (vec3 arg1, float arg2)
 {
-	float powFactor;
-	float powFactor2;
-	float powFactor4;
-	float powValue;
-	powFactor = (1.0 - arg2);
-	powFactor2 = (powFactor * powFactor);
-	powFactor4 = (powFactor2 * powFactor2);
-	powValue = (powFactor4 * powFactor);
-	return (arg1 + ((vec3(1.0, 1.0, 1.0) - arg1) * vec3(powValue, powValue, powValue)));
+	float _l_powFactor;
+	float _l_powFactor2;
+	float _l_powFactor4;
+	float _l_powValue;
+	_l_powFactor = (1.0 - arg2);
+	_l_powFactor2 = (_l_powFactor * _l_powFactor);
+	_l_powFactor4 = (_l_powFactor2 * _l_powFactor2);
+	_l_powValue = (_l_powFactor4 * _l_powFactor);
+	return (arg1 + ((vec3(1.0, 1.0, 1.0) - arg1) * vec3(_l_powValue, _l_powValue, _l_powValue)));
 }
 
 void forwardLightingModel (inout vec4 color, vec3 normal, vec3 viewVector, vec3 position, vec4 albedo, float smoothness, vec3 fresnel)
 {
-	vec3 albedoColor;
-	float specularPower;
-	float specularNormalization;
-	vec3 accumulatedColor;
-	float hemiFactor;
-	int i;
-	LightSource lightSource;
-	vec3 L;
-	float dist;
-	float NdotL;
-	float spotCos;
-	float spotAttenuation;
-	float attenuationDistance;
-	float attDen;
-	float attenuation;
-	vec3 H;
-	vec3 F;
-	float NdotH;
-	float D;
-	vec3 _g1;
-	albedoColor = albedo.xyz;
-	specularPower = exp2((10.0 * smoothness));
-	specularNormalization = ((specularPower + 2.0) * 0.125);
-	accumulatedColor = vec3(0.0, 0.0, 0.0);
-	hemiFactor = ((dot(normal, GlobalLightingState.sunDirection) * 0.5) + 0.5);
-	accumulatedColor = (accumulatedColor + (albedoColor * mix(GlobalLightingState.groundLighting.xyz, GlobalLightingState.skyLighting.xyz, vec3(hemiFactor, hemiFactor, hemiFactor))));
-	i = 0;
-	for (;(i < GlobalLightingState.numberOfLights); i = (i + 1))
+	vec3 _l_albedoColor;
+	float _l_specularPower;
+	float _l_specularNormalization;
+	vec3 _l_accumulatedColor;
+	float _l_hemiFactor;
+	int _l_i;
+	LightSource _l_lightSource;
+	vec3 _l_L;
+	float _l_dist;
+	float _l_NdotL;
+	float _l_spotCos;
+	float _l_spotAttenuation;
+	float _l_attenuationDistance;
+	float _l_attDen;
+	float _l_attenuation;
+	vec3 _l_H;
+	vec3 _l_F;
+	float _l_NdotH;
+	float _l_D;
+	float _g1;
+	vec3 _g2;
+	_l_albedoColor = albedo.xyz;
+	_l_specularPower = exp2((10.0 * smoothness));
+	_l_specularNormalization = ((_l_specularPower + 2.0) * 0.125);
+	_l_accumulatedColor = vec3(0.0, 0.0, 0.0);
+	_l_hemiFactor = ((dot(normal, GlobalLightingState.sunDirection) * 0.5) + 0.5);
+	_l_accumulatedColor = (_l_accumulatedColor + (_l_albedoColor * mix(GlobalLightingState.groundLighting.xyz, GlobalLightingState.skyLighting.xyz, vec3(_l_hemiFactor, _l_hemiFactor, _l_hemiFactor))));
+	_l_i = 0;
+	for (;(_l_i < GlobalLightingState.numberOfLights); _l_i = (_l_i + 1))
 	{
-		lightSource = GlobalLightingState.lightSources[i];
-		L = (GlobalLightingState.lightSources[i].position.xyz - (position * vec3(lightSource.position.w, lightSource.position.w, lightSource.position.w)));
-		dist = length(L);
-		L = (L / vec3(dist, dist, dist));
-		NdotL = max(dot(normal, L), 0.0);
-		if ((NdotL == 0.0))
+		_l_lightSource = GlobalLightingState.lightSources[_l_i];
+		_g1 = _l_lightSource.position.w;
+		_l_L = (GlobalLightingState.lightSources[_l_i].position.xyz - (position * vec3(_g1, _g1, _g1)));
+		_l_dist = length(_l_L);
+		_l_L = (_l_L / vec3(_l_dist, _l_dist, _l_dist));
+		_l_NdotL = max(dot(normal, _l_L), 0.0);
+		if ((_l_NdotL == 0.0))
 			continue;
-		spotCos = 1.0;
-		if ((lightSource.outerCosCutoff > -1.0))
-			spotCos = dot(L, lightSource.spotDirection);
-		if ((spotCos < lightSource.outerCosCutoff))
+		_l_spotCos = 1.0;
+		if ((_l_lightSource.outerCosCutoff > -1.0))
+			_l_spotCos = dot(_l_L, _l_lightSource.spotDirection);
+		if ((_l_spotCos < _l_lightSource.outerCosCutoff))
 			continue;
-		spotAttenuation = (smoothstep(lightSource.outerCosCutoff, lightSource.innerCosCutoff, spotCos) * pow(spotCos, lightSource.spotExponent));
-		attenuationDistance = max(0.0, (dist - lightSource.radius));
-		attDen = (1.0 + (attenuationDistance / lightSource.radius));
-		attenuation = (spotAttenuation / (attDen * attDen));
-		H = normalize((L + viewVector));
-		_g1 = fresnelSchlick(fresnel, dot(H, L));
-		F = _g1;
-		NdotH = dot(normal, H);
-		D = (pow(NdotH, specularPower) * specularNormalization);
-		accumulatedColor = (accumulatedColor + (((lightSource.intensity.xyz * vec3(attenuation, attenuation, attenuation)) * (albedoColor + (F * vec3(D, D, D)))) * vec3(NdotL, NdotL, NdotL)));
+		_l_spotAttenuation = (smoothstep(_l_lightSource.outerCosCutoff, _l_lightSource.innerCosCutoff, _l_spotCos) * pow(_l_spotCos, _l_lightSource.spotExponent));
+		_l_attenuationDistance = max(0.0, (_l_dist - _l_lightSource.radius));
+		_l_attDen = (1.0 + (_l_attenuationDistance / _l_lightSource.radius));
+		_l_attenuation = (_l_spotAttenuation / (_l_attDen * _l_attDen));
+		_l_H = normalize((_l_L + viewVector));
+		_g2 = fresnelSchlick(fresnel, dot(_l_H, _l_L));
+		_l_F = _g2;
+		_l_NdotH = dot(normal, _l_H);
+		_l_D = (pow(_l_NdotH, _l_specularPower) * _l_specularNormalization);
+		_l_accumulatedColor = (_l_accumulatedColor + (((_l_lightSource.intensity.xyz * vec3(_l_attenuation, _l_attenuation, _l_attenuation)) * (_l_albedoColor + (_l_F * vec3(_l_D, _l_D, _l_D)))) * vec3(_l_NdotL, _l_NdotL, _l_NdotL)));
 	}
-	color = vec4(accumulatedColor, albedo.w);
+	color = vec4(_l_accumulatedColor, albedo.w);
 }
 
 void main ()
 {
-	vec3 N;
-	vec3 V;
-	vec4 g8;
-	N = normalize(FragmentInput_sve_normal);
-	V = normalize(-FragmentInput_sve_position);
-	forwardLightingModel(g8, N, V, FragmentInput_sve_position, (FragmentInput_sve_color * MaterialState.albedo), MaterialState.smoothness, MaterialState.fresnel);
-	FragmentOutput_sve_color = g8;
+	vec3 _l_N;
+	vec3 _l_V;
+	vec4 _l_g8;
+	_l_N = normalize(FragmentInput_sve_normal);
+	_l_V = normalize(-FragmentInput_sve_position);
+	forwardLightingModel(_l_g8, _l_N, _l_V, FragmentInput_sve_position, (FragmentInput_sve_color * MaterialState.albedo), MaterialState.smoothness, MaterialState.fresnel);
+	FragmentOutput_sve_color = _l_g8;
 }
 

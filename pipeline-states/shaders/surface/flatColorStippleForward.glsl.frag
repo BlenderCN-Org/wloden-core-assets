@@ -1,5 +1,6 @@
 #version 430
 #extension GL_ARB_separate_shader_objects : enable
+#pragma SLVM
 
 #ifdef VULKAN
 #define SLVM_GL_BINDING_VK_SET_BINDING(glb, s, b) set = s, binding = b
@@ -18,20 +19,20 @@ layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
 layout ( location = 2 ) in vec4 FragmentInput_sve_color;
 vec3 stippleFunction (vec3 arg1)
 {
-	return ((fsign(cos((arg1 * vec3(62.83185307179586, 62.83185307179586, 62.83185307179586)))) * vec3(0.5, 0.5, 0.5)) + vec3(0.5, 0.5, 0.5));
+	return ((sign(cos((arg1 * vec3(62.83185307179586, 62.83185307179586, 62.83185307179586)))) * vec3(0.5, 0.5, 0.5)) + vec3(0.5, 0.5, 0.5));
 }
 
 void main ()
 {
-	float stippleFactor;
-	vec3 stipples;
-	float alpha;
+	float _l_stippleFactor;
+	vec3 _l_stipples;
+	float _l_alpha;
 	vec3 _g1;
-	stippleFactor = 10.0;
-	_g1 = stippleFunction((FragmentInput_sve_position * vec3(stippleFactor, stippleFactor, stippleFactor)));
-	stipples = _g1;
-	alpha = ((stipples.x * stipples.y) * stipples.z);
-	FragmentOutput_sve_color = vec4(stipples, 1.0);
-	FragmentOutput_sve_color = vec4(FragmentInput_sve_color.xyz, (FragmentInput_sve_color.w * alpha));
+	_l_stippleFactor = 10.0;
+	_g1 = stippleFunction((FragmentInput_sve_position * vec3(_l_stippleFactor, _l_stippleFactor, _l_stippleFactor)));
+	_l_stipples = _g1;
+	_l_alpha = ((_l_stipples.x * _l_stipples.y) * _l_stipples.z);
+	FragmentOutput_sve_color = vec4(_l_stipples, 1.0);
+	FragmentOutput_sve_color = vec4(FragmentInput_sve_color.xyz, (FragmentInput_sve_color.w * _l_alpha));
 }
 
