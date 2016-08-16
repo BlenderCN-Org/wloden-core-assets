@@ -14,26 +14,36 @@
 #define SLVM_TEXTURE(vulkanType, openglType) openglType
 #endif
 
+struct ObjectStateData
+{
+	mat4 matrix;
+	mat4 inverseMatrix;
+	vec4 color;
+};
+
 layout ( location = 2 ) in vec4 SkinnedGenericVertexLayout_sve_color;
 layout ( location = 2 ) out vec4 VertexOutput_sve_color;
 layout ( location = 1 ) in vec2 SkinnedGenericVertexLayout_sve_texcoord;
 layout ( location = 1 ) out vec2 VertexOutput_sve_texcoord;
 layout ( location = 4 ) in vec4 SkinnedGenericVertexLayout_sve_tangent4;
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 1), std430 ) buffer PoseState_bufferBlock
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 2), std430 ) buffer PoseState_bufferBlock
 {
 	mat4 matrices[];
 } PoseState;
 
 layout ( location = 6 ) in ivec4 SkinnedGenericVertexLayout_sve_boneIndices;
 layout ( location = 5 ) in vec4 SkinnedGenericVertexLayout_sve_boneWeights;
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 0, 0), std140 ) uniform ObjectState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 0, 1), std430 ) buffer InstanceObjectState_bufferBlock
 {
-	mat4 modelMatrix;
-	mat4 inverseModelMatrix;
-	vec4 color;
+	ObjectStateData instanceStates[];
+} InstanceObjectState;
+
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 0, 0), std140 ) uniform ObjectState_block
+{
+	ObjectStateData objectState;
 } ObjectState;
 
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 0), std140 ) uniform CameraState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(7, 1, 0), std140 ) uniform CameraState_block
 {
 	mat4 inverseViewMatrix;
 	mat4 viewMatrix;
@@ -78,7 +88,7 @@ vec3 skinVector (vec3 arg1)
 vec3 transformNormalToView (vec3 arg1)
 {
 	vec4 _g11;
-	_g11 = ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraState.inverseViewMatrix);
+	_g11 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceID].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
 	return _g11.xyz;
 }
 
@@ -112,7 +122,7 @@ vec3 skinPosition (vec3 arg1)
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraState.viewMatrix * (ObjectState.modelMatrix * arg1));
+	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * arg1)));
 }
 
 vec4 transformPositionToView (vec3 arg1)

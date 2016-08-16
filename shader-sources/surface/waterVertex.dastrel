@@ -1,4 +1,5 @@
 import environment;
+import vertexEnvironment;
 import vertex;
 import waterMaterial;
 
@@ -55,5 +56,5 @@ code_block(vertex) main
     let position4 = transformPositionToView(position);
 
     VertexOutput.position =  position4.xyz;
-    VertexOutput.screenPosition = projectionMatrix * position4;
+    VertexStage.screenPosition = projectionMatrix * position4;
 }

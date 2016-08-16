@@ -1,16 +1,17 @@
 import environment;
+import vertexEnvironment;
 import vertex;
 
 code_block(vertex) main
 {
     using CameraState;
 
-    VertexOutput.color = GenericVertexLayout.color*ObjectState.color;
+    VertexOutput.color = GenericVertexLayout.color*currentObjectColor();
     VertexOutput.texcoord = GenericVertexLayout.texcoord;
     VertexOutput.tangent = transformNormalToView(GenericVertexLayout.tangent4.xyz);
     VertexOutput.normal = transformNormalToView(GenericVertexLayout.normal);
     VertexOutput.bitangent = cross(VertexOutput.normal, VertexOutput.tangent) * GenericVertexLayout.tangent4.w;
     let position4 = transformPositionToView(GenericVertexLayout.position);
     VertexOutput.position =  position4.xyz;
-    VertexOutput.screenPosition = projectionMatrix * position4;
+    VertexStage.screenPosition = projectionMatrix * position4;
 }

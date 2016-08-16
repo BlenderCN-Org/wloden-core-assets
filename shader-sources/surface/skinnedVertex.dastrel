@@ -1,4 +1,5 @@
 import environment;
+import vertexEnvironment;
 
 semantic SkinnedGenericVertexLayout {
     in(0) position: float3;
@@ -11,7 +12,6 @@ semantic SkinnedGenericVertexLayout {
 }
 
 semantic VertexOutput {
-    out(-1) screenPosition: float4;
     out(0) position: float3;
     out(1) texcoord: float2;
     out(2) color: float4;
@@ -20,7 +20,7 @@ semantic VertexOutput {
     out(5) bitangent: float3;
 }
 
-buffer(set=0, binding=1) PoseState
+buffer(set=0, binding=2) PoseState
 {
     matrices: float4x4[];
 }

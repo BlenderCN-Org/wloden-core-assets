@@ -68,6 +68,10 @@
                 {
                     "type" : "storage-buffer",
                     "points" : 1
+                },
+                {
+                    "type" : "storage-buffer",
+                    "points" : 1
                 }
             ]
         },

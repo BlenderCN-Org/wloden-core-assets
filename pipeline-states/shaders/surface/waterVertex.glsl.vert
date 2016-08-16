@@ -22,6 +22,13 @@ struct WaterHarmonic
 	int isRadial;
 };
 
+struct ObjectStateData
+{
+	mat4 matrix;
+	mat4 inverseMatrix;
+	vec4 color;
+};
+
 layout ( location = 0 ) in vec3 GenericVertexLayout_sve_position;
 layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 3, 0), std140 ) uniform MaterialState_block
 {
@@ -44,11 +51,14 @@ layout ( location = 2 ) in vec4 GenericVertexLayout_sve_color;
 layout ( location = 2 ) out vec4 VertexOutput_sve_color;
 layout ( location = 1 ) in vec2 GenericVertexLayout_sve_texcoord;
 layout ( location = 1 ) out vec2 VertexOutput_sve_texcoord;
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 0, 0), std140 ) uniform ObjectState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 0, 1), std430 ) buffer InstanceObjectState_bufferBlock
 {
-	mat4 modelMatrix;
-	mat4 inverseModelMatrix;
-	vec4 color;
+	ObjectStateData instanceStates[];
+} InstanceObjectState;
+
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(7, 0, 0), std140 ) uniform ObjectState_block
+{
+	ObjectStateData objectState;
 } ObjectState;
 
 layout ( location = 4 ) out vec3 VertexOutput_sve_tangent;
@@ -58,13 +68,13 @@ layout ( location = 0 ) out vec3 VertexOutput_sve_position;
 vec3 transformNormalToView (vec3 arg1)
 {
 	vec4 _g3;
-	_g3 = ((vec4(arg1, 0.0) * ObjectState.inverseModelMatrix) * CameraState.inverseViewMatrix);
+	_g3 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceID].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
 	return _g3.xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraState.viewMatrix * (ObjectState.modelMatrix * arg1));
+	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * arg1)));
 }
 
 vec4 transformPositionToView (vec3 arg1)

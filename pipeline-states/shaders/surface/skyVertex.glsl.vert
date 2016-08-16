@@ -14,15 +14,25 @@
 #define SLVM_TEXTURE(vulkanType, openglType) openglType
 #endif
 
+struct ObjectStateData
+{
+	mat4 matrix;
+	mat4 inverseMatrix;
+	vec4 color;
+};
+
 layout ( location = 0 ) in vec3 GenericVertexLayout_sve_position;
 layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 0), std140 ) uniform ObjectState_block
 {
-	mat4 modelMatrix;
-	mat4 inverseModelMatrix;
-	vec4 color;
+	ObjectStateData objectState;
 } ObjectState;
 
-layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraState_block
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 0, 1), std430 ) buffer InstanceObjectState_bufferBlock
+{
+	ObjectStateData instanceStates[];
+} InstanceObjectState;
+
+layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 0), std140 ) uniform CameraState_block
 {
 	mat4 inverseViewMatrix;
 	mat4 viewMatrix;
@@ -33,7 +43,7 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 1, 0), std140 ) uniform CameraState_b
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
 vec4 transformPositionToWorld (vec3 arg1)
 {
-	return (ObjectState.modelMatrix * vec4(arg1, 1.0));
+	return (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * vec4(arg1, 1.0)));
 }
 
 vec3 cameraWorldPosition ()
@@ -43,7 +53,7 @@ vec3 cameraWorldPosition ()
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraState.viewMatrix * (ObjectState.modelMatrix * arg1));
+	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * arg1)));
 }
 
 vec4 transformPositionToView (vec3 arg1)

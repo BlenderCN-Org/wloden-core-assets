@@ -1,5 +1,6 @@
 import environment;
 import skinnedVertex;
+import vertexEnvironment;
 
 code_block(vertex) main
 {
@@ -12,5 +13,5 @@ code_block(vertex) main
     VertexOutput.bitangent = cross(VertexOutput.normal, VertexOutput.tangent) * SkinnedGenericVertexLayout.tangent4.w;
     let position4 = transformPositionToView(skinPosition(SkinnedGenericVertexLayout.position));
     VertexOutput.position =  position4.xyz;
-    VertexOutput.screenPosition = projectionMatrix * position4;
+    VertexStage.screenPosition = projectionMatrix * position4;
 }

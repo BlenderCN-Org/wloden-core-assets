@@ -1,4 +1,5 @@
 import environment;
+import vertexEnvironment;
 import vertex;
 
 code_block(vertex) main
@@ -6,8 +7,8 @@ code_block(vertex) main
     using CameraState;
 
     VertexOutput.texcoord = GenericVertexLayout.texcoord;
-    VertexOutput.color = GenericVertexLayout.color*ObjectState.color;
+    VertexOutput.color = GenericVertexLayout.color*currentObjectColor();
     let position4 = transformPositionToView(GenericVertexLayout.position);
     VertexOutput.position =  transformVectorToWorld(GenericVertexLayout.position);
-    VertexOutput.screenPosition = projectionMatrix * position4;
+    VertexStage.screenPosition = projectionMatrix * position4;
 }
