@@ -220,7 +220,15 @@
             "inherit-from" : "polygon.common",
             "primitive-type" : "triangles",
             "shader" : "Canvas2D.TextColor",
-            "primitive-type" : "triangles"
+            "primitive-type" : "triangles",
+
+            "blend-state" : [{
+                "render-target-mask" : -1,
+                "enabled" : true,
+                "source-factor" : "source-alpha",
+                "dest-factor" : "inverted-source-alpha",
+                "operation" : "add"
+            }]
         },
 
         "textsdf.color" : {
