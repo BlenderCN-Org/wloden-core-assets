@@ -1,5 +1,6 @@
 {
     "type" : "FlatColor",
 
-    "write-depth" : false
+    "write-depth" : false,
+    "thumbnail-type" : "no-editor"
 }

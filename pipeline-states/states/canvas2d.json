@@ -171,6 +171,36 @@
                 "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
         },
 
+        "polygon.convex.textured" : {
+            "abstract" : true,
+            "inherit-from" : "polygon.common",
+            "shader" : "Canvas2D.Textured"
+        },
+
+        "polygon.convex.textured.points" : {
+            "abstract" : true,
+            "inherit-from" : "polygon.convex.textured",
+            "primitive-type" : "points",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
+        },
+
+        "polygon.convex.textured.lines" : {
+            "abstract" : true,
+            "inherit-from" : "polygon.convex.textured",
+            "primitive-type" : "lines",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
+        },
+
+        "polygon.convex.textured.triangles" : {
+            "abstract" : true,
+            "inherit-from" : "polygon.convex.textured",
+            "primitive-type" : "triangles",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
+        },
+
         "polygon.cover.color" : {
             "inherit-from" : "polygon.cover",
             "shader" : "Canvas2D.Color",
@@ -182,6 +212,14 @@
         "polygon.cover.gradient" : {
             "inherit-from" : "polygon.cover",
             "shader" : "Canvas2D.Gradient",
+            "primitive-type" : "triangles",
+            "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
+                "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]
+        },
+
+        "polygon.cover.textured" : {
+            "inherit-from" : "polygon.cover",
+            "shader" : "Canvas2D.Textured",
             "primitive-type" : "triangles",
             "mixin-variants" : ["blend.add", "blend.clear", "blend.dest",
                 "blend.dest-over", "blend.multiply", "blend.over", "blend.source"]

@@ -3,5 +3,6 @@
 
     "stipple" : true,
 
-    "use-depth" : false
+    "use-depth" : false,
+    "thumbnail-type" : "no-editor"
 }
