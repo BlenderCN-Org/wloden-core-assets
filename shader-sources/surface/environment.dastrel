@@ -3,6 +3,7 @@ struct ObjectStateData
     matrix: float4x4;
     inverseMatrix: float4x4;
     color: float4;
+    visible: int;
 }
 
 uniform(set=0, binding=0) ObjectState
@@ -53,8 +54,6 @@ function cameraWorldPosition() -> float3
 
     return inverseViewMatrix[3].xyz;
 }
-
-
 
 function fresnelSchlick(F0: float3, cosTheta: float) -> float3
 {

@@ -19,6 +19,7 @@ struct ObjectStateData
 	mat4 matrix;
 	mat4 inverseMatrix;
 	vec4 color;
+	int visible;
 };
 
 layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 0), std140 ) uniform ObjectState_block
@@ -50,6 +51,15 @@ layout ( location = 3 ) out vec3 VertexOutput_sve_normal;
 layout ( location = 5 ) out vec3 VertexOutput_sve_bitangent;
 layout ( location = 0 ) in vec3 GenericVertexLayout_sve_position;
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
+bool isCurrentObjectInvisible ()
+{
+	bool _l_lorResult;
+	_l_lorResult = true;
+	if (!((ObjectState.objectState.visible == 0)))
+		_l_lorResult = (InstanceObjectState.instanceStates[gl_InstanceID].visible == 0);
+	return _l_lorResult;
+}
+
 vec4 currentObjectColor ()
 {
 	return (ObjectState.objectState.color * InstanceObjectState.instanceStates[gl_InstanceID].color);
@@ -57,9 +67,9 @@ vec4 currentObjectColor ()
 
 vec3 transformNormalToView (vec3 arg1)
 {
-	vec4 _g3;
-	_g3 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceID].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
-	return _g3.xyz;
+	vec4 _g4;
+	_g4 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceID].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
+	return _g4.xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
@@ -69,30 +79,37 @@ vec4 transformVector4ToView (vec4 arg1)
 
 vec4 transformPositionToView (vec3 arg1)
 {
-	vec4 _g7;
-	_g7 = transformVector4ToView(vec4(arg1, 1.0));
-	return _g7;
+	vec4 _g8;
+	_g8 = transformVector4ToView(vec4(arg1, 1.0));
+	return _g8;
 }
 
 void main ()
 {
 	vec4 _l_position4;
-	vec4 _g1;
-	vec3 _g2;
-	vec3 _g4;
-	float _g5;
-	vec4 _g6;
-	_g1 = currentObjectColor();
-	VertexOutput_sve_color = (GenericVertexLayout_sve_color * _g1);
+	bool _g1;
+	vec4 _g2;
+	vec3 _g3;
+	vec3 _g5;
+	float _g6;
+	vec4 _g7;
+	_g1 = isCurrentObjectInvisible();
+	if (_g1)
+	{
+		gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+		return;
+	}
+	_g2 = currentObjectColor();
+	VertexOutput_sve_color = (GenericVertexLayout_sve_color * _g2);
 	VertexOutput_sve_texcoord = GenericVertexLayout_sve_texcoord;
-	_g2 = transformNormalToView(GenericVertexLayout_sve_tangent4.xyz);
-	VertexOutput_sve_tangent = _g2;
-	_g4 = transformNormalToView(GenericVertexLayout_sve_normal);
-	VertexOutput_sve_normal = _g4;
-	_g5 = GenericVertexLayout_sve_tangent4.w;
-	VertexOutput_sve_bitangent = (cross(VertexOutput_sve_normal, VertexOutput_sve_tangent) * vec3(_g5, _g5, _g5));
-	_g6 = transformPositionToView(GenericVertexLayout_sve_position);
-	_l_position4 = _g6;
+	_g3 = transformNormalToView(GenericVertexLayout_sve_tangent4.xyz);
+	VertexOutput_sve_tangent = _g3;
+	_g5 = transformNormalToView(GenericVertexLayout_sve_normal);
+	VertexOutput_sve_normal = _g5;
+	_g6 = GenericVertexLayout_sve_tangent4.w;
+	VertexOutput_sve_bitangent = (cross(VertexOutput_sve_normal, VertexOutput_sve_tangent) * vec3(_g6, _g6, _g6));
+	_g7 = transformPositionToView(GenericVertexLayout_sve_position);
+	_l_position4 = _g7;
 	VertexOutput_sve_position = _l_position4.xyz;
 	gl_Position = (CameraState.projectionMatrix * _l_position4);
 }

@@ -6,6 +6,12 @@ code_block(vertex) main
 {
     using CameraState;
 
+    if(isCurrentObjectInvisible())
+    {
+        VertexStage.screenPosition = float4(2.0f, 2.0f, 2.0f, 1.0f);
+        return;
+    }
+
     VertexOutput.color = GenericVertexLayout.color*currentObjectColor();
     VertexOutput.texcoord = GenericVertexLayout.texcoord;
     VertexOutput.tangent = transformNormalToView(GenericVertexLayout.tangent4.xyz);

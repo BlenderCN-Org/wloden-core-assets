@@ -56,6 +56,15 @@ function currentObjectColor() -> float4
     using ObjectState;
     using InstanceObjectState;
     using VertexStage;
-    
+
     return objectState.color * instanceStates[instanceID].color;
+}
+
+function isCurrentObjectInvisible() -> bool
+{
+    using ObjectState;
+    using InstanceObjectState;
+    using VertexStage;
+
+    return (objectState.visible == 0) ||  (instanceStates[instanceID].visible == 0);
 }

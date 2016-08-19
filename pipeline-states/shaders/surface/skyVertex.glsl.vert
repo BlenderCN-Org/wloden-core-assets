@@ -19,6 +19,7 @@ struct ObjectStateData
 	mat4 matrix;
 	mat4 inverseMatrix;
 	vec4 color;
+	int visible;
 };
 
 layout ( location = 0 ) in vec3 GenericVertexLayout_sve_position;

@@ -19,6 +19,7 @@ struct ObjectStateData
 	mat4 matrix;
 	mat4 inverseMatrix;
 	vec4 color;
+	int visible;
 };
 
 layout ( location = 2 ) in vec4 SkinnedGenericVertexLayout_sve_color;
