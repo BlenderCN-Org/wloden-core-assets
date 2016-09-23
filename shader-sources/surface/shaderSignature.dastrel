@@ -1,0 +1,26 @@
+shader_signature ForwardRenderer
+{
+    descriptor_set(max_bindings = 1000000) ObjectState
+    {
+        ObjectState : uniform;
+        InstanceObjectState: buffer;
+        ExtraObjectState: buffer;
+    }
+
+    descriptor_set(max_bindings = 100) LightingState
+    {
+        GlobalLightingState: uniform;
+    }
+
+    descriptor_set(max_bindings = 10000) MaterialState
+    {
+        Attributes: uniform;
+        BigAttributes: buffer;
+        Textures: texture * 5;
+    }
+
+    descriptor_set(max_bindings = 10) Samplers
+    {
+        Samplers: sampler * 5;
+    }
+}
