@@ -64,7 +64,7 @@ struct _SLVM_ShaderStageOutput
 metal::float3 cameraWorldPosition (device const CameraState_block* CameraState);
 metal::float3 fresnelSchlick (metal::float3 arg1, float arg2);
 float fresnelSchlick (float arg1, float arg2);
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texturecube<float> skyTexture [[texture(0)]], metal::sampler skySampler [[sampler(2)]]);
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::sampler skySampler [[sampler(2)]], metal::texturecube<float> skyTexture [[texture(0)]]);
 metal::float3 cameraWorldPosition (device const CameraState_block* CameraState)
 {
 	return CameraState->inverseViewMatrix[3].xyz;
@@ -96,12 +96,12 @@ float fresnelSchlick (float arg1, float arg2)
 	return (arg1 + ((1.0 - arg1) * _l_powValue));
 }
 
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texturecube<float> skyTexture [[texture(0)]], metal::sampler skySampler [[sampler(2)]])
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::sampler skySampler [[sampler(2)]], metal::texturecube<float> skyTexture [[texture(0)]])
 {
 	metal::float4 _l_skyColor;
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float3* FragmentInput_sve_position = &_slvm_stagein.location0;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
+	thread metal::float3* FragmentInput_sve_position = &_slvm_stagein.location0;
 	_l_skyColor = skyTexture.sample(skySampler, (*FragmentInput_sve_position));
 	(*FragmentOutput_sve_color) = _l_skyColor;
 	return _slvm_stageout;

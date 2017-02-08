@@ -1,5 +1,12 @@
 #include <metal_stdlib>
 
+struct MaterialState_block
+{
+	metal::float4 albedo;
+	metal::float3 fresnel;
+	float smoothness;
+};
+
 struct ObjectStateData
 {
 	metal::float4x4 matrix;
@@ -46,13 +53,6 @@ struct InstanceObjectState_bufferBlock
 	ObjectStateData instanceStates[1];
 };
 
-struct MaterialState_block
-{
-	metal::float4 albedo;
-	metal::float3 fresnel;
-	float smoothness;
-};
-
 struct _SLVM_ShaderStageInput
 {
 	metal::float3 location0[[user(L0)]];
@@ -72,7 +72,7 @@ metal::float3 cameraWorldPosition (device const CameraState_block* CameraState);
 metal::float3 fresnelSchlick (metal::float3 arg1, float arg2);
 float fresnelSchlick (float arg1, float arg2);
 void forwardLightingModel (thread metal::float4* color, metal::float3 normal, metal::float3 viewVector, metal::float3 position, metal::float4 albedo, float smoothness, metal::float3 fresnel, device const GlobalLightingState_block* GlobalLightingState);
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const MaterialState_block* MaterialState [[buffer(5)]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]]);
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]], device const MaterialState_block* MaterialState [[buffer(5)]]);
 metal::float3 cameraWorldPosition (device const CameraState_block* CameraState)
 {
 	return CameraState->inverseViewMatrix[3].xyz;
@@ -163,16 +163,16 @@ void forwardLightingModel (thread metal::float4* color, metal::float3 normal, me
 	(*color) = metal::float4(_l_accumulatedColor, albedo.w);
 }
 
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const MaterialState_block* MaterialState [[buffer(5)]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]])
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]], device const MaterialState_block* MaterialState [[buffer(5)]])
 {
 	metal::float3 _l_N;
 	metal::float3 _l_V;
 	metal::float4 _l_g8;
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
-	thread metal::float3* FragmentInput_sve_position = &_slvm_stagein.location0;
 	thread metal::float3* FragmentInput_sve_normal = &_slvm_stagein.location3;
+	thread metal::float3* FragmentInput_sve_position = &_slvm_stagein.location0;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
+	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	_l_N = metal::normalize((*FragmentInput_sve_normal));
 	_l_V = metal::normalize(-(*FragmentInput_sve_position));
 	forwardLightingModel(&_l_g8, _l_N, _l_V, (*FragmentInput_sve_position), ((*FragmentInput_sve_color) * MaterialState->albedo), MaterialState->smoothness, MaterialState->fresnel, GlobalLightingState);

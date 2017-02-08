@@ -35,9 +35,9 @@ struct _SLVM_ShaderStageOutput
 	metal::float4 location0[[color(0)]];
 };
 
-metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps);
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::sampler fontSampler [[sampler(1)]], metal::texture2d<float> fontTexture [[texture(1)]]);
-metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps)
+metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp);
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texture2d<float> fontTexture [[texture(1)]], metal::sampler fontSampler [[sampler(1)]]);
+metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp)
 {
 	int _l_a;
 	int _l_b;
@@ -80,7 +80,7 @@ metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_blo
 	return metal::mix(ColorRamps->entries[_l_entryIndex].color, ColorRamps->entries[(_l_entryIndex + 1)].color, metal::float4(_l_mixFactor, _l_mixFactor, _l_mixFactor, _l_mixFactor));
 }
 
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::sampler fontSampler [[sampler(1)]], metal::texture2d<float> fontTexture [[texture(1)]])
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texture2d<float> fontTexture [[texture(1)]], metal::sampler fontSampler [[sampler(1)]])
 {
 	float _l_fontAlpha;
 	_SLVM_ShaderStageOutput _slvm_stageout;

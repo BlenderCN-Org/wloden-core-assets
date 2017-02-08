@@ -38,9 +38,9 @@ struct _SLVM_ShaderStageOutput
 	metal::float4 location2[[user(L2)]];
 };
 
-metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps);
-vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const CanvasViewport_block* CanvasViewport [[buffer(0)]]);
-metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps)
+metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp);
+vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const CanvasViewport_block* CanvasViewport [[buffer(1)]]);
+metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp)
 {
 	int _l_a;
 	int _l_b;
@@ -83,16 +83,16 @@ metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_blo
 	return metal::mix(ColorRamps->entries[_l_entryIndex].color, ColorRamps->entries[(_l_entryIndex + 1)].color, metal::float4(_l_mixFactor, _l_mixFactor, _l_mixFactor, _l_mixFactor));
 }
 
-vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const CanvasViewport_block* CanvasViewport [[buffer(0)]])
+vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const CanvasViewport_block* CanvasViewport [[buffer(1)]])
 {
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float4* VertexOutput_sve_screenPosition = &_slvm_stageout.position;
-	thread metal::float4* VertexInput_sve_color = &_slvm_stagein.location2;
 	thread metal::float2* VertexInput_sve_position = &_slvm_stagein.location0;
 	thread metal::float2* VertexOutput_sve_texcoord = &_slvm_stageout.location1;
-	thread metal::float4* VertexOutput_sve_position = &_slvm_stageout.location0;
 	thread metal::float4* VertexOutput_sve_color = &_slvm_stageout.location2;
+	thread metal::float4* VertexOutput_sve_screenPosition = &_slvm_stageout.position;
+	thread metal::float4* VertexInput_sve_color = &_slvm_stagein.location2;
 	thread metal::float2* VertexInput_sve_texcoord = &_slvm_stagein.location1;
+	thread metal::float4* VertexOutput_sve_position = &_slvm_stageout.location0;
 	(*VertexOutput_sve_color) = (*VertexInput_sve_color);
 	(*VertexOutput_sve_texcoord) = (*VertexInput_sve_texcoord);
 	(*VertexOutput_sve_position) = (CanvasViewport->viewMatrix * metal::float4((*VertexInput_sve_position), 0.0, 1.0));
