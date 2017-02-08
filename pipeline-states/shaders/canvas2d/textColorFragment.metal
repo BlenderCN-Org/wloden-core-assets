@@ -25,9 +25,9 @@ struct ColorRamps_bufferBlock
 
 struct _SLVM_ShaderStageInput
 {
-	metal::float4 location0;
-	metal::float2 location1;
-	metal::float4 location2;
+	metal::float4 location0[[user(L0)]];
+	metal::float2 location1[[user(L1)]];
+	metal::float4 location2[[user(L2)]];
 };
 
 struct _SLVM_ShaderStageOutput
@@ -85,8 +85,8 @@ fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagei
 	float _l_fontAlpha;
 	_SLVM_ShaderStageOutput _slvm_stageout;
 	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
-	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
 	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
+	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
 	_l_fontAlpha = fontTexture.sample(fontSampler, (*FragmentInput_sve_texcoord)).x;
 	(*FragmentOutput_sve_color) = metal::float4((*FragmentInput_sve_color).xyz, ((*FragmentInput_sve_color).w * _l_fontAlpha));
 	return _slvm_stageout;

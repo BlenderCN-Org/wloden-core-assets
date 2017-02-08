@@ -48,12 +48,12 @@ struct InstanceObjectState_bufferBlock
 
 struct _SLVM_ShaderStageInput
 {
-	metal::float3 location0;
-	metal::float2 location1;
-	metal::float4 location2;
-	metal::float3 location3;
-	metal::float3 location4;
-	metal::float3 location5;
+	metal::float3 location0[[user(L0)]];
+	metal::float2 location1[[user(L1)]];
+	metal::float4 location2[[user(L2)]];
+	metal::float3 location3[[user(L3)]];
+	metal::float3 location4[[user(L4)]];
+	metal::float3 location5[[user(L5)]];
 };
 
 struct _SLVM_ShaderStageOutput

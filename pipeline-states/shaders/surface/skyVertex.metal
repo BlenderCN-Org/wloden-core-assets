@@ -58,25 +58,25 @@ struct _SLVM_ShaderStageInput
 struct _SLVM_ShaderStageOutput
 {
 	metal::float4 position[[position]];
-	metal::float3 location0;
-	metal::float2 location1;
-	metal::float4 location2;
-	metal::float3 location3;
-	metal::float3 location4;
-	metal::float3 location5;
+	metal::float3 location0[[user(L0)]];
+	metal::float2 location1[[user(L1)]];
+	metal::float4 location2[[user(L2)]];
+	metal::float3 location3[[user(L3)]];
+	metal::float3 location4[[user(L4)]];
+	metal::float3 location5[[user(L5)]];
 };
 
 metal::float3 cameraWorldPosition (device const CameraState_block* CameraState);
 metal::float3 fresnelSchlick (metal::float3 arg1, float arg2);
 float fresnelSchlick (float arg1, float arg2);
-metal::float3 transformNormalToView (metal::float3 arg1, device const ObjectState_block* ObjectState, device const CameraState_block* CameraState, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID);
-metal::float4 transformVector4ToView (metal::float4 arg1, device const InstanceObjectState_bufferBlock* InstanceObjectState, device const ObjectState_block* ObjectState, unsigned int VertexStage_sve_instanceID, device const CameraState_block* CameraState);
-metal::float4 transformPositionToView (metal::float3 arg1, device const CameraState_block* CameraState, device const ObjectState_block* ObjectState, unsigned int VertexStage_sve_instanceID, device const InstanceObjectState_bufferBlock* InstanceObjectState);
-metal::float4 transformPositionToWorld (metal::float3 arg1, device const ObjectState_block* ObjectState, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID);
-metal::float3 transformVectorToWorld (metal::float3 arg1, unsigned int VertexStage_sve_instanceID, device const ObjectState_block* ObjectState, device const InstanceObjectState_bufferBlock* InstanceObjectState);
-metal::float4 currentObjectColor (device const ObjectState_block* ObjectState, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID);
-bool isCurrentObjectInvisible (device const ObjectState_block* ObjectState, unsigned int VertexStage_sve_instanceID, device const InstanceObjectState_bufferBlock* InstanceObjectState);
-vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const CameraState_block* CameraState [[buffer(3)]], unsigned int VertexStage_sve_instanceID [[instance_id]], device const InstanceObjectState_bufferBlock* InstanceObjectState [[buffer(1)]], device const ObjectState_block* ObjectState [[buffer(0)]]);
+metal::float3 transformNormalToView (metal::float3 arg1, unsigned int VertexStage_sve_instanceID, device const InstanceObjectState_bufferBlock* InstanceObjectState, device const ObjectState_block* ObjectState, device const CameraState_block* CameraState);
+metal::float4 transformVector4ToView (metal::float4 arg1, unsigned int VertexStage_sve_instanceID, device const ObjectState_block* ObjectState, device const CameraState_block* CameraState, device const InstanceObjectState_bufferBlock* InstanceObjectState);
+metal::float4 transformPositionToView (metal::float3 arg1, device const CameraState_block* CameraState, device const InstanceObjectState_bufferBlock* InstanceObjectState, device const ObjectState_block* ObjectState, unsigned int VertexStage_sve_instanceID);
+metal::float4 transformPositionToWorld (metal::float3 arg1, unsigned int VertexStage_sve_instanceID, device const InstanceObjectState_bufferBlock* InstanceObjectState, device const ObjectState_block* ObjectState);
+metal::float3 transformVectorToWorld (metal::float3 arg1, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID, device const ObjectState_block* ObjectState);
+metal::float4 currentObjectColor (device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID, device const ObjectState_block* ObjectState);
+bool isCurrentObjectInvisible (device const ObjectState_block* ObjectState, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID);
+vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const ObjectState_block* ObjectState [[buffer(0)]], device const CameraState_block* CameraState [[buffer(3)]], device const InstanceObjectState_bufferBlock* InstanceObjectState [[buffer(1)]], unsigned int VertexStage_sve_instanceID [[instance_id]]);
 metal::float3 cameraWorldPosition (device const CameraState_block* CameraState)
 {
 	return CameraState->inverseViewMatrix[3].xyz;
@@ -108,43 +108,43 @@ float fresnelSchlick (float arg1, float arg2)
 	return (arg1 + ((1.0 - arg1) * _l_powValue));
 }
 
-metal::float3 transformNormalToView (metal::float3 arg1, device const ObjectState_block* ObjectState, device const CameraState_block* CameraState, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID)
+metal::float3 transformNormalToView (metal::float3 arg1, unsigned int VertexStage_sve_instanceID, device const InstanceObjectState_bufferBlock* InstanceObjectState, device const ObjectState_block* ObjectState, device const CameraState_block* CameraState)
 {
 	metal::float4 _g1;
 	_g1 = (((metal::float4(arg1, 0.0) * InstanceObjectState->instanceStates[VertexStage_sve_instanceID].inverseMatrix) * ObjectState->objectState.inverseMatrix) * CameraState->inverseViewMatrix);
 	return _g1.xyz;
 }
 
-metal::float4 transformVector4ToView (metal::float4 arg1, device const InstanceObjectState_bufferBlock* InstanceObjectState, device const ObjectState_block* ObjectState, unsigned int VertexStage_sve_instanceID, device const CameraState_block* CameraState)
+metal::float4 transformVector4ToView (metal::float4 arg1, unsigned int VertexStage_sve_instanceID, device const ObjectState_block* ObjectState, device const CameraState_block* CameraState, device const InstanceObjectState_bufferBlock* InstanceObjectState)
 {
 	return (CameraState->viewMatrix * (ObjectState->objectState.matrix * (InstanceObjectState->instanceStates[VertexStage_sve_instanceID].matrix * arg1)));
 }
 
-metal::float4 transformPositionToView (metal::float3 arg1, device const CameraState_block* CameraState, device const ObjectState_block* ObjectState, unsigned int VertexStage_sve_instanceID, device const InstanceObjectState_bufferBlock* InstanceObjectState)
+metal::float4 transformPositionToView (metal::float3 arg1, device const CameraState_block* CameraState, device const InstanceObjectState_bufferBlock* InstanceObjectState, device const ObjectState_block* ObjectState, unsigned int VertexStage_sve_instanceID)
 {
 	metal::float4 _g2;
-	_g2 = transformVector4ToView(metal::float4(arg1, 1.0), InstanceObjectState, ObjectState, VertexStage_sve_instanceID, CameraState);
+	_g2 = transformVector4ToView(metal::float4(arg1, 1.0), VertexStage_sve_instanceID, ObjectState, CameraState, InstanceObjectState);
 	return _g2;
 }
 
-metal::float4 transformPositionToWorld (metal::float3 arg1, device const ObjectState_block* ObjectState, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID)
+metal::float4 transformPositionToWorld (metal::float3 arg1, unsigned int VertexStage_sve_instanceID, device const InstanceObjectState_bufferBlock* InstanceObjectState, device const ObjectState_block* ObjectState)
 {
 	return (ObjectState->objectState.matrix * (InstanceObjectState->instanceStates[VertexStage_sve_instanceID].matrix * metal::float4(arg1, 1.0)));
 }
 
-metal::float3 transformVectorToWorld (metal::float3 arg1, unsigned int VertexStage_sve_instanceID, device const ObjectState_block* ObjectState, device const InstanceObjectState_bufferBlock* InstanceObjectState)
+metal::float3 transformVectorToWorld (metal::float3 arg1, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID, device const ObjectState_block* ObjectState)
 {
 	metal::float4 _g3;
 	_g3 = (ObjectState->objectState.matrix * (InstanceObjectState->instanceStates[VertexStage_sve_instanceID].matrix * metal::float4(arg1, 0.0)));
 	return _g3.xyz;
 }
 
-metal::float4 currentObjectColor (device const ObjectState_block* ObjectState, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID)
+metal::float4 currentObjectColor (device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID, device const ObjectState_block* ObjectState)
 {
 	return (ObjectState->objectState.color * InstanceObjectState->instanceStates[VertexStage_sve_instanceID].color);
 }
 
-bool isCurrentObjectInvisible (device const ObjectState_block* ObjectState, unsigned int VertexStage_sve_instanceID, device const InstanceObjectState_bufferBlock* InstanceObjectState)
+bool isCurrentObjectInvisible (device const ObjectState_block* ObjectState, device const InstanceObjectState_bufferBlock* InstanceObjectState, unsigned int VertexStage_sve_instanceID)
 {
 	bool _l_lorResult;
 	_l_lorResult = true;
@@ -153,19 +153,19 @@ bool isCurrentObjectInvisible (device const ObjectState_block* ObjectState, unsi
 	return _l_lorResult;
 }
 
-vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const CameraState_block* CameraState [[buffer(3)]], unsigned int VertexStage_sve_instanceID [[instance_id]], device const InstanceObjectState_bufferBlock* InstanceObjectState [[buffer(1)]], device const ObjectState_block* ObjectState [[buffer(0)]])
+vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const ObjectState_block* ObjectState [[buffer(0)]], device const CameraState_block* CameraState [[buffer(3)]], device const InstanceObjectState_bufferBlock* InstanceObjectState [[buffer(1)]], unsigned int VertexStage_sve_instanceID [[instance_id]])
 {
 	metal::float4 _g4;
 	metal::float3 _g5;
 	metal::float4 _g6;
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float3* GenericVertexLayout_sve_position = &_slvm_stagein.location0;
 	thread metal::float3* VertexOutput_sve_position = &_slvm_stageout.location0;
+	thread metal::float3* GenericVertexLayout_sve_position = &_slvm_stagein.location0;
 	thread metal::float4* VertexStage_sve_screenPosition = &_slvm_stageout.position;
-	_g4 = transformPositionToWorld((*GenericVertexLayout_sve_position), ObjectState, InstanceObjectState, VertexStage_sve_instanceID);
+	_g4 = transformPositionToWorld((*GenericVertexLayout_sve_position), VertexStage_sve_instanceID, InstanceObjectState, ObjectState);
 	_g5 = cameraWorldPosition(CameraState);
 	(*VertexOutput_sve_position) = (_g4.xyz - _g5);
-	_g6 = transformPositionToView((*GenericVertexLayout_sve_position), CameraState, ObjectState, VertexStage_sve_instanceID, InstanceObjectState);
+	_g6 = transformPositionToView((*GenericVertexLayout_sve_position), CameraState, InstanceObjectState, ObjectState, VertexStage_sve_instanceID);
 	(*VertexStage_sve_screenPosition) = (CameraState->projectionMatrix * _g6);
 	return _slvm_stageout;
 }

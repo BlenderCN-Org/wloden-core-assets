@@ -25,9 +25,9 @@ struct ColorRamps_bufferBlock
 
 struct _SLVM_ShaderStageInput
 {
-	metal::float4 location0;
-	metal::float2 location1;
-	metal::float4 location2;
+	metal::float4 location0[[user(L0)]];
+	metal::float2 location1[[user(L1)]];
+	metal::float4 location2[[user(L2)]];
 };
 
 struct _SLVM_ShaderStageOutput
@@ -35,9 +35,9 @@ struct _SLVM_ShaderStageOutput
 	metal::float4 location0[[color(0)]];
 };
 
-metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp);
+metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps);
 fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]]);
-metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp)
+metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps)
 {
 	int _l_a;
 	int _l_b;

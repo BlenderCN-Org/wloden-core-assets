@@ -25,9 +25,9 @@ struct ColorRamps_bufferBlock
 
 struct _SLVM_ShaderStageInput
 {
-	metal::float4 location0;
-	metal::float2 location1;
-	metal::float4 location2;
+	metal::float4 location0[[user(L0)]];
+	metal::float2 location1[[user(L1)]];
+	metal::float4 location2[[user(L2)]];
 };
 
 struct _SLVM_ShaderStageOutput
@@ -35,9 +35,9 @@ struct _SLVM_ShaderStageOutput
 	metal::float4 location0[[color(0)]];
 };
 
-metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp);
+metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps);
 fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texture2d<float> fontTexture [[texture(1)]], metal::sampler fontSampler [[sampler(1)]]);
-metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp)
+metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps)
 {
 	int _l_a;
 	int _l_b;
@@ -85,9 +85,9 @@ fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagei
 	float _l_fontSample;
 	float _l_fontAlpha;
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
-	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
+	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
+	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
 	_l_fontSample = fontTexture.sample(fontSampler, (*FragmentInput_sve_texcoord)).x;
 	_l_fontAlpha = metal::smoothstep(-0.08, 0.04, _l_fontSample);
 	(*FragmentOutput_sve_color) = metal::float4((*FragmentInput_sve_color).xyz, ((*FragmentInput_sve_color).w * _l_fontAlpha));
