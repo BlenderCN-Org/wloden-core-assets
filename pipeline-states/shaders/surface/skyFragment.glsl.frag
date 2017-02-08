@@ -18,6 +18,7 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 3, 2) ) uniform SLVM_TEXTURE(textureC
 layout ( location = 0 ) in vec3 FragmentInput_sve_position;
 SLVM_VK_UNIFORM_SAMPLER( ( SLVM_GL_BINDING_VK_SET_BINDING(2, 4, 2) ) ,skySampler)
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
+void main ();
 void main ()
 {
 	vec4 _l_skyColor;

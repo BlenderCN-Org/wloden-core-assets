@@ -3,61 +3,73 @@
 		"PolygonStencil" : {
 			"fragment" : {
 				"spir-v" : "stencilFragment.spv",
-				"glsl" : "stencilFragment.glsl.frag"
+				"glsl" : "stencilFragment.glsl.frag",
+				"metal" : "stencilFragment.metal"
 			},
 			"vertex" : {
 				"spir-v" : "genericVertex.spv",
-				"glsl" : "genericVertex.glsl.vert"
+				"glsl" : "genericVertex.glsl.vert",
+				"metal" : "genericVertex.metal"
 			}
 		},
 		"Color" : {
 			"fragment" : {
 				"spir-v" : "colorFragment.spv",
-				"glsl" : "colorFragment.glsl.frag"
+				"glsl" : "colorFragment.glsl.frag",
+				"metal" : "colorFragment.metal"
 			},
 			"vertex" : {
 				"spir-v" : "genericVertex.spv",
-				"glsl" : "genericVertex.glsl.vert"
+				"glsl" : "genericVertex.glsl.vert",
+				"metal" : "genericVertex.metal"
 			}
 		},
 		"Gradient" : {
 			"fragment" : {
 				"spir-v" : "gradientFragment.spv",
-				"glsl" : "gradientFragment.glsl.frag"
+				"glsl" : "gradientFragment.glsl.frag",
+				"metal" : "gradientFragment.metal"
 			},
 			"vertex" : {
 				"spir-v" : "genericVertex.spv",
-				"glsl" : "genericVertex.glsl.vert"
+				"glsl" : "genericVertex.glsl.vert",
+				"metal" : "genericVertex.metal"
 			}
 		},
 		"Textured" : {
 			"fragment" : {
 				"spir-v" : "texturedFragment.spv",
-				"glsl" : "texturedFragment.glsl.frag"
+				"glsl" : "texturedFragment.glsl.frag",
+				"metal" : "texturedFragment.metal"
 			},
 			"vertex" : {
 				"spir-v" : "genericVertex.spv",
-				"glsl" : "genericVertex.glsl.vert"
+				"glsl" : "genericVertex.glsl.vert",
+				"metal" : "genericVertex.metal"
 			}
 		},
 		"TextColor" : {
 			"fragment" : {
 				"spir-v" : "textColorFragment.spv",
-				"glsl" : "textColorFragment.glsl.frag"
+				"glsl" : "textColorFragment.glsl.frag",
+				"metal" : "textColorFragment.metal"
 			},
 			"vertex" : {
 				"spir-v" : "genericVertex.spv",
-				"glsl" : "genericVertex.glsl.vert"
+				"glsl" : "genericVertex.glsl.vert",
+				"metal" : "genericVertex.metal"
 			}
 		},
 		"TextSdfColor" : {
 			"fragment" : {
 				"spir-v" : "textSdfColorFragment.spv",
-				"glsl" : "textSdfColorFragment.glsl.frag"
+				"glsl" : "textSdfColorFragment.glsl.frag",
+				"metal" : "textSdfColorFragment.metal"
 			},
 			"vertex" : {
 				"spir-v" : "genericVertex.spv",
-				"glsl" : "genericVertex.glsl.vert"
+				"glsl" : "genericVertex.glsl.vert",
+				"metal" : "genericVertex.metal"
 			}
 		}
 	}

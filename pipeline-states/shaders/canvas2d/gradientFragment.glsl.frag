@@ -30,6 +30,8 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 1), std430 ) buffer ColorRamps_buf
 } ColorRamps;
 
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
+vec4 evaluateColorRamp (float arg1);
+void main ();
 vec4 evaluateColorRamp (float arg1)
 {
 	int _l_a;
@@ -42,7 +44,7 @@ vec4 evaluateColorRamp (float arg1)
 	float _l_mixFactor;
 	bool _l_landResult;
 	bool _l_lorResult;
-	if ((CurrentColorRamp.colorRampSize == 0))
+	if (CurrentColorRamp.colorRampSize == 0)
 		return vec4(1.0, 1.0, 1.0, 1.0);
 	_l_a = 0;
 	_l_b = CurrentColorRamp.colorRampSize;
@@ -50,7 +52,7 @@ vec4 evaluateColorRamp (float arg1)
 	while ((_l_a < _l_b))
 	{
 		_l_m = ((_l_a + _l_b) / 2);
-		if ((ColorRamps.entries[(CurrentColorRamp.colorRampIndex + _l_m)].edge <= arg1))
+		if (ColorRamps.entries[(CurrentColorRamp.colorRampIndex + _l_m)].edge <= arg1)
 		{
 			_l_lastResult = _l_m;
 			_l_a = (_l_m + 1);
@@ -61,7 +63,7 @@ vec4 evaluateColorRamp (float arg1)
 	_l_entryIndex = (CurrentColorRamp.colorRampIndex + _l_lastResult);
 	_l_prevEdge = ColorRamps.entries[_l_entryIndex].edge;
 	_l_landResult = false;
-	if ((_l_lastResult == 0))
+	if (_l_lastResult == 0)
 		_l_landResult = (arg1 <= _l_prevEdge);
 	_l_lorResult = true;
 	if (!(_l_landResult))
@@ -89,7 +91,7 @@ void main ()
 	float _l_r2;
 	vec4 _g2;
 	_l_point = FragmentInput_sve_position.xy;
-	if ((FragmentInput_sve_texcoord.x == 0.0))
+	if (FragmentInput_sve_texcoord.x == 0.0)
 	{
 		_l_start = FragmentInput_sve_color.xy;
 		_l_end = FragmentInput_sve_color.zw;

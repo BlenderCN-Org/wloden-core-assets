@@ -17,6 +17,8 @@
 layout ( location = 0 ) in vec3 FragmentInput_sve_position;
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
 layout ( location = 2 ) in vec4 FragmentInput_sve_color;
+vec3 stippleFunction (vec3 arg1);
+void main ();
 vec3 stippleFunction (vec3 arg1)
 {
 	return ((sign(cos((arg1 * vec3(62.83185307179586, 62.83185307179586, 62.83185307179586)))) * vec3(0.5, 0.5, 0.5)) + vec3(0.5, 0.5, 0.5));

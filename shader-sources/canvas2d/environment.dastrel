@@ -1,6 +1,6 @@
 import shaderSignature;
 
-uniform(set=0, binding=0) CanvasViewport
+uniform(binding=CanvasViewport.Viewport) CanvasViewport
 {
     projectionMatrix: float4x4;
     viewMatrix: float4x4;
@@ -12,12 +12,12 @@ struct ColorRampEntry
     color: float4;
 }
 
-buffer(set=0, binding=1) ColorRamps
+buffer(binding=CanvasViewport.ColorRamps) ColorRamps
 {
     entries: ColorRampEntry[];
 }
 
-uniform(push_constant) CurrentColorRamp
+uniform(push_constant=CurrentGradient) CurrentColorRamp
 {
     colorRampIndex: int;
     colorRampSize: int;

@@ -5,7 +5,7 @@ semantic VertexStage
     out(-1) screenPosition: float4;
 
     in(-6) vertexID: int;
-    in(-7) instanceID: int;
+    in(-7) instanceID: uint;
 }
 
 function transformNormalToView(normal: float3) -> float3

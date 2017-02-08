@@ -19,6 +19,7 @@ layout ( location = 1 ) in vec2 FragmentInput_sve_texcoord;
 SLVM_VK_UNIFORM_SAMPLER( ( SLVM_GL_BINDING_VK_SET_BINDING(2, 3, 1) ) ,fontSampler)
 layout ( location = 2 ) in vec4 FragmentInput_sve_color;
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
+void main ();
 void main ()
 {
 	float _l_fontSample;

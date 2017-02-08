@@ -1,8 +1,8 @@
 import environment;
 import fragment;
 
-uniform(set = 3, binding = 2) skyTexture : textureCube;
-uniform(set = 4, binding = 2) skySampler : sampler;
+uniform(binding = MaterialState.Textures) skyTexture : textureCube;
+uniform(binding = Samplers.Samplers + 2) skySampler : sampler;
 
 code_block(fragment) main
 {

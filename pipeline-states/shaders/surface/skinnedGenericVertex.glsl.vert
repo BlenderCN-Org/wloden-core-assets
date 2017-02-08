@@ -58,6 +58,12 @@ layout ( location = 3 ) out vec3 VertexOutput_sve_normal;
 layout ( location = 5 ) out vec3 VertexOutput_sve_bitangent;
 layout ( location = 0 ) in vec3 SkinnedGenericVertexLayout_sve_position;
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
+vec3 skinVector (vec3 arg1);
+vec3 transformNormalToView (vec3 arg1);
+vec3 skinPosition (vec3 arg1);
+vec4 transformVector4ToView (vec4 arg1);
+vec4 transformPositionToView (vec3 arg1);
+void main ();
 vec3 skinVector (vec3 arg1)
 {
 	vec4 _l_vector4;

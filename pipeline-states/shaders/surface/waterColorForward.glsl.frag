@@ -55,6 +55,9 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(3, 2, 0), std140 ) uniform GlobalLightin
 } GlobalLightingState;
 
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
+vec3 fresnelSchlick (vec3 arg1, float arg2);
+void forwardLightingModel (inout vec4 color, vec3 normal, vec3 viewVector, vec3 position, vec4 albedo, float smoothness, vec3 fresnel);
+void main ();
 vec3 fresnelSchlick (vec3 arg1, float arg2)
 {
 	float _l_powFactor;
@@ -106,12 +109,12 @@ void forwardLightingModel (inout vec4 color, vec3 normal, vec3 viewVector, vec3 
 		_l_dist = length(_l_L);
 		_l_L = (_l_L / vec3(_l_dist, _l_dist, _l_dist));
 		_l_NdotL = max(dot(normal, _l_L), 0.0);
-		if ((_l_NdotL == 0.0))
+		if (_l_NdotL == 0.0)
 			continue;
 		_l_spotCos = 1.0;
-		if ((_l_lightSource.outerCosCutoff > -1.0))
+		if (_l_lightSource.outerCosCutoff > -1.0)
 			_l_spotCos = dot(_l_L, _l_lightSource.spotDirection);
-		if ((_l_spotCos < _l_lightSource.outerCosCutoff))
+		if (_l_spotCos < _l_lightSource.outerCosCutoff)
 			continue;
 		_l_spotAttenuation = (smoothstep(_l_lightSource.outerCosCutoff, _l_lightSource.innerCosCutoff, _l_spotCos) * pow(_l_spotCos, _l_lightSource.spotExponent));
 		_l_attenuationDistance = max(0.0, (_l_dist - _l_lightSource.radius));

@@ -46,6 +46,11 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(5, 1, 0), std140 ) uniform CameraState_b
 } CameraState;
 
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
+vec4 currentObjectColor ();
+vec4 transformVector4ToView (vec4 arg1);
+vec4 transformPositionToView (vec3 arg1);
+vec3 transformVectorToWorld (vec3 arg1);
+void main ();
 vec4 currentObjectColor ()
 {
 	return (ObjectState.objectState.color * InstanceObjectState.instanceStates[gl_InstanceID].color);

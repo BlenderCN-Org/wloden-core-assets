@@ -15,6 +15,7 @@
 #endif
 
 layout ( location = 0 ) out vec4 FragmentOutput_sve_color;
+void main ();
 void main ()
 {
 	FragmentOutput_sve_color = vec4(1.0, 1.0, 0.0, 0.2);

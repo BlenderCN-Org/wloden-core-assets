@@ -10,7 +10,7 @@ semantic FragmentOutput {
     out(0) color: float4;
 }
 
-uniform(set = 1, binding = 0) mainTexture : texture2D;
-uniform(set = 2, binding = 0) fontTexture : texture2D;
-uniform(set = 3, binding = 0) mainSampler : sampler;
-uniform(set = 3, binding = 1) fontSampler : sampler;
+uniform(binding = Texture.Texture) mainTexture : texture2D;
+uniform(binding = Font.Texture) fontTexture : texture2D;
+uniform(binding = Sampler.Sampler) mainSampler : sampler;
+uniform(binding = Sampler.Sampler + 1) fontSampler : sampler;

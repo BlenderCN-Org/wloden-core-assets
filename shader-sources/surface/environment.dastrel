@@ -8,17 +8,17 @@ struct ObjectStateData
     visible: int;
 }
 
-uniform(set=0, binding=0) ObjectState
+uniform(binding=ObjectState.ObjectState) ObjectState
 {
     objectState: ObjectStateData;
 }
 
-buffer(set=0, binding=1) InstanceObjectState
+buffer(binding=ObjectState.InstanceObjectState) InstanceObjectState
 {
     instanceStates: ObjectStateData[];
 }
 
-uniform(set=1, binding=0) CameraState
+uniform(binding=CameraState.ObjectState) CameraState
 {
     inverseViewMatrix: float4x4;
     viewMatrix: float4x4;
@@ -27,7 +27,7 @@ uniform(set=1, binding=0) CameraState
     currentTime: float;
 }
 
-uniform(set=2, binding=0) GlobalLightingState
+uniform(binding=LightingState.GlobalLightingState) GlobalLightingState
 {
     // Hemisphere lighting
     groundLighting: float4;

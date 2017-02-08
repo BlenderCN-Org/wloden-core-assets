@@ -26,6 +26,7 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 0, 0), std140 ) uniform CanvasViewpor
 
 layout ( location = 0 ) in vec2 VertexInput_sve_position;
 layout ( location = 0 ) out vec4 VertexOutput_sve_position;
+void main ();
 void main ()
 {
 	VertexOutput_sve_color = VertexInput_sve_color;

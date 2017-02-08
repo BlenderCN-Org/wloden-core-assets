@@ -1,13 +1,16 @@
-uniform(set = 3, binding=0) MaterialState
+import shaderSignature;
+
+uniform(binding = MaterialState.Attributes) MaterialState
 {
     albedo: float4;
     fresnel: float3;
     smoothness: float;
 }
 
-uniform(set = 3, binding = 2) albedoTexture : texture2D;
-uniform(set = 3, binding = 3) normalTexture : texture2D;
-uniform(set = 3, binding = 4) fresnelTexture : texture2D;
+uniform(binding = MaterialState.Textures) albedoTexture : texture2D;
+uniform(binding = Samplers.Samplers) albedoSampler : sampler;
 
-uniform(set = 4, binding = 0) albedoSampler : sampler;
-uniform(set = 4, binding = 1) normalSampler : sampler;
+uniform(binding = MaterialState.Textures + 1) normalTexture : texture2D;
+uniform(binding = Samplers.Samplers+1) normalSampler : sampler;
+
+uniform(binding = MaterialState.Textures + 2) fresnelTexture : texture2D;

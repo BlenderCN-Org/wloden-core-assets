@@ -66,6 +66,10 @@ layout ( location = 4 ) out vec3 VertexOutput_sve_tangent;
 layout ( location = 5 ) out vec3 VertexOutput_sve_bitangent;
 layout ( location = 3 ) out vec3 VertexOutput_sve_normal;
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
+vec3 transformNormalToView (vec3 arg1);
+vec4 transformVector4ToView (vec4 arg1);
+vec4 transformPositionToView (vec3 arg1);
+void main ();
 vec3 transformNormalToView (vec3 arg1)
 {
 	vec4 _g3;
@@ -113,7 +117,7 @@ void main ()
 	for (;(_l_i < 5); _l_i = (_l_i + 1))
 	{
 		_l_harmonic = MaterialState.harmonics[_l_i];
-		if ((_l_harmonic.isRadial == 1))
+		if (_l_harmonic.isRadial == 1)
 		{
 			_l_distance = length((_l_position.xz - _l_harmonic.centerOrDirection));
 			_l_distanceDerivatives = ((_l_position.xz - _l_harmonic.centerOrDirection) / vec2(_l_distance, _l_distance));

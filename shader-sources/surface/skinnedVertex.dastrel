@@ -20,7 +20,7 @@ semantic VertexOutput {
     out(5) bitangent: float3;
 }
 
-buffer(set=0, binding=2) PoseState
+buffer(binding=ObjectState.ExtraObjectState) PoseState
 {
     matrices: float4x4[];
 }

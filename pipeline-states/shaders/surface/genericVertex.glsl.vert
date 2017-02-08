@@ -51,6 +51,12 @@ layout ( location = 3 ) out vec3 VertexOutput_sve_normal;
 layout ( location = 5 ) out vec3 VertexOutput_sve_bitangent;
 layout ( location = 0 ) in vec3 GenericVertexLayout_sve_position;
 layout ( location = 0 ) out vec3 VertexOutput_sve_position;
+bool isCurrentObjectInvisible ();
+vec4 currentObjectColor ();
+vec3 transformNormalToView (vec3 arg1);
+vec4 transformVector4ToView (vec4 arg1);
+vec4 transformPositionToView (vec3 arg1);
+void main ();
 bool isCurrentObjectInvisible ()
 {
 	bool _l_lorResult;

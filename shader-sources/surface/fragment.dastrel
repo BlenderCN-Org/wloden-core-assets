@@ -1,3 +1,5 @@
+import shaderSignature;
+
 semantic FragmentInput {
     in(0) position: float3;
     in(1) texcoord: float2;
@@ -11,6 +13,6 @@ semantic FragmentOutput {
     out(0) color: float4;
 }
 
-uniform(set = 4, binding = 0) albedoSampler : sampler;
-uniform(set = 4, binding = 1) normalSampler : sampler;
-uniform(set = 4, binding = 1) displacementSampler : sampler;
+uniform(binding = Samplers.Samplers) albedoSampler : sampler;
+uniform(binding = Samplers.Samplers+1) normalSampler : sampler;
+uniform(binding = Samplers.Samplers+2) displacementSampler : sampler;
