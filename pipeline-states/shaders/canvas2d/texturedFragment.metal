@@ -35,9 +35,9 @@ struct _SLVM_ShaderStageOutput
 	metal::float4 location0[[color(0)]];
 };
 
-metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp);
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::sampler mainSampler [[sampler(0)]], metal::texture2d<float> mainTexture [[texture(0)]]);
-metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp)
+metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps);
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texture2d<float> mainTexture [[texture(0)]], metal::sampler mainSampler [[sampler(0)]]);
+metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps)
 {
 	int _l_a;
 	int _l_b;
@@ -80,12 +80,12 @@ metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock
 	return metal::mix(ColorRamps->entries[_l_entryIndex].color, ColorRamps->entries[(_l_entryIndex + 1)].color, metal::float4(_l_mixFactor, _l_mixFactor, _l_mixFactor, _l_mixFactor));
 }
 
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::sampler mainSampler [[sampler(0)]], metal::texture2d<float> mainTexture [[texture(0)]])
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texture2d<float> mainTexture [[texture(0)]], metal::sampler mainSampler [[sampler(0)]])
 {
 	_SLVM_ShaderStageOutput _slvm_stageout;
 	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
-	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
+	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
 	(*FragmentOutput_sve_color) = ((*FragmentInput_sve_color) * mainTexture.sample(mainSampler, (*FragmentInput_sve_texcoord)));
 	return _slvm_stageout;
 }
