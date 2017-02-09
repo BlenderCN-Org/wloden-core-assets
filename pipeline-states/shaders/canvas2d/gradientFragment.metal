@@ -36,7 +36,7 @@ struct _SLVM_ShaderStageOutput
 };
 
 metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp);
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const ColorRamps_bufferBlock* ColorRamps [[buffer(1)]], constant const CurrentColorRamp_block* CurrentColorRamp [[buffer(2)]]);
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], constant const CurrentColorRamp_block* CurrentColorRamp [[buffer(2)]], device const ColorRamps_bufferBlock* ColorRamps [[buffer(1)]]);
 metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp)
 {
 	int _l_a;
@@ -80,7 +80,7 @@ metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock
 	return metal::mix(ColorRamps->entries[_l_entryIndex].color, ColorRamps->entries[(_l_entryIndex + 1)].color, metal::float4(_l_mixFactor, _l_mixFactor, _l_mixFactor, _l_mixFactor));
 }
 
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const ColorRamps_bufferBlock* ColorRamps [[buffer(1)]], constant const CurrentColorRamp_block* CurrentColorRamp [[buffer(2)]])
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], constant const CurrentColorRamp_block* CurrentColorRamp [[buffer(2)]], device const ColorRamps_bufferBlock* ColorRamps [[buffer(1)]])
 {
 	float _l_coord;
 	metal::float2 _l_point;
@@ -96,10 +96,10 @@ fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagei
 	float _l_r2;
 	metal::float4 _g2;
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float4* FragmentInput_sve_position = &_slvm_stagein.location0;
-	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
-	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
+	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
+	thread metal::float4* FragmentInput_sve_position = &_slvm_stagein.location0;
+	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
 	_l_point = (*FragmentInput_sve_position).xy;
 	if ((*FragmentInput_sve_texcoord).x == 0.0)
 	{

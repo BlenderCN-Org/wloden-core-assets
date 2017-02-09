@@ -99,8 +99,8 @@ float fresnelSchlick (float arg1, float arg2)
 fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]])
 {
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
 	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
+	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
 	(*FragmentOutput_sve_color) = (*FragmentInput_sve_color);
 	return _slvm_stageout;
 }

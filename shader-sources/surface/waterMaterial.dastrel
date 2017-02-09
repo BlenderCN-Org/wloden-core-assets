@@ -6,7 +6,7 @@ struct WaterHarmonic
     isRadial: int;
 }
 
-uniform(set = 3, binding=0) MaterialState
+uniform(binding=MaterialState.Attributes) MaterialState
 {
     albedo: float4;
     fresnel: float3;
@@ -14,7 +14,6 @@ uniform(set = 3, binding=0) MaterialState
     propagationSpeed: float;
     harmonics: WaterHarmonic[5];
 }
-
 
 uniform(binding = MaterialState.Textures) normalTexture : texture2D;
 uniform(binding = Samplers.Samplers+1) normalSampler : sampler;
