@@ -109,9 +109,9 @@ fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagei
 	float _l_alpha;
 	metal::float3 _g1;
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float3* FragmentInput_sve_position = &_slvm_stagein.location0;
 	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
+	thread metal::float3* FragmentInput_sve_position = &_slvm_stagein.location0;
 	_l_stippleFactor = 10.0;
 	_g1 = stippleFunction(((*FragmentInput_sve_position) * metal::float3(_l_stippleFactor, _l_stippleFactor, _l_stippleFactor)));
 	_l_stipples = _g1;
