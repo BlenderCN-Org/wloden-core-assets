@@ -83,8 +83,8 @@ metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_blo
 fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::sampler mainSampler [[sampler(0)]], metal::texture2d<float> mainTexture [[texture(0)]])
 {
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
+	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
 	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	(*FragmentOutput_sve_color) = ((*FragmentInput_sve_color) * mainTexture.sample(mainSampler, (*FragmentInput_sve_texcoord)));
 	return _slvm_stageout;

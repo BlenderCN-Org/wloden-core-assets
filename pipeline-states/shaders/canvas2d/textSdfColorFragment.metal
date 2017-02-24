@@ -86,8 +86,8 @@ fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagei
 	float _l_fontAlpha;
 	_SLVM_ShaderStageOutput _slvm_stageout;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
-	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
+	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	_l_fontSample = fontTexture.sample(fontSampler, (*FragmentInput_sve_texcoord)).x;
 	_l_fontAlpha = metal::smoothstep(-0.08, 0.04, _l_fontSample);
 	(*FragmentOutput_sve_color) = metal::float4((*FragmentInput_sve_color).xyz, ((*FragmentInput_sve_color).w * _l_fontAlpha));
