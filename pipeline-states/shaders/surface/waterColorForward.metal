@@ -1,22 +1,5 @@
 #include <metal_stdlib>
 
-struct WaterHarmonic
-{
-	metal::float2 centerOrDirection;
-	float amplitude;
-	float frequency;
-	int isRadial;
-};
-
-struct MaterialState_block
-{
-	metal::float4 albedo;
-	metal::float3 fresnel;
-	float smoothness;
-	float propagationSpeed;
-	WaterHarmonic harmonics[5];
-};
-
 struct ObjectStateData
 {
 	metal::float4x4 matrix;
@@ -61,6 +44,23 @@ struct GlobalLightingState_block
 struct InstanceObjectState_bufferBlock
 {
 	ObjectStateData instanceStates[1];
+};
+
+struct WaterHarmonic
+{
+	metal::float2 centerOrDirection;
+	float amplitude;
+	float frequency;
+	int isRadial;
+};
+
+struct MaterialState_block
+{
+	metal::float4 albedo;
+	metal::float3 fresnel;
+	float smoothness;
+	float propagationSpeed;
+	WaterHarmonic harmonics[5];
 };
 
 struct _SLVM_ShaderStageInput
@@ -179,10 +179,10 @@ fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagei
 	metal::float3 _l_V;
 	metal::float4 _l_g8;
 	_SLVM_ShaderStageOutput _slvm_stageout;
+	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	thread metal::float3* FragmentInput_sve_normal = &_slvm_stagein.location3;
 	thread metal::float3* FragmentInput_sve_position = &_slvm_stagein.location0;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
-	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	_l_N = metal::normalize((*FragmentInput_sve_normal));
 	_l_V = metal::normalize(-(*FragmentInput_sve_position));
 	forwardLightingModel(&_l_g8, _l_N, _l_V, (*FragmentInput_sve_position), ((*FragmentInput_sve_color) * MaterialState->albedo), MaterialState->smoothness, MaterialState->fresnel, GlobalLightingState);

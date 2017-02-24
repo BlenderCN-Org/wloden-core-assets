@@ -49,7 +49,7 @@ vec4 evaluateColorRamp (float arg1)
 	_l_a = 0;
 	_l_b = CurrentColorRamp.colorRampSize;
 	_l_lastResult = _l_a;
-	while ((_l_a < _l_b))
+	for (;(_l_a < _l_b); )
 	{
 		_l_m = ((_l_a + _l_b) / 2);
 		if (ColorRamps.entries[(CurrentColorRamp.colorRampIndex + _l_m)].edge <= arg1)

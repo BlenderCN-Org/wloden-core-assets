@@ -35,9 +35,9 @@ struct _SLVM_ShaderStageOutput
 	metal::float4 location0[[color(0)]];
 };
 
-metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps);
+metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp);
 fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]]);
-metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps)
+metal::float4 evaluateColorRamp (float arg1, device const ColorRamps_bufferBlock* ColorRamps, constant const CurrentColorRamp_block* CurrentColorRamp)
 {
 	int _l_a;
 	int _l_b;
@@ -54,7 +54,7 @@ metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_blo
 	_l_a = 0;
 	_l_b = CurrentColorRamp->colorRampSize;
 	_l_lastResult = _l_a;
-	while ((_l_a < _l_b))
+	for (;(_l_a < _l_b); )
 	{
 		_l_m = ((_l_a + _l_b) / 2);
 		if (ColorRamps->entries[(CurrentColorRamp->colorRampIndex + _l_m)].edge <= arg1)

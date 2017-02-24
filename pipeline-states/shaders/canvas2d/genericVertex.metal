@@ -57,7 +57,7 @@ metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_blo
 	_l_a = 0;
 	_l_b = CurrentColorRamp->colorRampSize;
 	_l_lastResult = _l_a;
-	while ((_l_a < _l_b))
+	for (;(_l_a < _l_b); )
 	{
 		_l_m = ((_l_a + _l_b) / 2);
 		if (ColorRamps->entries[(CurrentColorRamp->colorRampIndex + _l_m)].edge <= arg1)
@@ -87,12 +87,12 @@ vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein 
 {
 	_SLVM_ShaderStageOutput _slvm_stageout;
 	thread metal::float4* VertexOutput_sve_screenPosition = &_slvm_stageout.position;
+	thread metal::float4* VertexOutput_sve_color = &_slvm_stageout.location2;
 	thread metal::float2* VertexInput_sve_texcoord = &_slvm_stagein.location1;
 	thread metal::float2* VertexOutput_sve_texcoord = &_slvm_stageout.location1;
-	thread metal::float4* VertexOutput_sve_position = &_slvm_stageout.location0;
 	thread metal::float2* VertexInput_sve_position = &_slvm_stagein.location0;
 	thread metal::float4* VertexInput_sve_color = &_slvm_stagein.location2;
-	thread metal::float4* VertexOutput_sve_color = &_slvm_stageout.location2;
+	thread metal::float4* VertexOutput_sve_position = &_slvm_stageout.location0;
 	(*VertexOutput_sve_color) = (*VertexInput_sve_color);
 	(*VertexOutput_sve_texcoord) = (*VertexInput_sve_texcoord);
 	(*VertexOutput_sve_position) = (CanvasViewport->viewMatrix * metal::float4((*VertexInput_sve_position), 0.0, 1.0));
