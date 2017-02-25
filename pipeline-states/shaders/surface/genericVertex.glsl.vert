@@ -62,25 +62,25 @@ bool isCurrentObjectInvisible ()
 	bool _l_lorResult;
 	_l_lorResult = true;
 	if (!((ObjectState.objectState.visible == 0)))
-		_l_lorResult = (InstanceObjectState.instanceStates[gl_InstanceID].visible == 0);
+		_l_lorResult = (InstanceObjectState.instanceStates[gl_InstanceIndex].visible == 0);
 	return _l_lorResult;
 }
 
 vec4 currentObjectColor ()
 {
-	return (ObjectState.objectState.color * InstanceObjectState.instanceStates[gl_InstanceID].color);
+	return (ObjectState.objectState.color * InstanceObjectState.instanceStates[gl_InstanceIndex].color);
 }
 
 vec3 transformNormalToView (vec3 arg1)
 {
 	vec4 _g4;
-	_g4 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceID].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
+	_g4 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceIndex].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
 	return _g4.xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * arg1)));
+	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceIndex].matrix * arg1)));
 }
 
 vec4 transformPositionToView (vec3 arg1)

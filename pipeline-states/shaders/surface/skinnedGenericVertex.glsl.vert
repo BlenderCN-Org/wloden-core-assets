@@ -95,7 +95,7 @@ vec3 skinVector (vec3 arg1)
 vec3 transformNormalToView (vec3 arg1)
 {
 	vec4 _g11;
-	_g11 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceID].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
+	_g11 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceIndex].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
 	return _g11.xyz;
 }
 
@@ -129,7 +129,7 @@ vec3 skinPosition (vec3 arg1)
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * arg1)));
+	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceIndex].matrix * arg1)));
 }
 
 vec4 transformPositionToView (vec3 arg1)

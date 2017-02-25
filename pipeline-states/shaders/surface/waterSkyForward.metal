@@ -6,6 +6,7 @@ struct WaterHarmonic
 	float amplitude;
 	float frequency;
 	int isRadial;
+	float padding[3];
 };
 
 struct MaterialState_block
@@ -14,6 +15,7 @@ struct MaterialState_block
 	metal::float3 fresnel;
 	float smoothness;
 	float propagationSpeed;
+	metal::float2 padding;
 	WaterHarmonic harmonics[5];
 };
 
@@ -82,7 +84,7 @@ metal::float3 cameraWorldPosition (device const CameraState_block* CameraState);
 metal::float3 fresnelSchlick (metal::float3 arg1, float arg2);
 float fresnelSchlick (float arg1, float arg2);
 void forwardLightingModel (thread metal::float4* color, metal::float3 normal, metal::float3 viewVector, metal::float3 position, metal::float4 albedo, float smoothness, metal::float3 fresnel, device const GlobalLightingState_block* GlobalLightingState);
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const MaterialState_block* MaterialState [[buffer(5)]], device const CameraState_block* CameraState [[buffer(3)]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]], metal::sampler skySampler [[sampler(2)]], metal::texturecube<float> skyTexture [[texture(1)]]);
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const CameraState_block* CameraState [[buffer(3)]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]], device const MaterialState_block* MaterialState [[buffer(5)]], metal::texturecube<float> skyTexture [[texture(1)]], metal::sampler skySampler [[sampler(2)]]);
 metal::float3 cameraWorldPosition (device const CameraState_block* CameraState)
 {
 	return CameraState->inverseViewMatrix[3].xyz;
@@ -173,7 +175,7 @@ void forwardLightingModel (thread metal::float4* color, metal::float3 normal, me
 	(*color) = metal::float4(_l_accumulatedColor, albedo.w);
 }
 
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const MaterialState_block* MaterialState [[buffer(5)]], device const CameraState_block* CameraState [[buffer(3)]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]], metal::sampler skySampler [[sampler(2)]], metal::texturecube<float> skyTexture [[texture(1)]])
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const CameraState_block* CameraState [[buffer(3)]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]], device const MaterialState_block* MaterialState [[buffer(5)]], metal::texturecube<float> skyTexture [[texture(1)]], metal::sampler skySampler [[sampler(2)]])
 {
 	metal::float3 _l_N;
 	metal::float3 _l_V;

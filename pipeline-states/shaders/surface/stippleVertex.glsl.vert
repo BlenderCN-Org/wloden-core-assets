@@ -53,12 +53,12 @@ vec3 transformVectorToWorld (vec3 arg1);
 void main ();
 vec4 currentObjectColor ()
 {
-	return (ObjectState.objectState.color * InstanceObjectState.instanceStates[gl_InstanceID].color);
+	return (ObjectState.objectState.color * InstanceObjectState.instanceStates[gl_InstanceIndex].color);
 }
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * arg1)));
+	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceIndex].matrix * arg1)));
 }
 
 vec4 transformPositionToView (vec3 arg1)
@@ -71,7 +71,7 @@ vec4 transformPositionToView (vec3 arg1)
 vec3 transformVectorToWorld (vec3 arg1)
 {
 	vec4 _g5;
-	_g5 = (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * vec4(arg1, 0.0)));
+	_g5 = (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceIndex].matrix * vec4(arg1, 0.0)));
 	return _g5.xyz;
 }
 

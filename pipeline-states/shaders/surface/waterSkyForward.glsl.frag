@@ -20,6 +20,7 @@ struct WaterHarmonic
 	float amplitude;
 	float frequency;
 	int isRadial;
+	float padding[3];
 };
 
 struct LightSource
@@ -41,6 +42,7 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 3, 0), std140 ) uniform MaterialState
 	vec3 fresnel;
 	float smoothness;
 	float propagationSpeed;
+	vec2 padding;
 	WaterHarmonic harmonics[5];
 } MaterialState;
 

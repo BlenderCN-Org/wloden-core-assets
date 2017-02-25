@@ -20,6 +20,7 @@ struct WaterHarmonic
 	float amplitude;
 	float frequency;
 	int isRadial;
+	float padding[3];
 };
 
 struct ObjectStateData
@@ -37,6 +38,7 @@ layout ( SLVM_GL_BINDING_VK_SET_BINDING(1, 3, 0), std140 ) uniform MaterialState
 	vec3 fresnel;
 	float smoothness;
 	float propagationSpeed;
+	vec2 padding;
 	WaterHarmonic harmonics[5];
 } MaterialState;
 
@@ -73,13 +75,13 @@ void main ();
 vec3 transformNormalToView (vec3 arg1)
 {
 	vec4 _g3;
-	_g3 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceID].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
+	_g3 = (((vec4(arg1, 0.0) * InstanceObjectState.instanceStates[gl_InstanceIndex].inverseMatrix) * ObjectState.objectState.inverseMatrix) * CameraState.inverseViewMatrix);
 	return _g3.xyz;
 }
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * arg1)));
+	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceIndex].matrix * arg1)));
 }
 
 vec4 transformPositionToView (vec3 arg1)

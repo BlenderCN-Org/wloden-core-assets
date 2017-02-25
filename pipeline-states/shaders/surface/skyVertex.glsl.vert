@@ -49,7 +49,7 @@ vec4 transformPositionToView (vec3 arg1);
 void main ();
 vec4 transformPositionToWorld (vec3 arg1)
 {
-	return (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * vec4(arg1, 1.0)));
+	return (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceIndex].matrix * vec4(arg1, 1.0)));
 }
 
 vec3 cameraWorldPosition ()
@@ -59,7 +59,7 @@ vec3 cameraWorldPosition ()
 
 vec4 transformVector4ToView (vec4 arg1)
 {
-	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceID].matrix * arg1)));
+	return (CameraState.viewMatrix * (ObjectState.objectState.matrix * (InstanceObjectState.instanceStates[gl_InstanceIndex].matrix * arg1)));
 }
 
 vec4 transformPositionToView (vec3 arg1)
