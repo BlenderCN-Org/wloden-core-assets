@@ -4,8 +4,7 @@
             "abstract" : true,
             "shader-signature" : "GUI",
             "render-target-formats" : ["B8G8R8A8_UNORM_SRGB"],
-            "depth-stencil-format" : "D24_UNORM_S8_UINT",
-            "inherit-from" : "settings.rendering.sample-description",
+            "inherit-from" : ["settings.rendering.sample-description", "settings.rendering.depth-stencil-format"],
             "vertex-layout" : "CanvasVertex2D"
         },
 
@@ -14,8 +13,7 @@
             "shader-signature" : "GUI",
             "shader" : "Canvas2D.PolygonStencil",
             "render-target-formats" : ["B8G8R8A8_UNORM_SRGB"],
-            "depth-stencil-format" : "D24_UNORM_S8_UINT",
-            "inherit-from" : "settings.rendering.sample-description",
+            "inherit-from" : ["settings.rendering.sample-description", "settings.rendering.depth-stencil-format"],
             "vertex-layout" : "CanvasVertex2D",
             "primitive-type" : "triangles",
 
@@ -115,10 +113,9 @@
             "abstract" : true,
             "shader-signature" : "GUI",
             "render-target-formats" : ["B8G8R8A8_UNORM_SRGB"],
-            "inherit-from" : "settings.rendering.sample-description",
+            "inherit-from" : ["settings.rendering.sample-description", "settings.rendering.depth-stencil-format"],
             "vertex-layout" : "CanvasVertex2D",
 
-            "depth-stencil-format" : "D24_UNORM_S8_UINT",
             "stencil-state" : {
                 "enabled" : true,
                 "read-mask" : 255,

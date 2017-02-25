@@ -4,8 +4,7 @@
             "abstract" : true,
             "shader-signature" : "ForwardRenderer",
             "render-target-formats" : ["B8G8R8A8_UNORM_SRGB"],
-            "depth-stencil-format" : "D24_UNORM_S8_UINT",
-            "inherit-from" : "settings.rendering.sample-description",
+            "inherit-from" : ["settings.rendering.sample-description", "settings.rendering.depth-stencil-format"],
 
             "cull-mode" : "back",
             "front-face" : "counter-clockwise",
@@ -216,7 +215,7 @@
                 "enabled" : false
             }
         },
-        
+
         "forward.water.color" : {
             "inherit-from" : "forward.common.generic-vertex",
             "cull-mode" : "none",
