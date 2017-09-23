@@ -72,7 +72,7 @@ metal::float3 cameraWorldPosition (device const CameraState_block* CameraState);
 metal::float3 fresnelSchlick (metal::float3 arg1, float arg2);
 float fresnelSchlick (float arg1, float arg2);
 void forwardLightingModel (thread metal::float4* color, metal::float3 normal, metal::float3 viewVector, metal::float3 position, metal::float4 albedo, float smoothness, metal::float3 fresnel, device const GlobalLightingState_block* GlobalLightingState);
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]], metal::sampler albedoSampler [[sampler(0)]], metal::texture2d<float> albedoTexture [[texture(0)]], metal::texture2d<float> fresnelTexture [[texture(2)]], device const MaterialState_block* MaterialState [[buffer(5)]]);
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texture2d<float> albedoTexture [[texture(0)]], metal::sampler albedoSampler [[sampler(0)]], metal::texture2d<float> fresnelTexture [[texture(2)]], device const MaterialState_block* MaterialState [[buffer(5)]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]]);
 metal::float3 cameraWorldPosition (device const CameraState_block* CameraState)
 {
 	return CameraState->inverseViewMatrix[3].xyz;
@@ -163,7 +163,7 @@ void forwardLightingModel (thread metal::float4* color, metal::float3 normal, me
 	(*color) = metal::float4(_l_accumulatedColor, albedo.w);
 }
 
-fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]], metal::sampler albedoSampler [[sampler(0)]], metal::texture2d<float> albedoTexture [[texture(0)]], metal::texture2d<float> fresnelTexture [[texture(2)]], device const MaterialState_block* MaterialState [[buffer(5)]])
+fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein [[stage_in]], metal::texture2d<float> albedoTexture [[texture(0)]], metal::sampler albedoSampler [[sampler(0)]], metal::texture2d<float> fresnelTexture [[texture(2)]], device const MaterialState_block* MaterialState [[buffer(5)]], device const GlobalLightingState_block* GlobalLightingState [[buffer(4)]])
 {
 	metal::float3 _l_N;
 	metal::float3 _l_V;
@@ -172,10 +172,10 @@ fragment _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagei
 	metal::float4 _l_g23;
 	metal::float4 _g3;
 	_SLVM_ShaderStageOutput _slvm_stageout;
-	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	thread metal::float3* FragmentInput_sve_normal = &_slvm_stagein.location3;
 	thread metal::float3* FragmentInput_sve_position = &_slvm_stagein.location0;
 	thread metal::float2* FragmentInput_sve_texcoord = &_slvm_stagein.location1;
+	thread metal::float4* FragmentInput_sve_color = &_slvm_stagein.location2;
 	thread metal::float4* FragmentOutput_sve_color = &_slvm_stageout.location0;
 	_l_N = metal::normalize((*FragmentInput_sve_normal));
 	_l_V = metal::normalize(-(*FragmentInput_sve_position));
