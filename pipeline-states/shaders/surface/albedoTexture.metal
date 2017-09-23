@@ -1,5 +1,12 @@
 #include <metal_stdlib>
 
+struct MaterialState_block
+{
+	metal::float4 albedo;
+	metal::float3 fresnel;
+	float smoothness;
+};
+
 struct ObjectStateData
 {
 	metal::float4x4 matrix;
@@ -44,13 +51,6 @@ struct GlobalLightingState_block
 struct InstanceObjectState_bufferBlock
 {
 	ObjectStateData instanceStates[1];
-};
-
-struct MaterialState_block
-{
-	metal::float4 albedo;
-	metal::float3 fresnel;
-	float smoothness;
 };
 
 struct _SLVM_ShaderStageInput

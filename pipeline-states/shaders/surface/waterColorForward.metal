@@ -1,24 +1,5 @@
 #include <metal_stdlib>
 
-struct WaterHarmonic
-{
-	metal::float2 centerOrDirection;
-	float amplitude;
-	float frequency;
-	int isRadial;
-	float padding[3];
-};
-
-struct MaterialState_block
-{
-	metal::float4 albedo;
-	metal::float3 fresnel;
-	float smoothness;
-	float propagationSpeed;
-	metal::float2 padding;
-	WaterHarmonic harmonics[5];
-};
-
 struct ObjectStateData
 {
 	metal::float4x4 matrix;
@@ -63,6 +44,25 @@ struct GlobalLightingState_block
 struct InstanceObjectState_bufferBlock
 {
 	ObjectStateData instanceStates[1];
+};
+
+struct WaterHarmonic
+{
+	metal::float2 centerOrDirection;
+	float amplitude;
+	float frequency;
+	int isRadial;
+	float padding[3];
+};
+
+struct MaterialState_block
+{
+	metal::float4 albedo;
+	metal::float3 fresnel;
+	float smoothness;
+	float propagationSpeed;
+	metal::float2 padding;
+	WaterHarmonic harmonics[5];
 };
 
 struct _SLVM_ShaderStageInput
