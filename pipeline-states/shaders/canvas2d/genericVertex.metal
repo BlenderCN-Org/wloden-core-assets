@@ -32,10 +32,10 @@ struct _SLVM_ShaderStageInput
 
 struct _SLVM_ShaderStageOutput
 {
+	metal::float4 position[[position]];
 	metal::float4 location0[[user(L0)]];
 	metal::float2 location1[[user(L1)]];
 	metal::float4 location2[[user(L2)]];
-	metal::float4 position[[position]];
 };
 
 metal::float4 evaluateColorRamp (float arg1, constant const CurrentColorRamp_block* CurrentColorRamp, device const ColorRamps_bufferBlock* ColorRamps);
