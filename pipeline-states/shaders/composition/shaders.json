@@ -1,0 +1,28 @@
+{
+	"shaders" : {
+		"Passthrough" : {
+			"fragment" : {
+				"spir-v" : "passthroughFragment.spv",
+				"glsl" : "passthroughFragment.glsl.frag",
+				"metal" : "passthroughFragment.metal"
+			},
+			"vertex" : {
+				"spir-v" : "passthroughVertex.spv",
+				"glsl" : "passthroughVertex.glsl.vert",
+				"metal" : "passthroughVertex.metal"
+			}
+		},
+		"VR" : {
+			"fragment" : {
+				"spir-v" : "vrColorFilter.spv",
+				"glsl" : "vrColorFilter.glsl.frag",
+				"metal" : "vrColorFilter.metal"
+			},
+			"vertex" : {
+				"spir-v" : "vrGrid.spv",
+				"glsl" : "vrGrid.glsl.vert",
+				"metal" : "vrGrid.metal"
+			}
+		}
+	}
+}

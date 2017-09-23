@@ -1,0 +1,12 @@
+{
+    "shaders" : {
+        "Passthrough" : {
+            "fragment" : "passthroughFragment.dastrel",
+            "vertex" : "passthroughVertex.dastrel"
+        },
+        "VR" : {
+            "fragment" : "vrColorFilter.dastrel",
+            "vertex" : "vrGrid.dastrel"
+        }
+    }
+}

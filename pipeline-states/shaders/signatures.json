@@ -130,5 +130,42 @@
                 }
             ]
         }
+    ],
+
+    "Composition" : [
+        {
+            "name" : "Parameters",
+            "type" : "bank",
+            "max-bindings" :  1000,
+            "elements" : [
+                {
+                    "type" : "uniform-buffer",
+                    "points" : 1
+                }
+            ]
+        },
+        {
+            "name" : "Source",
+            "type" : "bank",
+            "max-bindings" :  1000,
+            "elements" : [
+                {
+                    "type" : "sampled-image",
+                    "points" : 1
+                }
+            ]
+        },
+        {
+            "name" : "Sampler",
+            "type" : "bank",
+            "max-bindings" :  10,
+            "elements" : [
+                {
+                    "type" : "sampler",
+                    "points" : 5
+                }
+            ]
+        }
     ]
+
 }
