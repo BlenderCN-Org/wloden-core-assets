@@ -4,9 +4,13 @@
             "fragment" : "passthroughFragment.dastrel",
             "vertex" : "passthroughVertex.dastrel"
         },
+        "Anaglyph" : {
+            "fragment" : "anaglyph.dastrel",
+            "vertex" : "passthroughVertex.dastrel"
+        },
         "VR" : {
-            "fragment" : "vrColorFilter.dastrel",
-            "vertex" : "vrGrid.dastrel"
+            "fragment" : "vrDistortion.dastrel",
+            "vertex" : "passthroughVertex.dastrel"
         }
     }
 }

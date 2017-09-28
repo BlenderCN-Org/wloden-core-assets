@@ -12,16 +12,28 @@
 				"metal" : "passthroughVertex.metal"
 			}
 		},
-		"VR" : {
+		"Anaglyph" : {
 			"fragment" : {
-				"spir-v" : "vrColorFilter.spv",
-				"glsl" : "vrColorFilter.glsl.frag",
-				"metal" : "vrColorFilter.metal"
+				"spir-v" : "anaglyph.spv",
+				"glsl" : "anaglyph.glsl.frag",
+				"metal" : "anaglyph.metal"
 			},
 			"vertex" : {
-				"spir-v" : "vrGrid.spv",
-				"glsl" : "vrGrid.glsl.vert",
-				"metal" : "vrGrid.metal"
+				"spir-v" : "passthroughVertex.spv",
+				"glsl" : "passthroughVertex.glsl.vert",
+				"metal" : "passthroughVertex.metal"
+			}
+		},
+		"VR" : {
+			"fragment" : {
+				"spir-v" : "vrDistortion.spv",
+				"glsl" : "vrDistortion.glsl.frag",
+				"metal" : "vrDistortion.metal"
+			},
+			"vertex" : {
+				"spir-v" : "passthroughVertex.spv",
+				"glsl" : "passthroughVertex.glsl.vert",
+				"metal" : "passthroughVertex.metal"
 			}
 		}
 	}

@@ -23,6 +23,7 @@ vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein 
 	float _l_y;
 	metal::float2 _l_pos;
 	metal::float2 _l_texcoord;
+	metal::float2 _l_screenSize;
 	float _l_r;
 	float _l_r2;
 	bool _l_lorResult;
@@ -37,8 +38,8 @@ vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein 
 	thread metal::float4* VertexStage_sve_screenPosition = &_slvm_stageout.position;
 	_l_cellIndex = (VertexStage_sve_vertexID / 6);
 	_l_cellExtraOffset = (VertexStage_sve_vertexID % 6);
-	_l_column = (_l_cellIndex % 16);
-	_l_row = (_l_cellIndex / 16);
+	_l_column = (_l_cellIndex % 64);
+	_l_row = (_l_cellIndex / 64);
 	_l_lorResult = true;
 	if (!((_l_cellExtraOffset == 1)))
 		_l_lorResult = (_l_cellExtraOffset == 2);
@@ -61,17 +62,19 @@ vertex _SLVM_ShaderStageOutput shaderMain (_SLVM_ShaderStageInput _slvm_stagein 
 	else
 		_l_g41 = 0;
 	_l_dy = _l_g41;
-	_l_x = (((float) (_l_column + _l_dx)) / 16.0);
-	_l_y = (((float) (_l_row + _l_dy)) / 16.0);
+	_l_x = (((float) (_l_column + _l_dx)) / 64.0);
+	_l_y = (((float) (_l_row + _l_dy)) / 64.0);
 	_l_pos = ((metal::float2(_l_x, _l_y) * metal::float2(2.0, 2.0)) - metal::float2(1.0, 1.0));
 	_l_texcoord = ((_l_pos * metal::float2(0.5, 0.5)) + metal::float2(0.5, 0.5));
-	_l_pos = (_l_pos * metal::float2(0.5, 1.0));
+	_l_screenSize = (metal::float2(0.1261999756, 0.22435551217777774) * metal::float2(3.0, 3.0));
+	_l_pos = (_l_pos * _l_screenSize);
 	_l_r = metal::length(_l_pos);
 	_l_r2 = (_l_r * _l_r);
 	_g4 = ((1.0 + (0.22 * _l_r2)) + ((0.24 * _l_r2) * _l_r2));
 	_l_pos = (_l_pos / metal::float2(_g4, _g4));
+	_l_pos = (_l_pos / _l_screenSize);
 	_l_texcoord = metal::float2(((_l_texcoord.x * 0.5) + (((float) VertexStage_sve_instanceID) * 0.5)), _l_texcoord.y);
-	_l_pos = metal::float2(((_l_pos.x - 0.5) + (((float) VertexStage_sve_instanceID) * 1.0)), _l_pos.y);
+	_l_pos = metal::float2((((_l_pos.x * 0.5) - 0.5) + (((float) VertexStage_sve_instanceID) * 1.0)), _l_pos.y);
 	(*VertexOutput_sve_texcoord) = _l_texcoord;
 	(*VertexStage_sve_screenPosition) = metal::float4(_l_pos, 0.0, 1.0);
 	return _slvm_stageout;

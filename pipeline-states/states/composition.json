@@ -13,10 +13,16 @@
             "primitive-type" : "triangle-strip"
         },
 
+        "anaglyph" : {
+            "inherit-from" : ["common"],
+            "shader" : "Composition.Anaglyph",
+            "primitive-type" : "triangle-strip"
+        },
+
         "vr" : {
             "inherit-from" : ["common"],
             "shader" : "Composition.VR",
-            "primitive-type" : "triangles"
+            "primitive-type" : "triangle-strip"
         }
 
     }
