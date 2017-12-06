@@ -1,7 +1,0 @@
-{
-    "groups" : {
-        "canvas2d" : "canvas2d.json",
-        "composition" : "composition.json",
-        "material" : "material.json"
-    }
-}

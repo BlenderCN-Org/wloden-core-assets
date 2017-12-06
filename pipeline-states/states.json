@@ -1,7 +1,0 @@
-{
-    "structures" : "structures/structures.json",
-    "shader-signatures" : "shaders/signatures.json",
-    "vertex-layouts" : "layouts/vertex-layouts.json",
-    "shaders" : "shaders/shaders.json",
-    "pipeline-states" : "states/pipeline-states.json"
-}
