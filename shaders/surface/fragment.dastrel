@@ -16,3 +16,4 @@ semantic FragmentOutput {
 uniform(binding = Samplers.Samplers) albedoSampler : sampler;
 uniform(binding = Samplers.Samplers+1) normalSampler : sampler;
 uniform(binding = Samplers.Samplers+2) displacementSampler : sampler;
+uniform(binding = Samplers.Samplers+3) shadowSampler : sampler;

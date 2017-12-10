@@ -12,11 +12,6 @@ shader_signature ForwardRenderer
         ObjectState : uniform;
     }
 
-    descriptor_set(max_bindings = 100) LightingState
-    {
-        GlobalLightingState: uniform;
-    }
-
     descriptor_set(max_bindings = 10000) MaterialState
     {
         Attributes: uniform;
@@ -27,5 +22,11 @@ shader_signature ForwardRenderer
     descriptor_set(max_bindings = 10) Samplers
     {
         Samplers: sampler * 5;
+    }
+
+    descriptor_set(max_bindings = 100) LightingState
+    {
+        GlobalLightingState: uniform;
+        ShadowMaps: texture * 2;
     }
 }

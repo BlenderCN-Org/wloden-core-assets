@@ -1,4 +1,7 @@
 import environment;
+import fragment;
+
+uniform(binding = LightingState.ShadowMaps) spotShadowMaps : depthTexture2DArray;
 
 code_block forwardLightingModel
 {
@@ -41,14 +44,29 @@ code_block forwardLightingModel
             spotCos = dot(L, lightSource.spotDirection);
 
         if(spotCos < lightSource.outerCosCutoff)
-            continue;
-        let spotAttenuation = smoothstep(lightSource.outerCosCutoff, lightSource.innerCosCutoff, spotCos)*pow(spotCos, lightSource.spotExponent);
+           continue;
+ 
+		let shadowFactor = 1.0f;
+		if(lightSource.shadowMapLayer >= 0.0f)
+		{
+			let shadowPoint = lightSource.shadowMapTransform * float4(position, 1.0f);
+			
+			let projectedShadowPoint = float3(shadowPoint.xyz / shadowPoint.w);
+			let shadowCoord = float3(projectedShadowPoint.xy*0.5f + 0.5f, lightSource.shadowMapLayer);
+			let depthRef = projectedShadowPoint.z;
+			shadowFactor = shadowSampler.sampleWithDepthReference(spotShadowMaps, shadowCoord, depthRef);
+		}
+
+		if(shadowFactor <= 0.0f)
+			continue;
+ 
+		let spotAttenuation = smoothstep(lightSource.outerCosCutoff, lightSource.innerCosCutoff, spotCos)*pow(spotCos, lightSource.spotExponent);
 
         // Compute the attenuation factor.
         // I am using (partly) the technique that I found here: https://imdoingitwrong.wordpress.com/2011/01/31/light-attenuation/
         let attenuationDistance = max(0.0f, dist - lightSource.radius);
         let attDen = 1.0f + attenuationDistance/lightSource.radius;
-        let attenuation = spotAttenuation/(attDen*attDen);
+        let attenuation = shadowFactor*spotAttenuation/(attDen*attDen);
 
         // Compute the fresnel factor
         let H = normalize(L + viewVector);

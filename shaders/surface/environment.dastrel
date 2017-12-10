@@ -48,6 +48,9 @@ struct LightSource
     outerCosCutoff: float;
     spotExponent: float;
     radius: float;
+
+	shadowMapLayer: float;
+	shadowMapTransform: float4x4;
 }
 
 function cameraWorldPosition() -> float3
