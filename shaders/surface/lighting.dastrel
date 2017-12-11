@@ -29,8 +29,8 @@ code_block forwardLightingModel
     // Accumulate each one of the lights
     for(let i = 0; i < numberOfLights; i += 1)
     {
-        let lightSource = lightSources[i];
-        let L = lightSources[i].position.xyz - position*lightSource.position.w;
+        using lightSource = lightSources[i];
+        let L = lightSource.position.xyz - position*lightSource.position.w;
         let dist = length(L);
         L = L / dist;
 
