@@ -2,6 +2,8 @@ import environment;
 
 semantic FragmentInput {
     in(0) texcoord: float2;
+	in(1) tint: float4;
+	in(2) isRightSide: float;
 }
 
 semantic FragmentOutput {
