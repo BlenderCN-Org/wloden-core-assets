@@ -43,13 +43,15 @@ struct LightSource
 {
     position: float4;
     intensity: float4;
+
     spotDirection: float3;
+    shadowMapLayer: float;
+
     innerCosCutoff: float;
     outerCosCutoff: float;
     spotExponent: float;
     radius: float;
 
-	shadowMapLayer: float;
 	shadowMapTransform: float4x4;
 }
 

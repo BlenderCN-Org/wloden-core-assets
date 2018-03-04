@@ -3,17 +3,21 @@ struct WaterHarmonic
     centerOrDirection: float2;
     amplitude: float;
     frequency: float;
+
+    padding: float3;
     isRadial: int;
-    padding: float[3];
 }
 
 uniform(binding=MaterialState.Attributes) MaterialState
 {
     albedo: float4;
+
     fresnel: float3;
     smoothness: float;
+
+    padding: float3;
     propagationSpeed: float;
-    padding: float2;
+
     harmonics: WaterHarmonic[5];
 }
 

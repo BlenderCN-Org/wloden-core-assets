@@ -66,5 +66,10 @@ function isCurrentObjectInvisible() -> bool
     using InstanceObjectState;
     using VertexStage;
 
-    return (objectState.visible == 0) ||  (instanceStates[instanceID].visible == 0);
+    if(objectState.visible == 0)
+        return true;
+
+    if(instanceStates[instanceID].visible == 0)
+        return true;
+    return false;
 }
