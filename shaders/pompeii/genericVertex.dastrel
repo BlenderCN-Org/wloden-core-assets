@@ -1,0 +1,12 @@
+import environment;
+import vertex;
+
+code_block(vertex) main
+{
+    using CanvasMatrices;
+
+    VertexOutput.color = VertexInput.color;
+    VertexOutput.texcoord = VertexInput.texcoord;
+    VertexOutput.position = matrices[1] * float4(VertexInput.position, 0.0f, 1.0f);
+    VertexOutput.screenPosition = matrices[0] * VertexOutput.position;
+}

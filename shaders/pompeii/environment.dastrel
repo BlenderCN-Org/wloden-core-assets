@@ -1,9 +1,8 @@
 import shaderSignature;
 
-uniform(binding=CanvasViewport.Viewport) CanvasViewport
+buffer(binding=CanvasViewport.Matrices) CanvasMatrices
 {
-    projectionMatrix: float4x4;
-    viewMatrix: float4x4;
+    matrices: float4x4[];
 }
 
 struct ColorRampEntry

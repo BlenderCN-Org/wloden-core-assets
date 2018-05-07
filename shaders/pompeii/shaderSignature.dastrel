@@ -2,7 +2,7 @@ shader_signature GUI
 {
     descriptor_set(max_bindings=1000) CanvasViewport
     {
-        Viewport: uniform;
+        Matrices: buffer;
         ColorRamps: buffer;
     }
 
