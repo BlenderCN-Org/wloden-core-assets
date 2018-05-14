@@ -1,9 +1,0 @@
-import environment;
-import fragment;
-
-code_block(fragment) main
-{
-    let fontSample = fontSampler.sample(fontTexture, FragmentInput.texcoord).r;
-    let fontAlpha = smoothstep(-0.08f, 0.04f, fontSample);
-    FragmentOutput.color = float4(FragmentInput.color.rgb, FragmentInput.color.a*fontAlpha);
-}

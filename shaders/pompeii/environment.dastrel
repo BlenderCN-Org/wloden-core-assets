@@ -16,8 +16,11 @@ buffer(binding=CanvasViewport.ColorRamps) ColorRamps
     entries: ColorRampEntry[];
 }
 
-uniform(push_constant=CurrentGradient) CurrentColorRamp
+uniform(push_constant=QuickState) QuickState
 {
+    modelViewMatrixIndex: int;
+    projectionMatrixIndex: int;
+
     colorRampIndex: int;
     colorRampSize: int;
 }
@@ -25,7 +28,7 @@ uniform(push_constant=CurrentGradient) CurrentColorRamp
 function evaluateColorRamp(coord: float) -> float4
 {
     using ColorRamps;
-    using CurrentColorRamp;
+    using QuickState;
 
     if(colorRampSize == 0)
         return float4(1.0f, 1.0f, 1.0f, 1.0f);

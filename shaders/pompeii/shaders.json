@@ -19,10 +19,6 @@
         "TextColor" : {
             "fragment" : "textColorFragment.dastrel",
             "vertex" : "genericVertex.dastrel"
-        },
-        "TextSdfColor" : {
-            "fragment" : "textSdfColorFragment.dastrel",
-            "vertex" : "genericVertex.dastrel"
         }
     }
 }
