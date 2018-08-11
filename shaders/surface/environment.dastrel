@@ -52,7 +52,12 @@ struct LightSource
     spotExponent: float;
     radius: float;
 
+    cascadeSplitOffsets: float4;
+    cascadeFrustumPlane: float4;
+
 	shadowMapTransform: float4x4;
+    shadowMapTransform2: float4x4;
+    shadowMapTransform3: float4x4;
 }
 
 function cameraWorldPosition() -> float3

@@ -11,6 +11,7 @@ semantic FragmentOutput {
 }
 
 uniform(binding = Texture.Texture) mainTexture : texture2D;
+uniform(binding = Texture.Texture) mainTextureArray : texture2DArray;
 uniform(binding = Font.Texture) fontTexture : texture2D;
 uniform(binding = Sampler.Sampler) mainSampler : sampler;
 uniform(binding = Sampler.Sampler + 1) fontSampler : sampler;
