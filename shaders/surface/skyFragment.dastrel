@@ -1,11 +1,11 @@
+import shaderSignature;
 import environment;
 import fragment;
 
 uniform(binding = MaterialState.Textures) skyTexture : textureCube;
-uniform(binding = Samplers.Samplers + 2) skySampler : sampler;
 
 code_block(fragment) main
 {
-    let skyColor = skySampler.sample(skyTexture, FragmentInput.position);
+    let skyColor = cubeMapSampler.sample(skyTexture, FragmentInput.position);
     FragmentOutput.color = skyColor;
 }

@@ -1,0 +1,26 @@
+import shaderSignature;
+
+uniform(binding=MaterialState.Attributes) MaterialState
+{
+    heightMapScale: float2;
+    heightMapOffset: float2;
+
+    albedo: float4;
+    fresnel: float3;
+    smoothness: float;
+}
+
+uniform(binding = MaterialState.Textures) heightMapTexture : texture2D;
+uniform(binding = MaterialState.Textures + 1) splattingTexture : texture2D;
+
+uniform(binding = MaterialState.Textures + 2) albedoTexture0 : texture2D;
+uniform(binding = MaterialState.Textures + 3) albedoTexture1 : texture2D;
+uniform(binding = MaterialState.Textures + 4) albedoTexture2 : texture2D;
+uniform(binding = MaterialState.Textures + 5) albedoTexture3 : texture2D;
+uniform(binding = MaterialState.Textures + 6) albedoTexture4 : texture2D;
+
+uniform(binding = MaterialState.Textures + 7) normalTexture0 : texture2D;
+uniform(binding = MaterialState.Textures + 8) normalTexture1 : texture2D;
+uniform(binding = MaterialState.Textures + 9) normalTexture2 : texture2D;
+uniform(binding = MaterialState.Textures + 10) normalTexture3 : texture2D;
+uniform(binding = MaterialState.Textures + 11) normalTexture4 : texture2D;

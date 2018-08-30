@@ -1,3 +1,5 @@
+import shaderSignature;
+
 struct WaterHarmonic
 {
     centerOrDirection: float2;
@@ -22,7 +24,4 @@ uniform(binding=MaterialState.Attributes) MaterialState
 }
 
 uniform(binding = MaterialState.Textures) normalTexture : texture2D;
-uniform(binding = Samplers.Samplers+1) normalSampler : sampler;
-
 uniform(binding = MaterialState.Textures + 1) skyTexture : textureCube;
-uniform(binding = Samplers.Samplers + 2) skySampler : sampler;

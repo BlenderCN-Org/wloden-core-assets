@@ -8,9 +8,5 @@ uniform(binding = MaterialState.Attributes) MaterialState
 }
 
 uniform(binding = MaterialState.Textures) albedoTexture : texture2D;
-uniform(binding = Samplers.Samplers) albedoSampler : sampler;
-
 uniform(binding = MaterialState.Textures + 1) normalTexture : texture2D;
-uniform(binding = Samplers.Samplers+1) normalSampler : sampler;
-
 uniform(binding = MaterialState.Textures + 2) fresnelTexture : texture2D;

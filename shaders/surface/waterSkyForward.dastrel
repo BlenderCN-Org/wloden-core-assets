@@ -1,3 +1,4 @@
+import shaderSignature;
 import environment;
 import fragment;
 import waterMaterial;
@@ -16,7 +17,7 @@ code_block(fragment) main
 
     let R = reflect(-V, N);
     let skyPosition = (CameraState.inverseViewMatrix * float4(R, 0.0f)).xyz;
-    let skyColor = skySampler.sample(skyTexture, skyPosition);
+    let skyColor = cubeMapSampler.sample(skyTexture, skyPosition);
 
     let NdotV = max(0.0f, min(1.0f, dot(N, V)));
     let reflectionFresnel = fresnelSchlick(MaterialState.fresnel, NdotV);
