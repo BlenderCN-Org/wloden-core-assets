@@ -13,22 +13,63 @@ function transformNormalToView(normal: float3) -> float3
     return ((float4(normal, 0.0f) * objectState.inverseMatrix) * inverseViewMatrix).xyz;
 }
 
+function fetchAlbedo(texcoord: float2, splatting: float4) -> float4
+{
+    let a0 = albedoSampler.sample(albedoTexture0, texcoord);
+    let a1 = albedoSampler.sample(albedoTexture1, texcoord);
+    let a2 = albedoSampler.sample(albedoTexture2, texcoord);
+    let a3 = albedoSampler.sample(albedoTexture3, texcoord);
+    let a4 = albedoSampler.sample(albedoTexture4, texcoord);
+
+    return mixSplatting(a0, a1, a2, a3, a4, splatting);
+}
+
+function fetchNormal(texcoord: float2, splatting: float4) -> float4
+{
+    let n0 = normalSampler.sample(normalTexture0, texcoord);
+    let n1 = normalSampler.sample(normalTexture1, texcoord);
+    let n2 = normalSampler.sample(normalTexture2, texcoord);
+    let n3 = normalSampler.sample(normalTexture3, texcoord);
+    let n4 = normalSampler.sample(normalTexture4, texcoord);
+
+    return mixSplatting(n0, n1, n2, n3, n4, splatting);
+}
+
 code_block(fragment) main
 {
     let dh = 0.01f;
     let texcoord = FragmentInput.texcoord;
 
+    // Fetch the splatting
+    let splatting = albedoSampler.sample(splattingTexture, texcoord);
+
+    // Compute the height map derivatives
     let dx = displacementSampler.sample(heightMapTexture, texcoord + float2(dh, 0.0f)).r - displacementSampler.sample(heightMapTexture, texcoord - float2(dh, 0.0f)).r;
     let dy = displacementSampler.sample(heightMapTexture, texcoord + float2(0.0f, dh)).r - displacementSampler.sample(heightMapTexture, texcoord - float2(0.0f, dh)).r;
 
-    let tangent = normalize(transformNormalToView(float3(dh, dx*MaterialState.heightScale, 0.0f)));
-    let bitangent = normalize(transformNormalToView(float3(0.0f, dy*MaterialState.heightScale, -dh)));
-    let N = normalize(cross(tangent, bitangent));
+    // Build the TBN matrix
+    let t = normalize(transformNormalToView(float3(dh, dx*MaterialState.heightScale, 0.0f)));
+    let b = normalize(transformNormalToView(float3(0.0f, dy*MaterialState.heightScale, -dh)));
+    let n = normalize(cross(t, b));
+    let TBN = float3x3(t, b, n);
+
+    // Fetch the albedo.
+    let rawAlbedo = fetchAlbedo(texcoord, splatting);
+    let albedo = FragmentInput.color*MaterialState.albedo;
+
+    // Fetch the actual normal
+    let rawNormal = fetchNormal(texcoord, splatting);
+    let normalMapValue = rawNormal.xyz*2.0f - 1.0f;
+    let N = normalize(TBN*normalMapValue);
+
+    // Compute the smoothness and the fresnel factor.
+    let fresnel = MaterialState.fresnel*rawAlbedo.a;
+    let smoothness = MaterialState.smoothness*rawNormal.a;
 
     let V = normalize(-FragmentInput.position);
 
     color: FragmentOutput.color <== forwardLightingModel
-        albedo: FragmentInput.color*MaterialState.albedo
-        fresnel: MaterialState.fresnel smoothness: MaterialState.smoothness
+        albedo: albedo
+        fresnel: fresnel smoothness: smoothness
         normal: N viewVector: V position: FragmentInput.position;
 }
