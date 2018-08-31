@@ -5,6 +5,9 @@ uniform(binding=MaterialState.Attributes) MaterialState
     heightMapScale: float2;
     heightMapOffset: float2;
 
+    heightScale: float;
+    heightOffset: float;
+
     albedo: float4;
     fresnel: float3;
     smoothness: float;
@@ -24,3 +27,9 @@ uniform(binding = MaterialState.Textures + 8) normalTexture1 : texture2D;
 uniform(binding = MaterialState.Textures + 9) normalTexture2 : texture2D;
 uniform(binding = MaterialState.Textures + 10) normalTexture3 : texture2D;
 uniform(binding = MaterialState.Textures + 11) normalTexture4 : texture2D;
+
+function mixSplatting(v0: float4, v1: float4, v2: float4, v3: float4, v4: float4, alpha: float4) -> float4
+{
+    let a0 = 1.0f - dot(alpha, float4(1.0f, 1.0f, 1.0f, 1.0f));
+    return v0*a0 + v1*alpha.x + v2*alpha.y + v3*alpha.z + v4*alpha.w;
+}

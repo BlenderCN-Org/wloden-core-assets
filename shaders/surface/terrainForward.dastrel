@@ -17,12 +17,13 @@ code_block(fragment) main
 {
     let dh = 0.01f;
     let texcoord = FragmentInput.texcoord;
-    let dx = displacementSampler.sample(heightMapTexture, texcoord + float2(0.0f, dh)).r - displacementSampler.sample(heightMapTexture, texcoord - float2(0.0f, dh)).r;
-    let dy = displacementSampler.sample(heightMapTexture, texcoord + float2(dh, 0.0f)).r - displacementSampler.sample(heightMapTexture, texcoord - float2(dh, 0.0f)).r;
 
-    let tangent = normalize(transformNormalToView(float3(dh, dx, 0.0f)));
-    let bitangent = normalize(transformNormalToView(float3(0.0f, dy, dh)));
-    let N = normalize(cross(bitangent, tangent));
+    let dx = displacementSampler.sample(heightMapTexture, texcoord + float2(dh, 0.0f)).r - displacementSampler.sample(heightMapTexture, texcoord - float2(dh, 0.0f)).r;
+    let dy = displacementSampler.sample(heightMapTexture, texcoord + float2(0.0f, dh)).r - displacementSampler.sample(heightMapTexture, texcoord - float2(0.0f, dh)).r;
+
+    let tangent = normalize(transformNormalToView(float3(dh, dx*MaterialState.heightScale, 0.0f)));
+    let bitangent = normalize(transformNormalToView(float3(0.0f, dy*MaterialState.heightScale, -dh)));
+    let N = normalize(cross(tangent, bitangent));
 
     let V = normalize(-FragmentInput.position);
 

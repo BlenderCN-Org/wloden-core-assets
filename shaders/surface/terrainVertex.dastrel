@@ -11,10 +11,10 @@ code_block(vertex) main
 
     let position = GenericVertexLayout.position;
 
-    let texcoord = position.zx*heightMapScale + heightMapOffset;
+    let texcoord = float2(position.x, -position.z)*0.5f*heightMapScale + 0.5f + heightMapOffset;
 
     // Compute the height
-    let height = displacementSampler.sampleLod(heightMapTexture, texcoord, 0.0f).r;
+    let height = displacementSampler.sampleLod(heightMapTexture, texcoord, 0.0f).r*heightScale + heightOffset;
 
     position += float3(0.0f, height, 0.0f);
 

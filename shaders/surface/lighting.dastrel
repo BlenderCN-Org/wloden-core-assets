@@ -97,7 +97,7 @@ code_block forwardLightingModel
         let F = fresnelSchlick(fresnel, dot(H, L));
 
         // Compute the distribution factor.
-        let NdotH = dot(normal, H);
+        let NdotH = max(0.0f, dot(normal, H));
         let D = pow(NdotH, specularPower)*specularNormalization;
 
         // Add the light contribution.
