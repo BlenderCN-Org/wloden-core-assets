@@ -8,52 +8,27 @@ code_block(vertex) main
     using CameraState;
     using MaterialState;
 
-    let height = 0.0f;
-    let position = GenericVertexLayout.position;
-    let tangentialContributions = float2(0.0f, 0.0f);
-    for(let i = 0; i < 5; i += 1)
-    {
-        // Fetch the harmonic parameters
-        // Fetch the fields manually as a work-around for a metal bug.
-        let centerOrDirection = harmonics[i].centerOrDirection;
-        let amplitude = harmonics[i].amplitude;
-        let frequency = harmonics[i].frequency;
-        let isRadial = harmonics[i].isRadial;
+    // Fetch the position and texcoord.
+    let position = float3(GenericVertexLayout.position.x, 0.0f,  GenericVertexLayout.position.y);
+    let surfacePosition = float2(position.x, -position.z);
 
-        // Compute the distance factor.
-        let distance : float;
-        let distanceDerivatives : float2;
-        if(isRadial == 1)
-        {
-            distance = length(position.xz - centerOrDirection);
-            distanceDerivatives = (position.xz - centerOrDirection) / distance;
-        }
-        else
-        {
-            distance = dot(position.xz, centerOrDirection);
-            distanceDerivatives = centerOrDirection;
-        }
+    let lod = GenericVertexLayout.position.z;
+    let texcoord = surfacePosition;
 
-        // Compute the propagation speed factor.
-        let omega = 6.283185307179586f * frequency;
-        let kappa = omega / propagationSpeed;
+    // Eval the water waves.
+    let waterWaveEffect = evalWaterWaves(surfacePosition);
+    let height = waterWaveEffect.x;
+    let tangentialContributions = waterWaveEffect.yz;
 
-        // Compute the contribution by the harmonic.
-        let phase = kappa*distance + omega*currentTime;
-        height += amplitude * sin(phase);
-
-        // Add the tangential factor
-        tangentialContributions += amplitude*kappa*cos(phase)*distanceDerivatives;
-    }
-
+    // Apply the water height.
     position += float3(0.0f, height, 0.0f);
 
     let tangent = normalize(float3(1.0f, tangentialContributions.x, 0.0f));
-    let bitangent = normalize(float3(0.0f, tangentialContributions.y, 1.0f));
-    let normal = normalize(cross(bitangent, tangent));
+    let bitangent = normalize(float3(0.0f, tangentialContributions.y, -1.0f));
+    let normal = normalize(cross(tangent, bitangent));
 
-    VertexOutput.color = GenericVertexLayout.color;
-    VertexOutput.texcoord = GenericVertexLayout.texcoord;
+    VertexOutput.color = currentObjectColor();
+    VertexOutput.texcoord = texcoord;
     VertexOutput.tangent = transformNormalToView(tangent);
     VertexOutput.bitangent = transformNormalToView(bitangent);
     VertexOutput.normal = transformNormalToView(normal);
