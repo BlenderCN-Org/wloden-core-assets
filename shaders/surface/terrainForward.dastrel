@@ -40,6 +40,13 @@ code_block(fragment) main
     let dh = 0.01f;
     let texcoord = FragmentInput.texcoord;
 
+    if(texcoord.s < 0.0f || texcoord.t < 0.0f || texcoord.s > 1.0f || texcoord.t > 1.0f)
+    {
+        // TODO: Use discard here.
+        FragmentOutput.color = 0.0f;
+        return;
+    }
+
     // Fetch the splatting
     let splatting = albedoSampler.sample(splattingTexture, texcoord);
 

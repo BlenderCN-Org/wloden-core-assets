@@ -9,16 +9,31 @@ code_block(vertex) main
     using CameraState;
     using MaterialState;
 
-    let position = GenericVertexLayout.position;
+    let position = float3(GenericVertexLayout.position.x, 0.0f,  GenericVertexLayout.position.y);
+    let lod = GenericVertexLayout.position.z;
 
     let texcoord = float2(position.x, -position.z)*0.5f*heightMapScale + 0.5f + heightMapOffset;
 
+    if(isCurrentObjectInvisible() /*|| texcoord.s <= -0.1f || texcoord.t <= -0.1f || texcoord.s >= 1.1f || texcoord.t >= 1.1f*/)
+    {
+        VertexStage.screenPosition = float4(2.0f, 2.0f, 2.0f, 1.0f);
+        return;
+    }
+
+
     // Compute the height
-    let height = displacementSampler.sampleLod(heightMapTexture, texcoord, 0.0f).r*heightScale + heightOffset;
+    let height = displacementSampler.sampleLod(heightMapTexture, texcoord, lod).r*heightScale + heightOffset;
 
     position += float3(0.0f, height, 0.0f);
 
-    VertexOutput.color = GenericVertexLayout.color;
+    VertexOutput.color = currentObjectColor();
+    /*if(lod == 0.0f)
+        VertexOutput.color = float4(1.0f, 0.0f, 0.0f, 1.0f);
+    else if(lod == 1.0f)
+        VertexOutput.color = float4(0.0f, 1.0f, 0.0f, 1.0f);
+    else if(lod == 2.0f)
+        VertexOutput.color = float4(0.0f, 0.0f, 1.0f, 1.0f);*/
+
     VertexOutput.texcoord = texcoord;
     let position4 = transformPositionToView(position);
 
