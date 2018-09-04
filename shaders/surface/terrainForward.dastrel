@@ -37,11 +37,7 @@ code_block(fragment) main
     let texcoord = TerrainFragmentInput.texcoord;
 
     if(surfaceTexcoord.s < 0.0f || surfaceTexcoord.t < 0.0f || surfaceTexcoord.s > 1.0f || surfaceTexcoord.t > 1.0f)
-    {
-        // TODO: Use discard here.
-        FragmentOutput.color = 0.0f;
-        return;
-    }
+        discard;
 
     // Fetch the splatting
     let splatting = albedoSampler.sample(splattingTexture, surfaceTexcoord);
