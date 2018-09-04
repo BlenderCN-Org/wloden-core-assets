@@ -62,7 +62,7 @@ code_block(fragment) main
 
     // Fetch the albedo.
     let rawAlbedo = fetchAlbedo(texcoord, splatting);
-    let albedo = FragmentInput.color*MaterialState.albedo;
+    let albedo = FragmentInput.color*MaterialState.albedo*float4(rawAlbedo.rgb, 1.0f);
 
     // Fetch the actual normal
     let rawNormal = fetchNormal(texcoord, splatting);
