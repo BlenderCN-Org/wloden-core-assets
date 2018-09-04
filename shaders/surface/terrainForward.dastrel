@@ -4,33 +4,28 @@ import fragment;
 import terrainMaterial;
 import lighting;
 
-function transformNormalToView(normal: float3) -> float3
-{
-    using CameraState;
-    using ObjectState;
-    using InstanceObjectState;
-
-    return ((float4(normal, 0.0f) * objectState.inverseMatrix) * inverseViewMatrix).xyz;
-}
-
 function fetchAlbedo(texcoord: float2, splatting: float4) -> float4
 {
-    let a0 = albedoSampler.sample(albedoTexture0, texcoord);
-    let a1 = albedoSampler.sample(albedoTexture1, texcoord);
-    let a2 = albedoSampler.sample(albedoTexture2, texcoord);
-    let a3 = albedoSampler.sample(albedoTexture3, texcoord);
-    let a4 = albedoSampler.sample(albedoTexture4, texcoord);
+    using MaterialState;
+
+    let a0 = albedoSampler.sample(albedoTexture0, texcoord*textureScales[0] + textureOffsets[0]);
+    let a1 = albedoSampler.sample(albedoTexture1, texcoord*textureScales[1] + textureOffsets[1]);
+    let a2 = albedoSampler.sample(albedoTexture2, texcoord*textureScales[2] + textureOffsets[2]);
+    let a3 = albedoSampler.sample(albedoTexture3, texcoord*textureScales[3] + textureOffsets[3]);
+    let a4 = albedoSampler.sample(albedoTexture4, texcoord*textureScales[4] + textureOffsets[4]);
 
     return mixSplatting(a0, a1, a2, a3, a4, splatting);
 }
 
 function fetchNormal(texcoord: float2, splatting: float4) -> float4
 {
-    let n0 = normalSampler.sample(normalTexture0, texcoord);
-    let n1 = normalSampler.sample(normalTexture1, texcoord);
-    let n2 = normalSampler.sample(normalTexture2, texcoord);
-    let n3 = normalSampler.sample(normalTexture3, texcoord);
-    let n4 = normalSampler.sample(normalTexture4, texcoord);
+    using MaterialState;
+
+    let n0 = normalSampler.sample(normalTexture0, texcoord*textureScales[0] + textureOffsets[0]);
+    let n1 = normalSampler.sample(normalTexture1, texcoord*textureScales[1] + textureOffsets[1]);
+    let n2 = normalSampler.sample(normalTexture2, texcoord*textureScales[2] + textureOffsets[2]);
+    let n3 = normalSampler.sample(normalTexture3, texcoord*textureScales[3] + textureOffsets[3]);
+    let n4 = normalSampler.sample(normalTexture4, texcoord*textureScales[4] + textureOffsets[4]);
 
     return mixSplatting(n0, n1, n2, n3, n4, splatting);
 }
@@ -38,9 +33,10 @@ function fetchNormal(texcoord: float2, splatting: float4) -> float4
 code_block(fragment) main
 {
     let dh = 0.01f;
-    let texcoord = FragmentInput.texcoord;
+    let surfaceTexcoord = TerrainFragmentInput.surfaceTexcoord;
+    let texcoord = TerrainFragmentInput.texcoord;
 
-    if(texcoord.s < 0.0f || texcoord.t < 0.0f || texcoord.s > 1.0f || texcoord.t > 1.0f)
+    if(surfaceTexcoord.s < 0.0f || surfaceTexcoord.t < 0.0f || surfaceTexcoord.s > 1.0f || surfaceTexcoord.t > 1.0f)
     {
         // TODO: Use discard here.
         FragmentOutput.color = 0.0f;
@@ -48,11 +44,11 @@ code_block(fragment) main
     }
 
     // Fetch the splatting
-    let splatting = albedoSampler.sample(splattingTexture, texcoord);
+    let splatting = albedoSampler.sample(splattingTexture, surfaceTexcoord);
 
     // Compute the height map derivatives
-    let dx = displacementSampler.sample(heightMapTexture, texcoord + float2(dh, 0.0f)).r - displacementSampler.sample(heightMapTexture, texcoord - float2(dh, 0.0f)).r;
-    let dy = displacementSampler.sample(heightMapTexture, texcoord + float2(0.0f, dh)).r - displacementSampler.sample(heightMapTexture, texcoord - float2(0.0f, dh)).r;
+    let dx = displacementSampler.sample(heightMapTexture, surfaceTexcoord + float2(dh, 0.0f)).r - displacementSampler.sample(heightMapTexture, surfaceTexcoord - float2(dh, 0.0f)).r;
+    let dy = displacementSampler.sample(heightMapTexture, surfaceTexcoord + float2(0.0f, dh)).r - displacementSampler.sample(heightMapTexture, surfaceTexcoord - float2(0.0f, dh)).r;
 
     // Build the TBN matrix
     let t = normalize(transformNormalToView(float3(dh, dx*MaterialState.heightScale, 0.0f)));
@@ -62,7 +58,7 @@ code_block(fragment) main
 
     // Fetch the albedo.
     let rawAlbedo = fetchAlbedo(texcoord, splatting);
-    let albedo = FragmentInput.color*MaterialState.albedo*float4(rawAlbedo.rgb, 1.0f);
+    let albedo = TerrainFragmentInput.color*MaterialState.albedo*float4(rawAlbedo.rgb, 1.0f);
 
     // Fetch the actual normal
     let rawNormal = fetchNormal(texcoord, splatting);
@@ -73,10 +69,10 @@ code_block(fragment) main
     let fresnel = MaterialState.fresnel*rawAlbedo.a;
     let smoothness = MaterialState.smoothness*rawNormal.a;
 
-    let V = normalize(-FragmentInput.position);
+    let V = normalize(-TerrainFragmentInput.position);
 
     color: FragmentOutput.color <== forwardLightingModel
         albedo: albedo
         fresnel: fresnel smoothness: smoothness
-        normal: N viewVector: V position: FragmentInput.position;
+        normal: N viewVector: V position: TerrainFragmentInput.position;
 }

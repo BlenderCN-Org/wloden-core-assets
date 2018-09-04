@@ -13,6 +13,7 @@ struct WaterHarmonic
 
 uniform(binding=MaterialState.Attributes) MaterialState
 {
+    clipMapPeriod: float2;
     albedo: float4;
 
     fresnel: float3;
@@ -26,6 +27,27 @@ uniform(binding=MaterialState.Attributes) MaterialState
 
 uniform(binding = MaterialState.Textures) normalTexture : texture2D;
 uniform(binding = MaterialState.Textures + 1) skyTexture : textureCube;
+
+semantic WaterVertexOutput {
+    out(0) position: float3;
+    out(1) texcoord: float2;
+    out(2) color: float4;
+}
+
+semantic WaterFragmentInput {
+    in(0) position: float3;
+    in(1) texcoord: float2;
+    in(2) color: float4;
+}
+
+function transformNormalToView(normal: float3) -> float3
+{
+    using CameraState;
+    using ObjectState;
+    using InstanceObjectState;
+
+    return ((float4(normal, 0.0f) * objectState.inverseMatrix) * inverseViewMatrix).xyz;
+}
 
 function evalWaterWaves(position: float2) -> float3
 {
@@ -71,4 +93,25 @@ function evalWaterWaves(position: float2) -> float3
     }
 
     return float3(height, tangentialContributions);
+}
+
+function evalWaterHeight(position: float2) -> float
+{
+    return evalWaterWaves(position).x;
+}
+
+function evalWaterDerivatives(position: float2) -> float2
+{
+    return evalWaterWaves(position).yz;
+}
+
+function evalWaterNormal(position: float2) -> float3
+{
+    let derivatives = evalWaterDerivatives(position);
+    let dx = derivatives.x;
+    let dy = derivatives.y;
+
+    let t = normalize(float3(1.0f, dx, 0.0f));
+    let b = normalize(float3(0.0f, dy, -1.0f));
+    return normalize(transformNormalToView(cross(t, b)));
 }

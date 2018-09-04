@@ -1,7 +1,10 @@
 import shaderSignature;
+import environment;
 
 uniform(binding=MaterialState.Attributes) MaterialState
 {
+    clipMapPeriod: float2;
+
     heightMapScale: float2;
     heightMapOffset: float2;
 
@@ -11,6 +14,23 @@ uniform(binding=MaterialState.Attributes) MaterialState
     albedo: float4;
     fresnel: float3;
     smoothness: float;
+
+    textureScales: float2[5];
+    textureOffsets: float2[5];
+}
+
+semantic TerrainVertexOutput {
+    out(0) position: float3;
+    out(1) surfaceTexcoord: float2;
+    out(2) texcoord: float2;
+    out(3) color: float4;
+}
+
+semantic TerrainFragmentInput {
+    in(0) position: float3;
+    in(1) surfaceTexcoord: float2;
+    in(2) texcoord: float2;
+    in(3) color: float4;
 }
 
 uniform(binding = MaterialState.Textures) heightMapTexture : texture2D;
@@ -32,4 +52,13 @@ function mixSplatting(v0: float4, v1: float4, v2: float4, v3: float4, v4: float4
 {
     let a0 = 1.0f - dot(alpha, float4(1.0f, 1.0f, 1.0f, 1.0f));
     return v0*a0 + v1*alpha.x + v2*alpha.y + v3*alpha.z + v4*alpha.w;
+}
+
+function transformNormalToView(normal: float3) -> float3
+{
+    using CameraState;
+    using ObjectState;
+    using InstanceObjectState;
+
+    return ((float4(normal, 0.0f) * objectState.inverseMatrix) * inverseViewMatrix).xyz;
 }

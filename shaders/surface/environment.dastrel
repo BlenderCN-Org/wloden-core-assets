@@ -67,6 +67,14 @@ function cameraWorldPosition() -> float3
     return inverseViewMatrix[3].xyz;
 }
 
+function cameraObjectPosition() -> float3
+{
+    using CameraState;
+
+    //return (inverseViewMatrix * viewMatrix[3]).xyz;
+    return inverseViewMatrix[3].xyz;
+}
+
 function fresnelSchlick(F0: float3, cosTheta: float) -> float3
 {
     let powFactor = 1.0f - cosTheta;
@@ -85,4 +93,29 @@ function fresnelSchlick(F0: float, cosTheta: float) -> float
     let powValue = powFactor4 * powFactor;
 
     return F0 + (1.0f - F0) * powValue;
+}
+
+function offsetWithRoundingPeriod(offset: float, period: float) -> float
+{
+    return (period != 0.0f)
+        ? floor(offset/period)*period
+        : 0.0f;
+}
+
+function offsetWithRoundingPeriod(offset: float3, period: float3) -> float3
+{
+    return float3(
+        offsetWithRoundingPeriod(offset.x, period.x),
+        offsetWithRoundingPeriod(offset.y, period.y),
+        offsetWithRoundingPeriod(offset.z, period.z));
+}
+
+function clipMapOffsetWithPeriod(clipMapPeriod: float3) -> float3
+{
+    return offsetWithRoundingPeriod(cameraObjectPosition(), clipMapPeriod);
+}
+
+function clipMapOffsetWithPeriod(clipMapPeriod: float2) -> float3
+{
+    return clipMapOffsetWithPeriod(float3(clipMapPeriod.x, 0.0f, clipMapPeriod.y));
 }

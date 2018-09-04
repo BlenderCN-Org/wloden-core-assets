@@ -9,7 +9,7 @@ code_block(vertex) main
     using MaterialState;
 
     // Fetch the position and texcoord.
-    let position = float3(GenericVertexLayout.position.x, 0.0f,  GenericVertexLayout.position.y);
+    let position = float3(GenericVertexLayout.position.x, 0.0f,  GenericVertexLayout.position.y) + clipMapOffsetWithPeriod(clipMapPeriod);
     let surfacePosition = float2(position.x, -position.z);
 
     let lod = GenericVertexLayout.position.z;
@@ -23,17 +23,10 @@ code_block(vertex) main
     // Apply the water height.
     position += float3(0.0f, height, 0.0f);
 
-    let tangent = normalize(float3(1.0f, tangentialContributions.x, 0.0f));
-    let bitangent = normalize(float3(0.0f, tangentialContributions.y, -1.0f));
-    let normal = normalize(cross(tangent, bitangent));
-
-    VertexOutput.color = currentObjectColor();
-    VertexOutput.texcoord = texcoord;
-    VertexOutput.tangent = transformNormalToView(tangent);
-    VertexOutput.bitangent = transformNormalToView(bitangent);
-    VertexOutput.normal = transformNormalToView(normal);
+    WaterVertexOutput.color = currentObjectColor();
+    WaterVertexOutput.texcoord = texcoord;
     let position4 = transformPositionToView(position);
 
-    VertexOutput.position =  position4.xyz;
+    WaterVertexOutput.position =  position4.xyz;
     VertexStage.screenPosition = projectionMatrix * position4;
 }

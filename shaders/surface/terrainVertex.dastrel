@@ -9,12 +9,13 @@ code_block(vertex) main
     using CameraState;
     using MaterialState;
 
-    let position = float3(GenericVertexLayout.position.x, 0.0f,  GenericVertexLayout.position.y);
+    let position = float3(GenericVertexLayout.position.x, 0.0f,  GenericVertexLayout.position.y) + clipMapOffsetWithPeriod(clipMapPeriod);
     let lod = GenericVertexLayout.position.z;
 
-    let texcoord = float2(position.x, -position.z)*0.5f*heightMapScale + 0.5f + heightMapOffset;
+    let surfaceTexcoord = float2(position.x, -position.z)*0.5f*heightMapScale + 0.5f + heightMapOffset;
+    let texcoord = float2(position.x, -position.z);
 
-    if(isCurrentObjectInvisible() /*|| texcoord.s <= -0.1f || texcoord.t <= -0.1f || texcoord.s >= 1.1f || texcoord.t >= 1.1f*/)
+    if(isCurrentObjectInvisible() /*|| surfaceTexcoord.s <= -0.1f || surfaceTexcoord.t <= -0.1f || surfaceTexcoord.s >= 1.1f || surfaceTexcoord.t >= 1.1f*/)
     {
         VertexStage.screenPosition = float4(2.0f, 2.0f, 2.0f, 1.0f);
         return;
@@ -22,21 +23,22 @@ code_block(vertex) main
 
 
     // Compute the height
-    let height = displacementSampler.sampleLod(heightMapTexture, texcoord, lod).r*heightScale + heightOffset;
+    let height = displacementSampler.sampleLod(heightMapTexture, surfaceTexcoord, lod).r*heightScale + heightOffset;
 
     position += float3(0.0f, height, 0.0f);
 
-    VertexOutput.color = currentObjectColor();
+    TerrainVertexOutput.color = currentObjectColor();
     /*if(lod == 0.0f)
-        VertexOutput.color = float4(1.0f, 0.0f, 0.0f, 1.0f);
+        TerrainVertexOutput.color = float4(1.0f, 0.0f, 0.0f, 1.0f);
     else if(lod == 1.0f)
-        VertexOutput.color = float4(0.0f, 1.0f, 0.0f, 1.0f);
+        TerrainVertexOutput.color = float4(0.0f, 1.0f, 0.0f, 1.0f);
     else if(lod == 2.0f)
-        VertexOutput.color = float4(0.0f, 0.0f, 1.0f, 1.0f);*/
+        TerrainVertexOutput.color = float4(0.0f, 0.0f, 1.0f, 1.0f);*/
 
-    VertexOutput.texcoord = texcoord;
+    TerrainVertexOutput.surfaceTexcoord = surfaceTexcoord;
+    TerrainVertexOutput.texcoord = texcoord;
     let position4 = transformPositionToView(position);
 
-    VertexOutput.position =  position4.xyz;
+    TerrainVertexOutput.position =  position4.xyz;
     VertexStage.screenPosition = projectionMatrix * position4;
 }

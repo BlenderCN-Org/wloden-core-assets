@@ -5,11 +5,12 @@ import lighting;
 
 code_block(fragment) main
 {
-    let N = normalize(FragmentInput.normal);
-    let V = normalize(-FragmentInput.position);
+    let surfacePosition = WaterFragmentInput.texcoord;
+    let N = evalWaterNormal(surfacePosition);
+    let V = normalize(-WaterFragmentInput.position);
 
     color: FragmentOutput.color <== forwardLightingModel
         albedo: FragmentInput.color*MaterialState.albedo
         fresnel: MaterialState.fresnel smoothness: MaterialState.smoothness
-        normal: N viewVector: V position: FragmentInput.position;
+        normal: N viewVector: V position: WaterFragmentInput.position;
 }
