@@ -13,7 +13,6 @@ code_block(vertex) main
     let lod = GenericVertexLayout.position.z;
 
     let surfaceTexcoord = float2(position.x, -position.z)*0.5f*heightMapScale + 0.5f + heightMapOffset;
-    let texcoord = float2(position.x, -position.z);
 
     if(isCurrentObjectInvisible() /*|| surfaceTexcoord.s <= -0.1f || surfaceTexcoord.t <= -0.1f || surfaceTexcoord.s >= 1.1f || surfaceTexcoord.t >= 1.1f*/)
     {
@@ -36,7 +35,7 @@ code_block(vertex) main
         TerrainVertexOutput.color = float4(0.0f, 0.0f, 1.0f, 1.0f);*/
 
     TerrainVertexOutput.surfaceTexcoord = surfaceTexcoord;
-    TerrainVertexOutput.texcoord = texcoord;
+    TerrainVertexOutput.objectPosition = position;
     let position4 = transformPositionToView(position);
 
     TerrainVertexOutput.position =  position4.xyz;
