@@ -12,7 +12,7 @@ code_block(vertex) main
     let position = float3(GenericVertexLayout.position.x, 0.0f,  GenericVertexLayout.position.y) + clipMapOffsetWithPeriod(clipMapPeriod);
     let lod = GenericVertexLayout.position.z;
 
-    let surfaceTexcoord = float2(position.x, -position.z)*0.5f*heightMapScale + 0.5f + heightMapOffset;
+    let surfaceTexcoord = surfacePositionIntoTexcoord(position);
 
     if(isCurrentObjectInvisible() /*|| surfaceTexcoord.s <= -0.1f || surfaceTexcoord.t <= -0.1f || surfaceTexcoord.s >= 1.1f || surfaceTexcoord.t >= 1.1f*/)
     {

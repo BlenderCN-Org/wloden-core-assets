@@ -1,7 +1,7 @@
 {
     "type" : "Terrain",
 
-    "smoothness" : 0.55,
+    "smoothness" : 0.2,
 
     "height-map-scale" : [0.01, 0.01],
     "height-scale" : 110.0,

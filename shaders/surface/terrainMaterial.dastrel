@@ -48,6 +48,17 @@ uniform(binding = MaterialState.Textures + 9) normalTexture2 : texture2D;
 uniform(binding = MaterialState.Textures + 10) normalTexture3 : texture2D;
 uniform(binding = MaterialState.Textures + 11) normalTexture4 : texture2D;
 
+function surfacePositionIntoTexcoord(position: float3) -> float2
+{
+    return float2(position.x, -position.z)*0.5f*MaterialState.heightMapScale + 0.5f + MaterialState.heightMapOffset;
+}
+
+function surfaceTexcoordIntoPosition(texcoord: float2) -> float3
+{
+    let result = (texcoord - MaterialState.heightMapOffset - 0.5f)*2.0f/MaterialState.heightMapScale;
+    return float3(result.x, 0.0f, -result.y);
+}
+
 function mixSplatting(v0: float4, v1: float4, v2: float4, v3: float4, v4: float4, alpha: float4) -> float4
 {
     let a0 = 1.0f - dot(alpha, float4(1.0f, 1.0f, 1.0f, 1.0f));
