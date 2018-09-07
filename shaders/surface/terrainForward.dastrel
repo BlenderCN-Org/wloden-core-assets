@@ -58,7 +58,8 @@ function fetchNormal(objectPosition: float3, normal: float3, splatting: float4) 
 
 code_block(fragment) main
 {
-    let dh = 0.005f;
+    let dh = 1.0f / float2(getTextureSize(heightMapTexture));
+
     let surfaceTexcoord = TerrainFragmentInput.surfaceTexcoord;
     let objectPosition = TerrainFragmentInput.objectPosition;
 
@@ -69,11 +70,11 @@ code_block(fragment) main
     let splatting = albedoSampler.sample(splattingTexture, surfaceTexcoord);
 
     // Compute the height map derivatives
-    let dx = displacementSampler.sample(heightMapTexture, surfaceTexcoord + float2(dh, 0.0f)).r - displacementSampler.sample(heightMapTexture, surfaceTexcoord - float2(dh, 0.0f)).r;
-    let dy = displacementSampler.sample(heightMapTexture, surfaceTexcoord + float2(0.0f, dh)).r - displacementSampler.sample(heightMapTexture, surfaceTexcoord - float2(0.0f, dh)).r;
+    let dx = displacementSampler.sample(heightMapTexture, surfaceTexcoord + float2(dh.x*0.5f, 0.0f)).r - displacementSampler.sample(heightMapTexture, surfaceTexcoord - float2(dh.x*0.5f, 0.0f)).r;
+    let dy = displacementSampler.sample(heightMapTexture, surfaceTexcoord + float2(0.0f, dh.y*0.5f)).r - displacementSampler.sample(heightMapTexture, surfaceTexcoord - float2(0.0f, dh.y*0.5f)).r;
 
-    let ot = normalize(float3(dh, dx*MaterialState.heightScale, 0.0f));
-    let ob = normalize(float3(0.0f, dy*MaterialState.heightScale, -dh));
+    let ot = normalize(float3(dh.x, dx*MaterialState.heightScale, 0.0f));
+    let ob = normalize(float3(0.0f, dy*MaterialState.heightScale, -dh.y));
     let on = normalize(cross(ot, ob));
 
     // Build the TBN matrix
