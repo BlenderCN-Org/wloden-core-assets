@@ -1,0 +1,17 @@
+| textureSize colorRamp |
+textureSize := 7.0@7.0.
+colorRamp := WDCLinearRamp with: { 
+	0.0 -> '8a6025' asColor.
+	1.0 -> 'f7d8ac' asColor.
+}.
+
+^ WDCTextureData extent: 256@256 srgbColorRenderWith: [ :s :t |
+	| cracks st bumps height |
+	st := s@t.
+
+	cracks := (st*textureSize fractionalBrownianMotionOctaves: 3 lacunarity: 2.0 initialAmplitude: 0.6 tiledWith: textureSize with: #worleyNoiseTiledWith:)*3.0 min: 1.0.
+	bumps := st*textureSize*4.0 fractionalBrownianMotionOctaves: 4 lacunarity: 2.0 initialAmplitude: 1.0 tiledWith: textureSize*4.0 with: #signedGradientNoiseTiledWith:.
+	height := (cracks*0.5) + (bumps*0.3).
+	
+	colorRamp value: height
+]

@@ -1,0 +1,12 @@
+| textureSize colorRamp st sandFunction |
+textureSize := 30.0@30.0.
+colorRamp := WDCLinearRamp with: { 
+	0.0 -> Color black.
+	1.0 -> (Color fromHexString: 'b7a18b').
+}.
+
+^ WDCTextureData extent: 128@128 srgbColorRenderWith: [ :s :t |
+    st := s@t.
+    sandFunction := st*textureSize fractionalBrownianMotionOctaves: 4 lacunarity: 2.0 initialAmplitude: 0.6 tiledWith: textureSize with: #gradientNoiseTiledWith:.
+    colorRamp value: sandFunction
+]

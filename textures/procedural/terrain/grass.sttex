@@ -1,0 +1,13 @@
+| textureSize colorRamp |
+textureSize := 40.0@40.0.
+colorRamp := WDCLinearRamp with: { 
+	0.3 -> Color green muchDarker.
+	1.0 -> Color green.
+}.
+
+^ WDCTextureData extent: 256@256 srgbColorRenderWith: [ :s :t |
+	| st grassFunction |
+	st := s@t.
+	grassFunction := st*textureSize fractionalBrownianMotionOctaves: 4 lacunarity: 2.0 initialAmplitude: 0.5 tiledWith: textureSize with: #gradientNoiseTiledWith:.
+	colorRamp value: grassFunction
+]
