@@ -6,7 +6,7 @@ seabedLevel := -10.0.
 islandBaseLevel := 1.0.
 heightScale := 110.0.
 
-snowStartHeight := 45.0.
+snowStartHeight := 30.0.
 
 textureData := WDCTextureData extent: 128@128 terrainMap: (self at: #texture) renderWith: [ :s :t |
 	| st p r theta innerRadius

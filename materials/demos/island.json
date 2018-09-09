@@ -3,7 +3,7 @@
 
     "smoothness" : 0.2,
 
-    "height-map-scale" : [0.01, 0.01],
+    "height-map-size" : [200.0, 200.0],
     "height-scale" : 110.0,
 
     "height-map" : "textures/procedural/terrain/island.sttex?texture=height",

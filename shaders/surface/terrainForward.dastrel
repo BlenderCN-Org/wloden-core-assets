@@ -99,11 +99,8 @@ code_block(fragment) main
     let dx = displacementSampler.sample(heightMapTexture, surfaceTexcoord + float2(dh.x, 0.0f)).r - displacementSampler.sample(heightMapTexture, surfaceTexcoord - float2(dh.x, 0.0f)).r;
     let dy = displacementSampler.sample(heightMapTexture, surfaceTexcoord + float2(0.0f, dh.y)).r - displacementSampler.sample(heightMapTexture, surfaceTexcoord - float2(0.0f, dh.y)).r;
 
-    // Compute the object space normalFold this cross product.
-    let ot = float3(1.0f, dx*MaterialState.heightScale, 0.0f);
-    let ob = float3(0.0f, dy*MaterialState.heightScale, -1.0f);
-    let on = normalize(cross(ot, ob));
-    on = normalize(float3(-dx*MaterialState.heightScale, 1.0f, dy*MaterialState.heightScale));
+    // Compute the object space normal.
+    let on = normalize(float3(-dx*MaterialState.heightScale, 1.0f, dy*MaterialState.heightScale));
 
     // Fetch the albedo.
     let rawAlbedo = fetchAlbedo(objectPosition, on, splatting);
