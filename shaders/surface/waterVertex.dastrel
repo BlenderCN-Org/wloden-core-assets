@@ -24,7 +24,8 @@ code_block(vertex) main
     position += float3(0.0f, height, 0.0f);
 
     WaterVertexOutput.color = currentObjectColor();
-    WaterVertexOutput.texcoord = texcoord;
+    WaterVertexOutput.surfaceCoordinate = surfacePosition;
+    WaterVertexOutput.texcoord = surfacePosition*textureScale + textureOffset;
     let position4 = transformPositionToView(position);
 
     WaterVertexOutput.position =  position4.xyz;

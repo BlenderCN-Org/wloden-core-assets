@@ -1,7 +1,9 @@
 {
     "type" : "Water",
     "use-clip-map" : true,
-    "color" : [0.0, 0.25, 0.8, 0.2],
+    "albedo-texture" : "textures/procedural/water/ocean.sttex?texture=albedo",
+    "normal-texture" : "textures/procedural/water/ocean.sttex?texture=normal",
+    "texture-scale": [0.5, 0.5],
 
     "constant-fresnel" : [0.02, 0.02, 0.02],
     "smoothness" : 1.0
