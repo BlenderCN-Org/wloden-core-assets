@@ -7,7 +7,8 @@ uniform(binding = LightingState.ShadowMaps) spotShadowMaps : depthTexture2DArray
 function projectShadowPosition(shadowPoint: float4, shadowMapLayer: float) -> float4
 {
     let projectedShadowPoint = float3(shadowPoint.xyz / shadowPoint.w);
-    let shadowCoord = float3(projectedShadowPoint.xy*0.5f + 0.5f, shadowMapLayer);
+    let shadowCoord = float3(projectedShadowPoint.xy, shadowMapLayer);
+
     return float4(shadowCoord, projectedShadowPoint.z);
 }
 
@@ -58,8 +59,8 @@ code_block forwardLightingModel
 		if(lightSource.shadowMapLayer >= 0.0f)
 		{
             let cameraShadowPosition = float4(position + normal*0.3f, 1.0f);
-            let cascadeDistance = dot(lightSource.cascadeFrustumPlane.xyz, cameraShadowPosition.xyz) + lightSource.cascadeFrustumPlane.w;
             let cascadeSplitOffsets = lightSource.cascadeSplitOffsets;
+            let cascadeDistance = dot(lightSource.cascadeFrustumPlane.xyz, cameraShadowPosition.xyz) + lightSource.cascadeFrustumPlane.w;
 
             if(lightSource.position.w != 0.0f || cascadeDistance < cascadeSplitOffsets.y)
             {
