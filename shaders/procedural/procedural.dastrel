@@ -1,0 +1,10 @@
+function fbmWorleyNoiseOctaves(position: float2, octaves: int, lacunarity: float, initialAmplitude: float, textureSize: float2) -> float
+{
+	return 0.0f;
+}
+
+function fbmGradientNoiseOctaves(position: float2, octaves: int, lacunarity: float, initialAmplitude: float, textureSize: float2) -> float
+{
+	return 0.0f;
+}
+
