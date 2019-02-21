@@ -23,6 +23,8 @@ uniform(push_constant=QuickState) QuickState
 
     colorRampIndex: int;
     colorRampSize: int;
+
+    textureArrayElementIndex: int;
 }
 
 function evaluateColorRamp(coord: float) -> float4
