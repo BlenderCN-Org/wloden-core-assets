@@ -18,7 +18,7 @@ code_block(fragment) main
     color: lightedColor <== forwardLightingModel
         albedo: albedo
         fresnel: MaterialState.fresnel smoothness: MaterialState.smoothness
-        normal: N viewVector: V position: WaterFragmentInput.position;
+        normal: N surfaceNormal: N viewVector: V position: WaterFragmentInput.position;
 
     let R = reflect(-V, N);
     let skyPosition = (CameraState.inverseViewMatrix * float4(R, 0.0f)).xyz;

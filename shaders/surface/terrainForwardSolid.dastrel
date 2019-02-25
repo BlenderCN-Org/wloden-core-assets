@@ -39,5 +39,5 @@ code_block(fragment) main
     color: FragmentOutput.color <== forwardLightingModel
         albedo: albedo
         fresnel: fresnel smoothness: smoothness
-        normal: N viewVector: V position: TerrainFragmentInput.position;
+        normal: N surfaceNormal: N viewVector: V position: TerrainFragmentInput.position;
 }

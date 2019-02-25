@@ -32,9 +32,13 @@ uniform(binding=LightingState.GlobalLightingState) GlobalLightingState
     // Hemisphere lighting
     groundLighting: float4;
     skyLighting: float4;
-    sunDirection: float3;
+
+    // Shadow mapping extents
+    shadowMapExtent: float2;
+    shadowMapInverseExtent: float2;
 
     // Normal lights
+    sunDirection: float3;
     numberOfLights: int;
     lightSources: LightSource[16];
 }

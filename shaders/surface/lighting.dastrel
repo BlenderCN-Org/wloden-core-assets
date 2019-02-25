@@ -12,9 +12,29 @@ function projectShadowPosition(shadowPoint: float4, shadowMapLayer: float) -> fl
     return float4(shadowCoord, projectedShadowPoint.z);
 }
 
+function sampleShadowMapWithDisplacement(shadowPoint: float3, depthReference: float, displacement: float2) -> float
+{
+    return shadowSampler.sampleWithDepthReference(spotShadowMaps,
+        shadowPoint + float3(displacement*GlobalLightingState.shadowMapInverseExtent, 0.0f),
+        depthReference);
+}
+function computeShadowFactorFor(shadowPoint: float3, depthReference: float) -> float
+{
+    return
+        //sampleShadowMapWithDisplacement(shadowPoint, depthReference, float2(0.0f, 0.0f));
+
+        (sampleShadowMapWithDisplacement(shadowPoint, depthReference, float2(-0.5f, -0.5f)) +
+        sampleShadowMapWithDisplacement(shadowPoint, depthReference, float2(-0.5f, 0.5f)) +
+        sampleShadowMapWithDisplacement(shadowPoint, depthReference, float2(0.5f, -0.5f)) +
+        sampleShadowMapWithDisplacement(shadowPoint, depthReference, float2(0.5f, 0.5f))
+        ) * 0.25f;
+}
+
+
 code_block forwardLightingModel
 {
     in normal: float3;
+    in surfaceNormal: float3;
     in viewVector: float3;
     in position: float3;
     in albedo: float4;
@@ -58,7 +78,7 @@ code_block forwardLightingModel
 		let shadowFactor = 1.0f;
 		if(lightSource.shadowMapLayer >= 0.0f)
 		{
-            let cameraShadowPosition = float4(position + normal*0.3f, 1.0f);
+            let cameraShadowPosition = float4(position + surfaceNormal*0.01f, 1.0f);
             let cascadeSplitOffsets = lightSource.cascadeSplitOffsets;
             let cascadeDistance = dot(lightSource.cascadeFrustumPlane.xyz, cameraShadowPosition.xyz) + lightSource.cascadeFrustumPlane.w;
 
@@ -66,19 +86,19 @@ code_block forwardLightingModel
             {
                 let shadowPosition = lightSource.shadowMapTransform * cameraShadowPosition;
                 let projectedShadowPoint = projectShadowPosition(shadowPosition, lightSource.shadowMapLayer);
-			    shadowFactor = shadowSampler.sampleWithDepthReference(spotShadowMaps, projectedShadowPoint.xyz, projectedShadowPoint.w);
+			    shadowFactor = computeShadowFactorFor(projectedShadowPoint.xyz, projectedShadowPoint.w);
             }
             else if(cascadeDistance < cascadeSplitOffsets.z)
             {
                 let shadowPosition = lightSource.shadowMapTransform2 * cameraShadowPosition;
                 let projectedShadowPoint = projectShadowPosition(shadowPosition, lightSource.shadowMapLayer + 1.0f);
-                shadowFactor = shadowSampler.sampleWithDepthReference(spotShadowMaps, projectedShadowPoint.xyz, projectedShadowPoint.w);
+                shadowFactor = computeShadowFactorFor(projectedShadowPoint.xyz, projectedShadowPoint.w);
             }
             else
             {
                 let shadowPosition = lightSource.shadowMapTransform3 * cameraShadowPosition;
                 let projectedShadowPoint = projectShadowPosition(shadowPosition, lightSource.shadowMapLayer + 2.0f);
-                shadowFactor = shadowSampler.sampleWithDepthReference(spotShadowMaps, projectedShadowPoint.xyz, projectedShadowPoint.w);
+                shadowFactor = computeShadowFactorFor(projectedShadowPoint.xyz, projectedShadowPoint.w);
             }
 		}
 

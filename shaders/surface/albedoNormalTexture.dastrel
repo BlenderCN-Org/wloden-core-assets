@@ -19,5 +19,5 @@ code_block(fragment) main
     color: FragmentOutput.color <== forwardLightingModel
         albedo: albedo*MaterialState.albedo
         fresnel: MaterialState.fresnel smoothness: MaterialState.smoothness
-        normal: N viewVector: V position: FragmentInput.position;
+        normal: N surfaceNormal: n viewVector: V position: FragmentInput.position;
 }
