@@ -1,0 +1,37 @@
+import stage;
+
+shader_signature GenericComputation
+{
+    descriptor_set(max_bindings=10) Samplers
+    {
+        Samplers: sampler*4;
+    }
+
+    descriptor_set(max_bindings=10000) UniformBuffers
+    {
+        Buffers: buffer*4;
+    }
+
+    descriptor_set(max_bindings=10000) Textures
+    {
+        Textures: texture*4;
+    }
+
+    descriptor_set(max_bindings=10000) StorageBuffers
+    {
+        Buffers: buffer*4;
+    }
+
+    descriptor_set(max_bindings=10000) StorageImages
+    {
+        Images: image*4;
+    }
+
+
+    push_constant Arguments;
+}
+
+uniform(binding = Samplers.Samplers+1) nearestWrapSampler : sampler;
+uniform(binding = Samplers.Samplers+1) nearestClampToEdgeSampler : sampler;
+uniform(binding = Samplers.Samplers+1) linearWrapSampler : sampler;
+uniform(binding = Samplers.Samplers+1) linearClampToEdgeSampler : sampler;
