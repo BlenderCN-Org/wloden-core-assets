@@ -24,6 +24,11 @@ uniform(binding=CameraState.ObjectState) CameraState
     viewMatrix: float4x4;
 
     projectionMatrix: float4x4;
+    inverseProjectionMatrix: float4x4;
+
+    screenSize: float2;
+    inverseScreenSize: float2;
+
     currentTime: float;
 }
 

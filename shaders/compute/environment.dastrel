@@ -1,5 +1,3 @@
-import stage;
-
 shader_signature GenericComputation
 {
     descriptor_set(max_bindings=10) Samplers
@@ -31,7 +29,7 @@ shader_signature GenericComputation
     push_constant Arguments;
 }
 
-uniform(binding = Samplers.Samplers+1) nearestWrapSampler : sampler;
+uniform(binding = Samplers.Samplers) nearestWrapSampler : sampler;
 uniform(binding = Samplers.Samplers+1) nearestClampToEdgeSampler : sampler;
-uniform(binding = Samplers.Samplers+1) linearWrapSampler : sampler;
-uniform(binding = Samplers.Samplers+1) linearClampToEdgeSampler : sampler;
+uniform(binding = Samplers.Samplers+2) linearWrapSampler : sampler;
+uniform(binding = Samplers.Samplers+3) linearClampToEdgeSampler : sampler;

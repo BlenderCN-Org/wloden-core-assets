@@ -5,15 +5,17 @@ shader_signature ForwardRenderer
         Samplers: sampler * 5;
     }
 
-    descriptor_set(max_bindings = 100) LightingState
-    {
-        GlobalLightingState: uniform;
-        ShadowMaps: texture * 2;
-    }
-
     descriptor_set(max_bindings = 1000000) CameraState
     {
         ObjectState : uniform;
+    }
+
+    descriptor_set(max_bindings = 100) LightingState
+    {
+        GlobalLightingState: uniform;
+        SpotShadowMaps: texture;
+        PointShadowMaps: texture;
+        ScreenSpaceAmbientOcclusion: texture;
     }
 
     descriptor_set(max_bindings = 1000000) ObjectState

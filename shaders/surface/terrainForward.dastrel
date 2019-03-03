@@ -8,11 +8,11 @@ function fetchAlbedoPlane(texcoord: float2, splatting: float4) -> float4
 {
     using MaterialState;
 
-    let a0 = albedoSampler.sample(albedoTexture0, texcoord*textureScales[0] + textureOffsets[0]);
-    let a1 = albedoSampler.sample(albedoTexture1, texcoord*textureScales[1] + textureOffsets[1]);
-    let a2 = albedoSampler.sample(albedoTexture2, texcoord*textureScales[2] + textureOffsets[2]);
-    let a3 = albedoSampler.sample(albedoTexture3, texcoord*textureScales[3] + textureOffsets[3]);
-    let a4 = albedoSampler.sample(albedoTexture4, texcoord*textureScales[4] + textureOffsets[4]);
+    let a0 = albedoSampler.sample(albedoTexture0, texcoord*textureScaleAndOffset[0].xy + textureScaleAndOffset[0].zw);
+    let a1 = albedoSampler.sample(albedoTexture1, texcoord*textureScaleAndOffset[1].xy + textureScaleAndOffset[1].zw);
+    let a2 = albedoSampler.sample(albedoTexture2, texcoord*textureScaleAndOffset[2].xy + textureScaleAndOffset[2].zw);
+    let a3 = albedoSampler.sample(albedoTexture3, texcoord*textureScaleAndOffset[3].xy + textureScaleAndOffset[3].zw);
+    let a4 = albedoSampler.sample(albedoTexture4, texcoord*textureScaleAndOffset[4].xy + textureScaleAndOffset[4].zw);
 
     return mixSplatting(a0, a1, a2, a3, a4, splatting);
 }
@@ -45,11 +45,11 @@ function fetchNormalPlane(texcoord: float2, splatting: float4) -> float4
 {
     using MaterialState;
 
-    let n0 = normalSampler.sample(normalTexture0, texcoord*textureScales[0] + textureOffsets[0]);
-    let n1 = normalSampler.sample(normalTexture1, texcoord*textureScales[1] + textureOffsets[1]);
-    let n2 = normalSampler.sample(normalTexture2, texcoord*textureScales[2] + textureOffsets[2]);
-    let n3 = normalSampler.sample(normalTexture3, texcoord*textureScales[3] + textureOffsets[3]);
-    let n4 = normalSampler.sample(normalTexture4, texcoord*textureScales[4] + textureOffsets[4]);
+    let n0 = normalSampler.sample(normalTexture0, texcoord*textureScaleAndOffset[0].xy + textureScaleAndOffset[0].zw);
+    let n1 = normalSampler.sample(normalTexture1, texcoord*textureScaleAndOffset[1].xy + textureScaleAndOffset[1].zw);
+    let n2 = normalSampler.sample(normalTexture2, texcoord*textureScaleAndOffset[2].xy + textureScaleAndOffset[2].zw);
+    let n3 = normalSampler.sample(normalTexture3, texcoord*textureScaleAndOffset[3].xy + textureScaleAndOffset[3].zw);
+    let n4 = normalSampler.sample(normalTexture4, texcoord*textureScaleAndOffset[4].xy + textureScaleAndOffset[4].zw);
 
     return mixSplatting(n0, n1, n2, n3, n4, splatting)*float4(2.0f, 2.0f, 2.0f, 1.0f) - float4(1.0f, 1.0f, 1.0f, 0.0f);
 }

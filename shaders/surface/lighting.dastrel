@@ -1,8 +1,11 @@
 import shaderSignature;
 import environment;
 import fragment;
+import fragment.stage;
 
-uniform(binding = LightingState.ShadowMaps) spotShadowMaps : depthTexture2DArray;
+uniform(binding = LightingState.SpotShadowMaps) spotShadowMaps : depthTexture2DArray;
+uniform(binding = LightingState.PointShadowMaps) pointShadowMaps : depthTextureCubeArray;
+uniform(binding = LightingState.ScreenSpaceAmbientOcclusion) screenSpaceAmbientOcclusion : texture2D;
 
 function projectShadowPosition(shadowPoint: float4, shadowMapLayer: float) -> float4
 {
@@ -18,6 +21,13 @@ function sampleShadowMapWithDisplacement(shadowPoint: float3, depthReference: fl
         shadowPoint + float3(displacement*GlobalLightingState.shadowMapInverseExtent, 0.0f),
         depthReference);
 }
+
+function sampleScreenSpaceAmbientOcclusion() -> float
+{
+    let uv = FragmentStage.fragCoord.xy * CameraState.inverseScreenSize;
+    return albedoSampler.sample(screenSpaceAmbientOcclusion, uv).x;
+}
+
 function computeShadowFactorFor(shadowPoint: float3, depthReference: float) -> float
 {
     return
@@ -29,7 +39,6 @@ function computeShadowFactorFor(shadowPoint: float3, depthReference: float) -> f
         sampleShadowMapWithDisplacement(shadowPoint, depthReference, float2(0.5f, 0.5f))
         ) * 0.25f;
 }
-
 
 code_block forwardLightingModel
 {
@@ -53,7 +62,7 @@ code_block forwardLightingModel
 
     // Add the ambient hemispherical light.
     let hemiFactor = dot(normal, sunDirection)*0.5f + 0.5f;
-    accumulatedColor += albedoColor * mix(groundLighting.rgb, skyLighting.rgb, hemiFactor);
+    accumulatedColor += albedoColor * mix(groundLighting.rgb, skyLighting.rgb, hemiFactor)*sampleScreenSpaceAmbientOcclusion();
 
     // Accumulate each one of the lights
     for(let i = 0; i < numberOfLights; i += 1)

@@ -23,10 +23,10 @@
         "textures/procedural/terrain/snow.sttex?texture=normal"
     ],
 
-    "texture-scales" : [
-        [1.0, 1.0],
-        [0.3, 0.3],
-        [0.1, 0.1],
-        [1.0, 1.0]
+    "texture-scales-offsets" : [
+        [1.0, 1.0, 0.0, 0.0],
+        [0.3, 0.3, 0.0, 0.0],
+        [0.1, 0.1, 0.0, 0.0],
+        [1.0, 1.0, 0.0, 0.0]
     ]
 }

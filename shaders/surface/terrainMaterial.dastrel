@@ -15,8 +15,7 @@ uniform(binding=MaterialState.Attributes) MaterialState
     fresnel: float3;
     smoothness: float;
 
-    textureScales: float2[5];
-    textureOffsets: float2[5];
+    textureScaleAndOffset: float4[5];
 }
 
 semantic TerrainVertexOutput {

@@ -3,6 +3,6 @@ import fragment;
 
 code_block(fragment) main
 {
-    let fontAlpha = fontSampler.sample(fontTexture, FragmentInput.texcoord/float2(getTextureSize(fontTexture))).r;
+    let fontAlpha = fontSampler.sample(fontTexture, FragmentInput.texcoord/float2(getTextureSize(fontTexture, 0))).r;
     FragmentOutput.color = float4(FragmentInput.color.rgb, FragmentInput.color.a*fontAlpha);
 }
