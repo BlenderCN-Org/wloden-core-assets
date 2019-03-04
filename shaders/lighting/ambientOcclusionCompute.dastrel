@@ -19,7 +19,6 @@ uniform(binding=CameraState.ObjectState) CameraState
 uniform(binding = ComputeBuffers.DepthBuffer) depthTexture : texture2D;
 uniform(binding = ComputeBuffers.Destination, format = r8, writeonly) ssaoImage : image2D;
 
-/*
 constant SamplingDistributionSize : int = 32;
 constant SamplingDistribution : float3[32] = {
     { -0.0826997384428978f, 0.06553447246551514f, -0.5620816349983215f },
@@ -55,9 +54,8 @@ constant SamplingDistribution : float3[32] = {
     { 0.20202021300792694f, -0.6462392807006836f, 0.6567094326019287f },
     { 0.2668597996234894f, -0.8871186971664429f, 0.19643327593803406f },
 };
-*/
 
-constant SamplingDistributionSize : int = 16;
+/*constant SamplingDistributionSize : int = 16;
 constant SamplingDistribution : float3[16] = {
     { -0.0826997384428978f, 0.06553447246551514f, -0.5620816349983215f },
     { 0.8693857789039612f, -0.23299583792686462f, 0.03883274272084236f },
@@ -75,7 +73,7 @@ constant SamplingDistribution : float3[16] = {
     { -0.1692107617855072f, 0.0746079534292221f, -0.06416526436805725f },
     { 0.24969857931137085f, 0.6840792298316956f, -0.6804649829864502f },
     { 0.12979735434055328f, -0.4957471787929535f, -0.022970901802182198f },
-};
+};*/
 
 function sampleAmbientOcclusionAt(position: float3) -> float
 {
@@ -109,19 +107,16 @@ code_block(compute, localSizeX=32, localSizeY=16) main
     let eyePosition4 = CameraState.inverseProjectionMatrix *screenPosition;
     let eyePosition = eyePosition4.xyz/eyePosition4.w;
 
-	if(st.x < size.x && st.y < size.y)
-	{
-		let outSampleCount = 0.0f;
-        let noise = signedRandomNoise(uv);
+	let outSampleCount = 0.0f;
+    let noise = signedRandomNoise(uv);
 
-        for(let i = 0; i < SamplingDistributionSize; i += 1)
-        {
-            let delta = rotate(noise, SamplingDistribution[i]*0.05f);
-            outSampleCount += sampleAmbientOcclusionAt(eyePosition + delta);
-        }
+    for(let i = 0; i < SamplingDistributionSize; i += 1)
+    {
+        let delta = rotate(noise, SamplingDistribution[i]*0.05f);
+        outSampleCount += sampleAmbientOcclusionAt(eyePosition + delta);
+    }
 
 
-		let value = 1.0f - outSampleCount / float(SamplingDistributionSize);
-		imageWrite(ssaoImage, st, float4(value, 0.0f, 0.0f, 0.0f));
-	}
+	let value = 1.0f - outSampleCount / float(SamplingDistributionSize);
+	imageWrite(ssaoImage, st, float4(value, 0.0f, 0.0f, 0.0f));
 }

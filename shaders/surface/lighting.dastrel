@@ -87,7 +87,7 @@ code_block forwardLightingModel
 		let shadowFactor = 1.0f;
 		if(lightSource.shadowMapLayer >= 0.0f)
 		{
-            let cameraShadowPosition = float4(position + surfaceNormal*0.01f, 1.0f);
+            let cameraShadowPosition = float4(position + surfaceNormal*0.1f, 1.0f);
             let cascadeSplitOffsets = lightSource.cascadeSplitOffsets;
             let cascadeDistance = dot(lightSource.cascadeFrustumPlane.xyz, cameraShadowPosition.xyz) + lightSource.cascadeFrustumPlane.w;
 
